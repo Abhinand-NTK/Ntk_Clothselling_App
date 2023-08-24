@@ -1,0 +1,287 @@
+{% extends 'adminpanel/admin_basic.html' %}
+
+{% load static %}
+
+{% block content%}
+<html>
+<body>
+
+<!-- Bootstrap Modal for add categorys -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'addcategory' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Add new Category.</p>
+                    <input type="text" name="name" id="" placeholder="New Category">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap Modal for add Sub-categorys -->
+<div class="modal fade" id="addsubcModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'addsubcategory' %}">
+                {% csrf_token %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Sub Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Add new Category.</p>
+                    <input type="text" name="category" id="newSubCategory" placeholder="Choose category">
+                    <input type="text" name="name" id="" placeholder="Add Sub-category">
+                    <select name="selectedCategory" id="categoryDropdown">
+                        {% for category in cat %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+  <!-- Edit Category -->
+  {% for category in cat %}
+  <div class="modal fade" id="openModalBtnforupdate-{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <form method="post" action="/admin_c/editcategory/{{category.id}}">
+                  {% csrf_token %}
+                  {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Add/Update Category</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <p>Add/Update Category.</p>
+                      <input type="text" name="name" value="{{category.name}}" id="" placeholder="New Category">
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Save</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
+
+<!-- Edit Subcategory -->
+  
+  {% for subcategory in subcat %}
+  <div class="modal fade" id="openModalBtnforupdatesub-{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <form method="post" action="/admin_c/editsubcategory/{{subcategory.id}}">
+                  {% csrf_token %}
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Add/Update Sub-Category</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <p>Add/Update Sub-Category.</p>
+                      <input type="text" name="category" id="newSubCategory1" placeholder="Category" value="{{subcategory.category}}">
+                      <input type="text" name="name" id="subCategoryNameInput" placeholder="Sub-category Name" value="{{subcategory.name}}">
+                      <select name="selectedCategory" id="categoryDropdown1">
+                          {% for category in cat %}
+                          <option value="{{ category.id }}">{{ category.name }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-success">Save</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
+
+  
+  <div class="mt-2">
+    <div class="row">
+        <div class="col-md-2  d-none d-md-block " style="background-color: black;">
+
+            <div class="selectable-list text-light d-flex justify-content-center">
+                <ul class="list-unstyled mt-5">
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Dashboard</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/users/">Users</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/products/">Product</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/category/">Category</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/addcolorsize/">Color,Size & Brand</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/addcategory/">Coupons</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Orders</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Banners</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
+                    <!-- Add more list items as needed -->
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10 col-12">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row d-flex justify-content-center">
+                            <div>
+                                <h3><b>Manage Category</b></h3>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                        <button id="openModalBtn" class="btn btn-dark">Add Category</button>
+                        <!-- <button id="" data-target="#addsubc" class="d-flex text-dark font-weight font-weight-bold ">Add Sub Category</button> -->
+                        <button id="addsubc" data-toggle="modal" data-target="#addsubcModal" class="btn btn-dark">Add Sub Category</button>
+                        <!-- <a class="button btn-dark block" href="">Add color and Size</a> -->
+                        </div>
+                    </div>
+                    <div class="table-responsive  d-flex justify-content-center">
+                        <table class=" col-md-6 col-12 table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Category Name</th>
+                                    <th>Edit</th>
+                                    <th>List/Unlist Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category in cat %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ category.name }}</td>
+                                    <td>
+                                        <button type="submit" class="btn btn-dark edit-category"
+                                            data-toggle="modal" data-target="#openModalBtnforupdate-{{ forloop.counter }}"
+                                            data-category-id="{{ category.id }}">Edit Category</button>
+                                    </td>
+                                    <td>
+                                        <style>
+                                            .red-button {
+                                                background-color: red;
+                                                color: white;
+                                            }
+                                            
+                                            .green-button {
+                                                background-color: green;
+                                                color: white;
+                                            }
+                                        </style>
+                                        <script>
+                                            function toggleField() {
+                                                var field = document.getElementById('field');
+                                                var button = document.getElementById('toggleButton');
+                                                
+                                                if (field.value === 'true') {
+                                                    field.value = 'false';
+                                                    button.className = 'red-button';
+                                                } else {
+                                                    field.value = 'true';
+                                                    button.className = 'green-button';
+                                                }
+                                            }
+                                        </script>
+                                    </head>
+                                    <body>
+                                        <form action="{% url 'category' %}" method="POST" >
+                                            {%csrf_token %}
+
+                                            <button id="toggleButton" class="red-button btn" onclick="toggleField()">Toggle Field</button>
+                                            <input type="hidden" id="field" name="check"  value="false">
+
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+
+                        <table class=" col-md-6 col-12 table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Category Name</th>
+                                    <th>Edit</th>
+                                    <th>List/Unlist Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for subcategory in subcat%}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ subcategory.name }}</td>
+                                    <td>
+                                        <button type="submit" class="btn btn-dark edit-category"
+                                            data-toggle="modal" data-target="#openModalBtnforupdatesub-{{ forloop.counter }}"
+                                            data-category-id="{{ subcategory.id }}">Edit Category</button>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock content%}
+ 

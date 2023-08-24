@@ -1,0 +1,81 @@
+{% extends 'adminpanel\admin_basic.html' %}
+
+{% load static %}
+
+{% block content%}
+<html>
+
+<body>
+<div class="mt-2">
+    <div class="row" style="height: 120vh;"> 
+        <div class="col-md-2 col-2" style="background-color: black;">
+            <div class="selectable-list text-light d-flex justify-content-center">
+                <ul class="list-unstyled mt-5">
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Dashboard</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/users/">Users</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/products/">Product</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/category/">Category</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/addcategory/">Coupons</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Orders</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Banners</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
+                    <!-- Add more list items as needed -->
+                </ul>
+            </div>
+            
+
+        </div>
+        <div class="col-md-10 col-10">
+            <div class="d-flex justify-content-center">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div style="width: 170vh;" class="row d-flex justify-content-center">
+                            <div>
+                                <h3><b>Manage Users</b></h3>
+                            </div>
+                        </div>
+                    </div> 
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <span class="custom-checkbox">
+                                        <label for="selectAll"></label>
+                                    </span>
+                                </th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>MObile</th>
+                                <th>Data Joined</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="custom-checkbox">
+                                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                        <label for="checkbox1"></label>
+                                    </span>
+                                </td>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.user_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td> Not Provided </td>
+                                <td>
+                                    <a href="#editEmployeeModal-{{ forloop.counter }}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                    <a href="#deleteEmployeeModal-{{ forloop.counter }}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock content%}

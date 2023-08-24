@@ -1,0 +1,222 @@
+{% extends 'adminpanel\admin_basic.html' %}
+
+{% load static %}
+
+{% block content%}
+<html>
+
+<body>
+
+  <div class="mt-2">
+    <div class="row" style="height: 120vh;">
+      <div class="col-md-2 col-2" style="background-color: black;">
+        <div class="selectable-list text-light d-flex justify-content-center">
+          <ul class="list-unstyled mt-5">
+            <li class="admin"><a class="item" href="/admin_c/dashboard/">Dashboard</a></li>
+            <li class="admin"><a class="item" href="/admin_c/users/">Users</a></li>
+            <li class="admin"><a class="item" href="/admin_c/products/">Product</a></li>
+            <li class="admin"><a class="item" href="/admin_c/category/">Category</a></li>
+            <li class="admin"><a class="item" href="/admin_c/addcategory/">Coupons</a></li>
+            <li class="admin"><a class="item" href="/admin_c/dashboard/">Orders</a></li>
+            <li class="admin"><a class="item" href="/admin_c/dashboard/">Banners</a></li>
+            <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
+            <!-- Add more list items as needed -->
+          </ul>
+        </div>
+
+
+      </div>
+      <div class="col-md-10 col-10">
+        <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addVariantModal">
+          Add Variant
+        </button>
+
+        <table class="table align-middle mb-0 bg-white">
+          <thead class="bg-light">
+            <tr>
+              <th>Product Name</th>
+              <th>Size</th>
+              <th>Color</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Avalibilty</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          {% for var in varient %}
+          <tbody>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  {{var.product}}
+                </div>
+
+              </td>
+              <td>
+                {{var.size}}
+              </td>
+              <td>
+                {{var.color}}
+              </td>
+              <td>{{var.price}}</td>
+              <td>
+                {{var.stock}}
+              </td>
+              <td>
+                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#editVariantModal">
+                  Edit
+                </button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-dark">
+                  List and Unlist
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <!-- Button to Trigger Modal -->
+  <!-- Modal -->
+  <!-- Button to trigger the modal -->
+  <!-- Modal  for add the varient -->
+  <div class="modal fade" id="addVariantModal" tabindex="-1" role="dialog" aria-labelledby="addVariantModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addVariantModalLabel">Add Product Variant</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'productvarients' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="product">Product</label>
+              <select class="form-control" id="product" name="product">
+                {% for i in products %}
+                <option value="{{i.id}}">
+                  {{i.name}}
+                </option>
+                {%endfor%}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="size">Size</label>
+              <select class="form-control" id="size" name="size">
+                {% for i in size %}
+                <option value="{{i.id}}">
+                  {{i.name}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="color">Color</label>
+              <select class="form-control" id="color" name="color">
+                {%for i in color%}
+                <option value="{{i.id}}">
+                  {{i.name}}
+                </option>
+                {%endfor%}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="price">Price</label>
+              <input type="text" class="form-control" id="price" name="price" placeholder="Enter price">
+            </div>
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input type="text" class="form-control" id="stock" name="stock" placeholder="Enter stock">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Variant</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+   <!-- Modal  for edit the varient -->
+   <div class="modal fade" id="editVariantModal" tabindex="-1" role="dialog" aria-labelledby="addVariantModalLabel"
+   aria-hidden="true" >
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="addVariantModalLabel">Edit Product Variant</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form action="/admin_c/editproductvarients/{{i.id}}" method="post" enctype="multipart/form-data">
+           {% csrf_token %}
+           <div class="form-group">
+             <label for="product">Product</label>
+             <select class="form-control" id="product" name="product">
+               {% for i in products %}
+               <option value="{{i.id}}">
+                 {{i.name}}
+               </option>
+               {%endfor%}
+             </select>
+           </div>
+           <div class="form-group">
+             <label for="size">Size</label>
+             <select class="form-control" id="size" name="size">
+               {% for i in size %}
+               <option value="{{i.id}}">
+                 {{i.name}}
+               </option>
+               {% endfor %}
+             </select>
+           </div>
+           <div class="form-group">
+             <label for="color">Color</label>
+             <select class="form-control" id="color" name="color">
+               {%for i in color%}
+               <option value="{{i.id}}">
+                 {{i.name}}
+               </option>
+               {%endfor%}
+             </select>
+           </div>
+           <div class="form-group">
+             <label for="price">Price</label>
+             <input type="text" class="form-control" id="price" name="price" placeholder="Enter price">
+           </div>
+           <div class="form-group">
+             <label for="stock">Stock</label>
+             <input type="text" class="form-control" id="stock" name="stock" placeholder="Enter stock">
+           </div>
+
+           <button type="submit" class="btn btn-primary">Add Variant</button>
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+
+
+</body>
+
+</html>
+{% endblock content%}

@@ -1,0 +1,26 @@
+{% extends 'adminpanel/admin_basic.html' %}
+
+{% block content %}
+<div class="mt-2">
+    <div class="row"> 
+        <div class="col-md-2 bg-dark d-none d-sm-block">
+            <div class="selectable-list text-light d-flex justify-content-center">
+                <ul class="list-unstyled mt-5">
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Dashboard</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/users/">Users</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/products/">Product</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/category/">Category</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/addcategory/">Coupons</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Orders</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Banners</a></li>
+                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
+                    <!-- Add more list items as needed -->
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <!-- Your main content area here -->
+        </div>
+    </div>
+</div>
+{% endblock %}

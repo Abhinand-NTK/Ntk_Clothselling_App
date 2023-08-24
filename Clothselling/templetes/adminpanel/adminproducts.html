@@ -1,0 +1,211 @@
+{% extends 'adminpanel\admin_basic.html' %}
+
+{% load static %}
+
+{% block content%}
+<html>
+
+<body>
+    
+    <div class="mt-2">
+        <div class="row" style="height: 120vh;">
+            <div class="col-md-2 col-2" style="background-color: black;">
+                <div class="selectable-list text-light d-flex justify-content-center">
+                    <ul class="list-unstyled mt-5">
+                        <li class="admin"><a class="item" href="/admin_c/dashboard/">Dashboard</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/users/">Users</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/products/">Product</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/productvarients/">Product Vareints</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/category/">Category</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/addcategory/">Coupons</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/dashboard/">Orders</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/dashboard/">Banners</a></li>
+                        <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
+                        <!-- Add more list items as needed -->
+                    </ul>
+                </div>
+
+
+            </div>
+            <div class="col-md-10 col-10">
+                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addProductModal">
+                    Add Product
+                  </button>
+                
+                <!-- <div class="d-flex justify-content-center">
+                        <div class="table-wrapper"> -->
+
+                <table class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Descriptions</th>
+                            <th>Brand</th>
+                            <th>Subcategory</th>
+                            <th>images</th>
+                            <th>Edit</th>
+                            <th>List/Unlist</th>
+                        </tr>
+                    </thead>
+                    {% for i in product %}
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                      {{i.name}}
+                                </div>
+                                
+                            </td>
+                            <td>
+                                {{i.description}}
+                            </td>
+                            <td>
+                                {{i.brand}}
+                            </td>
+                            <td>{{i.subcategory}}</td>
+                            <td>  
+                              <img src="{{ i.images.url }}" alt="{{i.image}}" width="70" height="100%">
+
+                            </td>
+                            <td>
+                              <button type="button" class="btn btn-dark"  data-toggle="modal" data-target="#editProductModal-{{i}}-{{product.id}}">
+                                Edit
+                              </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-dark">
+                                    list and Unlist
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+     <!-- Button to Trigger Modal -->
+    
+      
+      <!-- Modal add products -->
+      <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="{% url 'addproducts' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="productName">Product Name</label>
+                  <input type="text" class="form-control" name="productName" id="productName" required>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input type="text" class="form-control" id="description" name="description" required>
+                </div>
+                <div class="form-group">
+                  <label for="brand">Brand</label>
+                  <select class="form-control" id="brand" name="brand">
+                    {% for y in brand %}
+                    <option value="{{y.id}}">{{y.name}}</option>
+                    {% endfor %}      
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="subcategory">Subcategory</label>
+                  <select class="form-control" id="subcategory" name="subcategory">
+                    {% for i in subcategory %}
+                    <option value="{{i.id}}">{{i.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="images">Images</label>
+                  <input type="file" class="form-control-file" id="images" name="image">
+                </div>
+              <button type="submit" class="btn btn-primary">Add Product</button>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+   <!-- Edit modal---Modal for edit products -->
+    
+      
+      <!-- Modal -->
+      <!-- {% for i in product%} -->
+
+      <div class="modal fade" id="editProductModal-{{i}}-{{product.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit product</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="/admin_c/editproducts/{{i.id}}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="productName">Product Name</label>
+                  <input type="text" class="form-control" name="productName" id="productName" value="{{i.name}}" required>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input type="text" class="form-control" id="description" name="description" value="{{i.description}}" required>
+                </div>
+                <div class="form-group">
+                  <label for="brand">Brand</label>
+                  <select class="form-control" id="brand" name="brand">
+                    {% for y in brand %}
+                    <option value="{{y.id}}">{{y.name}}</option>
+                    {% endfor %}      
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="subcategory">Subcategory</label>
+                  <select class="form-control" id="subcategory" name="subcategory">
+                    {% for i in subcategory %}
+                    <option value="{{i.id}}">{{i.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="images">Images</label>
+                  <input type="file" class="form-control-file" id="images" name="image">
+                </div>
+              <button type="submit" class="btn btn-primary">Add Product</button>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- {%endfor%} -->
+
+
+</body>
+
+</html>
+{% endblock content%}
