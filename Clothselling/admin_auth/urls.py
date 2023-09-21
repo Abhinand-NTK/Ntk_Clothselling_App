@@ -21,11 +21,15 @@ from .import views
 
 urlpatterns = [
     path('',views.adminlogin,name='adminlogin'),
-    path('logout/',views.adminlogin,name='logout'),
+    path('logout/',views.logout_admin,name='logout'),
     path('dashboard/',views.admindashboard,name='admindashboard'),
     path('users/',views.adminusers,name='adminusers'),
+    path('list_unlist_user/',views.admin_user_list_unlist,name='list_unlist_user'),
     path('products/',views.adminproducts,name='adminproducts'),
+    path('products_list_unlist/',views.list_unlist_products,name='list_unlist_products'),
     path('category/',views.admincategory,name='category'),
+    path('list_unlist_sub/',views.listsubcategory,name='list_unlist_subcategory'),
+    path('list_unlist_cate/',views.listcategory,name='list_unlist_category'),
     path('addcategory/',views.addcategory,name='addcategory'),
     path('editcategory/<str:id>',views.editcategory,name='editcategory'),
     path('addsubcategory/',views.addsubcategory,name='addsubcategory'), 
@@ -36,6 +40,7 @@ urlpatterns = [
     path('editproducts/<str:id>',views.admineditproducts,name='editproducts'),  
     path('productvarients/', views.adminproductsvarients, name='productvarients'),
     path('editproductvarients/<str:id>', views.admineditproductsvarients, name='productvarients'),
+    path('list_unlist_productvarient/', views.list_unlist_products_vareints, name='list_unlist_productvarient'),
 ]
    
 

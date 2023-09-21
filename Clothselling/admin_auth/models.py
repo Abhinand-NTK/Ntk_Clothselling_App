@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import  BaseUserManager,AbstractUser, Group, Permission
 from django.utils import timezone
+# from django.contrib.postgres.fields import ArrayField
 
 
 class Brand(models.Model):
-    name=models.CharField(max_length=10)
+    name=models.CharField(max_length=30)
     image=models.ImageField(upload_to='brand',blank=True)
 
     def __str__(self):
@@ -62,10 +63,16 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand,on_delete=models.CASCADE)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
     images = models.ImageField(upload_to='photos/products',blank=True)
-    # coupons = models.ManyToManyField(Coupon, blank=True)
-
+    active=models.BooleanField(default=False,null=True,blank=True)
+    men=models.BooleanField(default=False,null=True,blank=True)
+    woman=models.BooleanField(default=False,null=True,blank=True)
+    kids=models.BooleanField(default=False,null=True,blank=True)
+    combos=models.BooleanField(default=False,null=True,blank=True)
+   
     def __str__(self):
         return self.name
+
+
 
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -75,6 +82,13 @@ class ProductVariant(models.Model):
     stock = models.IntegerField(default=0)
     is_avaliable=models.BooleanField(default=True,null=True,blank=True)
     rating = models.FloatField(default=0)
+
+class Multipleimges(models.Model):
+    product=models.ForeignKey(ProductVariant,on_delete=models.CASCADE)
+    images=models.ImageField(upload_to='photos/vareintproducts',blank=True)
+    
+   
+
 
 class CustomUserManager(BaseUserManager):
 
@@ -113,6 +127,9 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
 
     username = None
+    first_name=models.CharField(max_length=30,null=True,blank=True)
+    lastname=models.CharField(max_length=30,null=True,blank=True)
+    phone_number=models.CharField(max_length=30,null=True,blank=True)
     is_verified=models.BooleanField(default=False)
     
     email = models.EmailField(unique=True)  # Email becomes the primary identifier

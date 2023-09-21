@@ -4,18 +4,19 @@
 {% block content %}
 
 <body>
-    
+
     <!-- Header Section End -->
 
     <!-- Categories Section Begin -->
     <section class="categories">
         <div class="container-fluid">
             <div class="row">
-                
+
                 <div class="col-lg-12 ml-2">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                            <div class="categories__item set-bg" data-setbg="{% static 'img/categories/category-2.jpg' %}">
+                            <div class="categories__item set-bg"
+                                data-setbg="https://images.pexels.com/photos/842811/pexels-photo-842811.jpeg?cs=srgb&dl=pexels-andrea-piacquadio-842811.jpg&fm=jpg">
                                 <div class="categories__text">
                                     <h4>Men’s fashion</h4>
                                     <p>358 items</p>
@@ -23,460 +24,319 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 p-0 ">
-                            <div class="categories__item set-bg" data-setbg="{% static 'img/categories/category-3.jpg' %}">
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item set-bg"
+                                data-setbg="https://img.freepik.com/premium-photo/beautiful-young-women-summer-fashion-concept_564719-215.jpg">
+                                <div class="categories__text">
+                                    <h4>Woman’s fashion</h4>
+                                    <p>358 items</p>
+                                    <a href="#">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                            <div class="categories__item set-bg"
+                                data-setbg="https://hellosubscription.com/wp-content/uploads/2023/01/image_63c95e6fb425d.png?quality=90&strip=all">
                                 <div class="categories__text">
                                     <h4>Kid’s fashion</h4>
-                                    <p>273 items</p>
+                                    <p>358 items</p>
                                     <a href="#">Shop now</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                            <div class="categories__item set-bg" data-setbg="{% static 'img/categories/category-4.jpg' %}">
+                            <div class="categories__item set-bg"
+                                data-setbg="https://www.lavendertheboutique.com/wp-content/uploads/2021/12/matching-family-outfits-for-marriage-1600x1375-M30-P.jpg">
                                 <div class="categories__text">
-                                    <h4>Cosmetics</h4>
-                                    <p>159 items</p>
-                                    <a href="#">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 p-0">
-                            <div class="categories__item set-bg" data-setbg="{% static 'img/categories/category-5.jpg' %}">
-                                <div class="categories__text">
-                                    <h4>Accessories</h4>
-                                    <p>792 items</p>
+                                    <h4>Comobo  ’s fashion</h4>
+                                    <p>358 items</p>
                                     <a href="#">Shop now</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Categories Section End -->
-
-<!-- Product Section Begin -->
-<section class="product spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4">
-                <div class="section-title">
-                    <h4>New products</h4>
-                </div>
-            </div>
-            <div class="col-lg-8 col-md-8">
-                <ul class="filter__controls">
-                    <li class="active" data-filter="*">All</li>
-                    <li data-filter=".women">Women’s</li>
-                    <li data-filter=".men">Men’s</li>
-                    <li data-filter=".kid">Kid’s</li>
-                    <li data-filter=".accessories">Combos</li>
-                </ul>
-            </div>
-        </div>
-
-        {% for i in products %}
-        <div class="row property__gallery">
-            <div class="col-lg-3 col-md-4 col-sm-6 mix men">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{{i.images.url}}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Flowy striped skirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <!-- <div class="product__price">$ 49.0</div> -->
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-
-
-
-            <!-- <div class="col-lg-3 col-md-4 col-sm-6 mix men">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Flowy striped skirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 49.0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix accessories">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-3.jpg' %}">
-                        <div class="label stockout">out of stock</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Cotton T-Shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-4.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Slim striped pocket shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix kid">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-5.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Fit micro corduroy shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-6.jpg' %}">
-                        <div class="label sale">Sale</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Tropical Kimono</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Contrasting sunglasses</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg' %}">
-                        <div class="label">Sale</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Water resistant backpack</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-                    </div>
                 </div>
             </div>
         </div>
-    </div> -->
-</section>
-<!-- Product Section End -->
+    </section>
+    <!-- Categories Section End -->
 
-
-
-<!-- offer Section --><section class="product spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4">
-                <div class="section-title">
-                    <h4>Big Saving Zone</h4>
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="section-title">
+                        <h4>New products</h4>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <ul class="filter__controls">
+                        <li class="active" data-filter="*">All</li>
+                        <li data-filter=".women">Women’s</li>
+                        <li data-filter=".men">Men’s</li>
+                        <li data-filter=".kid">Kid’s</li>
+                        <li data-filter=".accessories">Combos</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8">
-                <ul class="filter__controls">
-                    <li class="active" data-filter="*">All</li>
-                    <li data-filter=".women">Women’s</li>
-                    <li data-filter=".men">Men’s</li>
-                    <li data-filter=".kid">Kid’s</li>
-                    <li data-filter=".accessories">Combos</li>
-                </ul>
+            <div class="row property__gallery">
+                {% for i in products %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" style="width: 100; height: 100;" data-setbg="{{i.images.url}}">
+                                <div class="label new">New</div>
+                                <ul class="product__hover">
+                                    <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                                class="fa fa-search"></span></a></li>
+                                    <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                    <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">{{i.name}}</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <!-- <div class="product__price">$ 59.0</div> -->
+                            </div>
+                        </div>
+                    </div>
+            
+                    {% if forloop.counter|divisibleby:4 %}
+                        </div><div class="row property__gallery">
+                    {% endif %}
+                {% endfor %}
             </div>
+            
         </div>
-        <div class="row property__gallery">
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
-                        <div class="label new">New</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Buttons tweed blazer</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 59.0</div>
+
+    </section>
+
+
+
+
+    <!-- offer Section -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="section-title">
+                        <h4>Big Saving Zone</h4>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix men">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Flowy striped skirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
-                        <div class="product__price">$ 49.0</div>
-                    </div>
+                <div class="col-lg-8 col-md-8">
+                    <ul class="filter__controls">
+                        <li class="active" data-filter="*">All</li>
+                        <li data-filter=".women">Women’s</li>
+                        <li data-filter=".men">Men’s</li>
+                        <li data-filter=".kid">Kid’s</li>
+                        <li data-filter=".accessories">Combos</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix accessories">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-3.jpg' %}">
-                        <div class="label stockout">out of stock</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Cotton T-Shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+            <div class="row property__gallery">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
+                            <div class="label new">New</div>
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">$ 59.0</div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Buttons tweed blazer</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-4.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Slim striped pocket shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix men">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-1.jpg' %}">
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">$ 59.0</div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Flowy striped skirt</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 49.0</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix kid">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-5.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Fit micro corduroy shirt</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix accessories">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-3.jpg' %}">
+                            <div class="label stockout">out of stock</div>
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">$ 59.0</div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Cotton T-Shirt</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-6.jpg' %}">
-                        <div class="label sale">Sale</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Tropical Kimono</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-4.jpg' %}">
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Slim striped pocket shirt</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg' %}">
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Contrasting sunglasses</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix kid">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-5.jpg' %}">
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">$ 59.0</div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Fit micro corduroy shirt</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg' %}">
-                        <div class="label">Sale</div>
-                        <ul class="product__hover">
-                            <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span class="fa fa-search"></span></a></li>
-                            <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                            <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Water resistant backpack</a></h6>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
+                    <div class="product__item sale">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-6.jpg' %}">
+                            <div class="label sale">Sale</div>
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Tropical Kimono</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg' %}">
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Contrasting sunglasses</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 59.0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
+                    <div class="product__item sale">
+                        <div class="product__item__pic set-bg" data-setbg="{% static 'img/product/product-7.jpg' %}">
+                            <div class="label">Sale</div>
+                            <ul class="product__hover">
+                                <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
+                                            class="fa fa-search"></span></a></li>
+                                <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                                <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="#">Water resistant backpack</a></h6>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- offer Secction -->
+    <!-- offer Secction -->
 
-<!-- top brands -->
-<!-- <div style="height: 30vh; background-color: brown; width: 190vh;" class="mb-5 col-lg-12 container ">
+    <!-- top brands -->
+    <!-- <div style="height: 30vh; background-color: brown; width: 190vh;" class="mb-5 col-lg-12 container ">
     <div class="row">
             <div class="card-body">
                 <div  class="row">
@@ -494,388 +354,397 @@
             </div> 
     </div>
 </div> -->
-<!-- top brands -->
+    <!-- top brands -->
 
 
 
 
-<!-- Banner Section Begin -->
-<section  class="banner set-bg" data-setbg="{% static 'img/banner/banner-1.jpg' %}">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-7 col-lg-8 m-auto">
-                <div class="banner__slider owl-carousel"  style="height: 60vh;">
-                    <div class="banner__item  justify-content-center align-items-center">
-                        <div class="banner__text">
-                            <span>The Choice Collection</span>
-                            <h2>Shope from the top brands</h2>
-                            <a href="#">Shop now</a>
+    <!-- Banner Section Begin -->
+    <section class="banner set-bg" data-setbg="{% static 'img/banner/banner-1.jpg' %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-7 col-lg-8 m-auto">
+                    <div class="banner__slider owl-carousel" style="height: 60vh;">
+                        <div class="banner__item  justify-content-center align-items-center">
+                            <div class="banner__text">
+                                <span>The Choice Collection</span>
+                                <h2>Shope from the top brands</h2>
+                                <a href="#">Shop now</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="banner__item d-flex justify-content-center">
-                        <div class="banner__text">
-                            <img class="" style="width: 90vh; height: 30vh;" src="https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_750,h_400/https://assets.designhill.com/design-blog/wp-content/uploads/2019/04/1-5.jpg" alt="">
-                            <a href="#">Shop now</a>
+                        <div class="banner__item d-flex justify-content-center">
+                            <div class="banner__text">
+                                <img class="" style="width: 90vh; height: 30vh;"
+                                    src="https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_750,h_400/https://assets.designhill.com/design-blog/wp-content/uploads/2019/04/1-5.jpg"
+                                    alt="">
+                                <a href="#">Shop now</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="banner__item d-flex justify-content-center align-items-center">
-                        <div class="banner__text">
-                            <img class="" style="width: 90vh; height: 30vh;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmPNOS_hpKbaLJQtK8HY5TD2295JNU7DU_nL3KAjAdOa3OeW2ST-BUqOnRZY3nKD3h8EY&usqp=CAU" alt="">
-                            <a href="#">Shop now</a>
+                        <div class="banner__item d-flex justify-content-center align-items-center">
+                            <div class="banner__text">
+                                <img class="" style="width: 90vh; height: 30vh;"
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmPNOS_hpKbaLJQtK8HY5TD2295JNU7DU_nL3KAjAdOa3OeW2ST-BUqOnRZY3nKD3h8EY&usqp=CAU"
+                                    alt="">
+                                <a href="#">Shop now</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="banner__item d-flex justify-content-center">
-                        <div class="banner__text">
-                            <img class="" style="width: 90vh; height: 30vh;" src="https://i.pinimg.com/originals/9f/6f/08/9f6f08d9ca171e43ea8412ea4d67fa69.png" alt="">
-                            <a href="#">Shop now</a>
+                        <div class="banner__item d-flex justify-content-center">
+                            <div class="banner__text">
+                                <img class="" style="width: 90vh; height: 30vh;"
+                                    src="https://i.pinimg.com/originals/9f/6f/08/9f6f08d9ca171e43ea8412ea4d67fa69.png"
+                                    alt="">
+                                <a href="#">Shop now</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="banner__item d-flex justify-content-center">
-                        <div class="banner__text">
-                            <img class="" style="width: 90vh; height: 30vh;" src="https://assets.turbologo.ru/blog/ru/2021/11/12081458/Gucci_logo.png" alt="">
-                            <a href="#">Shop now</a>
+                        <div class="banner__item d-flex justify-content-center">
+                            <div class="banner__text">
+                                <img class="" style="width: 90vh; height: 30vh;"
+                                    src="https://assets.turbologo.ru/blog/ru/2021/11/12081458/Gucci_logo.png" alt="">
+                                <a href="#">Shop now</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="banner__item d-flex justify-content-center">
-                        <div class="banner__text">
-                            <img class="" style="width: 90vh; height: 30vh;" src="https://logo.com/image-cdn/images/kts928pd/production/6d2c3f3fcf8a25bc55ae4c2f352fd7dd876be458-582x309.jpg?w=1080&q=72" alt="">
-                            <a href="#">Shop now</a>
+                        <div class="banner__item d-flex justify-content-center">
+                            <div class="banner__text">
+                                <img class="" style="width: 90vh; height: 30vh;"
+                                    src="https://logo.com/image-cdn/images/kts928pd/production/6d2c3f3fcf8a25bc55ae4c2f352fd7dd876be458-582x309.jpg?w=1080&q=72"
+                                    alt="">
+                                <a href="#">Shop now</a>
+                            </div>
                         </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Banner Section End -->
 
-<!-- Trend Section Begin -->
-<section class="trend spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Hot Trend</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/ht-1.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Chain bucket bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/ht-2.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Pendant earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/ht-3.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Best seller</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/bs-1.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Cotton T-Shirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/bs-2.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Zip-pockets pebbled tote <br />briefcase</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/bs-3.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Round leather bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="trend__content">
-                    <div class="section-title">
-                        <h4>Feature</h4>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/f-1.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Bow wrap skirt</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/f-2.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Metallic earrings</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
-                    </div>
-                    <div class="trend__item">
-                        <div class="trend__item__pic">
-                            <img src="{% static 'img/trend/f-3.jpg' %}" alt="">
-                        </div>
-                        <div class="trend__item__text">
-                            <h6>Flap cross-body bag</h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">$ 59.0</div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- Trend Section End -->
+    </section>
+    <!-- Banner Section End -->
 
-<!-- Discount Section Begin -->
-<section class="discount">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 p-0">
-                <div class="discount__pic">
-                    <img src="{% static 'img/discount.jpg' %}" alt="">
+    <!-- Trend Section Begin -->
+    <section class="trend spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="trend__content">
+                        <div class="section-title">
+                            <h4>Hot Trend</h4>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/ht-1.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Chain bucket bag</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/ht-2.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Pendant earrings</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/ht-3.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Cotton T-Shirt</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="trend__content">
+                        <div class="section-title">
+                            <h4>Best seller</h4>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/bs-1.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Cotton T-Shirt</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/bs-2.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Zip-pockets pebbled tote <br />briefcase</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/bs-3.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Round leather bag</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="trend__content">
+                        <div class="section-title">
+                            <h4>Feature</h4>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/f-1.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Bow wrap skirt</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/f-2.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Metallic earrings</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                        <div class="trend__item">
+                            <div class="trend__item__pic">
+                                <img src="{% static 'img/trend/f-3.jpg' %}" alt="">
+                            </div>
+                            <div class="trend__item__text">
+                                <h6>Flap cross-body bag</h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6 p-0">
-                <div class="discount__text">
-                    <div class="discount__text__title">
-                        <span>Discount</span>
-                        <h2>Summer 2019</h2>
-                        <h5><span>Sale</span> 50%</h5>
+        </div>
+    </section>
+    <!-- Trend Section End -->
+
+    <!-- Discount Section Begin -->
+    <section class="discount">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    <div class="discount__pic">
+                        <img src="{% static 'img/discount.jpg' %}" alt="">
                     </div>
-                    <div class="discount__countdown" id="countdown-time">
-                        <div class="countdown__item">
-                            <span>22</span>
-                            <p>Days</p>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="discount__text">
+                        <div class="discount__text__title">
+                            <span>Discount</span>
+                            <h2>Summer 2019</h2>
+                            <h5><span>Sale</span> 50%</h5>
                         </div>
-                        <div class="countdown__item">
-                            <span>18</span>
-                            <p>Hour</p>
+                        <div class="discount__countdown" id="countdown-time">
+                            <div class="countdown__item">
+                                <span>22</span>
+                                <p>Days</p>
+                            </div>
+                            <div class="countdown__item">
+                                <span>18</span>
+                                <p>Hour</p>
+                            </div>
+                            <div class="countdown__item">
+                                <span>46</span>
+                                <p>Min</p>
+                            </div>
+                            <div class="countdown__item">
+                                <span>05</span>
+                                <p>Sec</p>
+                            </div>
                         </div>
-                        <div class="countdown__item">
-                            <span>46</span>
-                            <p>Min</p>
-                        </div>
-                        <div class="countdown__item">
-                            <span>05</span>
-                            <p>Sec</p>
+                        <a href="#">Shop now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Discount Section End -->
+
+    <!-- Services Section Begin -->
+    <section class="services spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="services__item">
+                        <i class="fa fa-car"></i>
+                        <h6>Free Shipping</h6>
+                        <p>For all oder over $99</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="services__item">
+                        <i class="fa fa-money"></i>
+                        <h6>Money Back Guarantee</h6>
+                        <p>If good have Problems</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="services__item">
+                        <i class="fa fa-support"></i>
+                        <h6>Online Support 24/7</h6>
+                        <p>Dedicated support</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="services__item">
+                        <i class="fa fa-headphones"></i>
+                        <h6>Payment Secure</h6>
+                        <p>100% secure payment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Services Section End -->
+
+    <!-- Instagram Begin -->
+    <div class="instagram">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg' %}">
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="#">@ ashion_shop</a>
                         </div>
                     </div>
-                    <a href="#">Shop now</a>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg' %}">
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="#">@ ashion_shop</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg' %}">
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="#">@ ashion_shop</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg' %}">
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="#">@ ashion_shop</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg' %}">
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="#">@ ashion_shop</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg' %}">
+                        <div class="instagram__text">
+                            <i class="fa fa-instagram"></i>
+                            <a href="#">@ ashion_shop</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<!-- Discount Section End -->
+    <!-- Instagram End -->
 
-<!-- Services Section Begin -->
-<section class="services spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="services__item">
-                    <i class="fa fa-car"></i>
-                    <h6>Free Shipping</h6>
-                    <p>For all oder over $99</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="services__item">
-                    <i class="fa fa-money"></i>
-                    <h6>Money Back Guarantee</h6>
-                    <p>If good have Problems</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="services__item">
-                    <i class="fa fa-support"></i>
-                    <h6>Online Support 24/7</h6>
-                    <p>Dedicated support</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="services__item">
-                    <i class="fa fa-headphones"></i>
-                    <h6>Payment Secure</h6>
-                    <p>100% secure payment</p>
-                </div>
-            </div>
+    <!-- Footer Section Begin -->
+
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
         </div>
     </div>
-</section>
-<!-- Services Section End -->
+    {% endblock %}
 
-<!-- Instagram Begin -->
-<div class="instagram">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg' %}">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Instagram End -->
-
-<!-- Footer Section Begin -->
-
-<!-- Footer Section End -->
-
-<!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
-    </div>
-</div>
-{% endblock %}
-
-<!-- Search End -->
+    <!-- Search End -->
 
 </body>
 

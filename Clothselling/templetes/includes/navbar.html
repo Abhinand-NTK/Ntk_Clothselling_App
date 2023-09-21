@@ -1,6 +1,28 @@
 {% load static %}
 </head>
 
+
+<style>
+    .dropdown-container {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+
+    .dropdown-container:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+
 <!-- header section start -->
 
 <!-- Page Preloder -->
@@ -15,11 +37,11 @@
     <ul class="offcanvas__widget">
         <li><span class="icon_search search-switch"></span></li>
         <li><a href="#"><span class="icon_heart_alt"></span>
-            <div class="tip">Add to cart</div>
-        </a></li>
+                <div class="tip">Add to cart</div>
+            </a></li>
         <li><a href="#"><span class="icon_bag_alt"></span>
-            <div class="tip">Wish list</div>
-        </a></li>
+                <div class="tip">Wish list</div>
+            </a></li>
     </ul>
     <div class="offcanvas__logo">
         <a href="./index.html"><img src="{% static 'img/logo/1.png' %}" alt=""></a>
@@ -38,36 +60,75 @@
         <div class="row">
             <div class="col-xl-3 col-lg-2">
                 <div class=" d-flex justify-content-between ">
-                    <a class="mt-2" href="./index.html"><img style="width: 10vh; height: 6vh; margin-block-start: 3vh;" src="{% static 'img/logo/1.png' %}" alt=""></a>
+                    <a class="mt-2" href="./index.html"><img style="width: 10vh; height: 6vh; margin-block-start: 3vh;"
+                            src="{% static 'img/logo/1.png' %}" alt=""></a>
                 </div>
             </div>
             <div class="col-xl-6 col-lg-7">
                 <nav class="header__menu">
                     <ul>
-                        <li class="active"><a href="./index.html">Shope</a></li>
-                        <li><a href="#">Women’s</a></li>
-                        <li><a href="#">Men’s</a></li>
-                        <li><a href="./shop.html">Kids</a></li>
-                        <li><a href="#">Combos</a>
+                        <li class="active"><a href="/products/">Shop</a></li>
+                        <li class=""><a href="/products/womans/">Women’s</a></li>
+                        <li><a href="/products/mens/">Men’s</a></li>
+                        <li><a href="/products/kids/">Kids</a></li>
+                        <li><a href="/products/combos/">Combos</a>
+
+                        </li>
+                        <li><a href="./blog.html">Blog</a></li>
+                        {% if user.is_authenticated  %}
+                        <li><a class="text-dark font-weight-5" href="">My Account</a>
                             <ul class="dropdown">
+                                <li><a href="/myprofile/">My Profile</a></li>
                                 <li><a href="./product-details.html">Product Details</a></li>
                                 <li><a href="./shop-cart.html">Shop Cart</a></li>
                                 <li><a href="./checkout.html">Checkout</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        {%endif%}
+
                     </ul>
                 </nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__right">
                     <div class="header__right__auth">
-                        <button style="width: 15vh; height: 5vh ; " class="btn-danger rounded-sm border text-primary font-weight-normal"><a class="text-light" href="/">Sigin</a></button>
-                        <button style="width: 15vh; height: 5vh ; " class=" btn-danger rounded-sm border text-primary font-weight-normal"><a class="text-light" href="/signup/">Register</a></button>
-                        
-                        
+                        {% if user.is_authenticated and not user.is_blocked %}
+                        <div class="header_right_auth">
+                            <a style="font-size: 1rem;" class="display-1 text-dark" href="#">{{user.first_name}}
+                                {{user.lastname}}</a>
+                            <button type="submit" class="btn-danger rounded-sm border text-primary font-weight-normal">
+                                <a class="text-light font-weight-5" href="/logout/">logout</a>
+                            </button>
+                        </div>
+
+                        {% else %}
+                        <div class="d-flex justifycontent-between">
+
+                            <div class="dropdown-container">
+                                <button type="button" style="width: 15vh; height: 5vh;" class=" d-flex justifycontent-between btn btn-danger rounded-sm border text-primary font-weight-normal">
+                                    <a class="text-light text-align-center" href="/">
+                                        Sign in
+                                    </a>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a href="/myprofile/">My Profile</a>
+                                    <a href="./product-details.html">Product Details</a>
+                                    <a href="./shop-cart.html">Shop Cart</a>
+                                    <a href="./checkout.html">Checkout</a>
+                                    <a href="./blog-details.html">Blog Details</a>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" style="width: 15vh; height: 5vh ; "
+                                class="btn-danger rounded-sm border text-primary font-weight-normal">
+                                <a class="text-light" href="/signup/">
+                                    Register
+                                </a>
+                            </button>
+                            </div>
+                        </div>
+                        {%endif%}
                     </div>
                     <ul class="header__right__widget list-inline">
                         <li>
@@ -76,12 +137,12 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/cart/cart_item/">
                                 <span class="fa fa-shopping-cart text-danger"></span>
                             </a>
                         </li>
                     </ul>
-                    
+
                 </div>
             </div>
         </div>

@@ -21,50 +21,97 @@
     <!-- <body style="background-color: #f5c5cf;" ></body> -->
 
     <div class=" container vh-80 d-flex justify-content-center align-items-center ">
-        <div class="col-md-6 text-center d-none d-md-block">
-            <img style="height: 90vh; width: 90vh;"
+        <div class="col-md-6 text-center d-none d-md-block vh-100">
+            <img style="height: 100vh; width: 90vh;"
                 src="https://img.freepik.com/free-photo/impressed-young-handsome-slavic-party-guy-wearing-party-hat-sunglasses-holding-balloons-paper-bags-looking-pointing-side-isolated-pink-wall_141793-85302.jpg"
-                class="img-fluid" alt="Image">
+                class="img-fluid mt-4" alt="Image">
         </div>
         <div class="col-md-6 d-flex justify-content-center ">
             <!-- <form method="POST" action="/signup/"  style="height: 85vh; width: 60vh;"  class="row d-flex justify-content-between mt-5"> -->
-            <form method="POST" action="/signup/" onsubmit="main(event)" style="width: 80%"
-                class="row d-flex justify-content-center align-items-center vh-70">
-                {% csrf_token %}
-                <div class="col-12 text-center mb-4">
-                    <h3 class="font-weight-bold">Sign up</h3>
-                </div>
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-                {% endif %}
-                <div class="form-group col-12 d-flex justify-content-center mb-3">
-                    <button class="btn btn-light rounded-sm border text-dark font-weight-normal"
-                        style="width: 100%;">Continue with Google</button>
-                </div>
-                <div class="form-group col-12">
-                    <p class="error-message" id="username-error"></p>
-                    <label for="username">Enter your Email</label>
-                    <input type="text" class="form-control" id="username" placeholder="Enter Your Email" name="email"
-                        required>
-                </div>
-                <div class="form-group col-12">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" name="password"
-                        required>
-                    <label class="d-flex justify-content-end" for="password"><a class="text-dark" href="/forgetpas">
-                            Forgot your password</a></label>
-                    <p class="error-message" id="password-error"></p>
-                </div>
-                <div class="form-group col-12 text-center">
-                    <button style="width: 100%;" type="submit" class="btn btn-danger">Sign In</button>
-                    <p class="mt-2">I already have an account <a href="" class="text-dark">Sign in</a></p>
-                </div>
-            </form>
-
+                <form method="POST" action="{% url 'user_signup' %}" onsubmit="return validateForm();" style="width: 80%" class="row d-flex justify-content-center align-items-center vh-100 mt-5">
+                    {% csrf_token %}
+                    <div class="col-12  mb-4">
+                        <h2 class="">Sign up</h3>
+                    </div>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="form-group col-12 d-flex justify-content-center mb-3">
+                        <button class="btn btn-light rounded-sm border text-dark font-weight-normal"
+                            style="width: 100%;">Continue with Google</button>
+                    </div>
+                    <div class="form-group col-6">
+                        <p class="error-message" id="firstname-error"></p>
+                        <label for="firstname">Enter your firstname</label>
+                        <input type="text" class="form-control" id="firstname" placeholder="Enter your firstname" name="firstname" required>
+                        
+                    </div>
+                    <div class="form-group col-6">
+                        <p class="error-message" id="lastname-error"></p>
+                        <label for="lastname">Enter your Lastname</label>
+                        <input type="text" class="form-control" id="lastname" placeholder="Enter your lastname" name="lastname" required>
+                    </div>
+                    <div class="form-group col-12">
+                        <p class="error-message" id="username-error"></p>
+                        <label for="username">Enter your Email or Phone Number</label>
+                        <input type="text" class="form-control" id="username" placeholder="Enter your e-mail or phone number" name="username" required>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                        <p class="error-message" id="password-error"></p>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="repeatpassword">Repeat Password</label>
+                        <input type="password" class="form-control" id="repeatpassword" placeholder="Repeat Password" name="repeatpassword" required>
+                        <p class="error-message" id="repeatpassword-error"></p>
+                    </div>
+                    <div class="form-group col-12 text-center">
+                        <button style="width: 100%;" type="submit" class="btn btn-danger">Sign Up</button>
+                        <p class="mt-2">I already have an account <a href="/" class="text-dark">Sign In</a></p>
+                    </div>
+                </form>
+                
+                <script>
+                    function validateForm() {
+                        var username = document.getElementById("username").value;
+                        var password = document.getElementById("password").value;
+                        var repeatpassword = document.getElementById("repeatpassword").value;
+                    
+                        // Validate username (email or phone number)
+                        var usernameRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$|^(\+\d{1,3})?\d{10,}$/;
+                        if (!username.match(usernameRegex)) {
+                            document.getElementById("username-error").textContent = "Enter a valid email or phone number";
+                            return false;
+                        } else {
+                            document.getElementById("username-error").textContent = "";
+                        }
+                    
+                        // Validate password
+                        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+                        if (!password.match(passwordRegex)) {
+                            document.getElementById("password-error").textContent = "Password must be at least 6 characters long and include uppercase, lowercase, digit, and special character";
+                            return false;
+                        } else {
+                            document.getElementById("password-error").textContent = "";
+                        }
+                    
+                        // Validate repeat password
+                        if (password !== repeatpassword) {
+                            document.getElementById("repeatpassword-error").textContent = "Passwords do not match";
+                            return false;
+                        } else {
+                            document.getElementById("repeatpassword-error").textContent = "";
+                        }
+                    
+                        return true; // Form is valid
+                    }
+                    </script>
+                    
 
         </div>
     </div>

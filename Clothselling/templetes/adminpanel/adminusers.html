@@ -8,7 +8,7 @@
 <body>
 <div class="mt-2">
     <div class="row" style="height: 120vh;"> 
-        <div class="col-md-2 col-2" style="background-color: black;">
+        <div class="col-md-2  d-none d-md-block " style="background-color: black;">
 
             <div class="selectable-list text-light d-flex justify-content-center">
                 <ul class="list-unstyled mt-5">
@@ -44,8 +44,11 @@
                                         <label for="selectAll"></label>
                                     </span>
                                 </th> -->
+                                <th>No</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Email Verification-Status</th>
+                                <th>Active/Not</th>
                                 <th>Data Joined</th>
                                 <th>Status</th>
                             </tr>
@@ -60,9 +63,22 @@
                                     </span>
                                 </td> -->
                                 <td>{{ forloop.counter }}</td>
+                                <td>{{ i.first_name }}</td>
                                 <td>{{ i.email }}</td>
+                                <td>{{ i.is_verified }}</td>
+                                <td>{{ i.is_blocked }}</td>
                                 <td>{{ i.created_at }}</td>
-                                <td><button class="btn btn-dark">Block/Unblock</button></td>
+                                <td>
+                                    <form action="{% url 'list_unlist_user'%}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="check" value="{% if i.is_blocked %}false{% else %}true{% endif %}">
+                                        <input type="hidden" name="user_id" value="{{ i.id }}">
+                                        <button class="btn toggle-button {% if i.is_blocked %}btn-success{% else %}btn-danger{% endif %}" type="submit">
+                                            {% if i.is_blocked %}Unblock{% else %}block{% endif %}
+                                        </button>
+                                    </form> 
+                                
+                                </td>
                                 <!-- <td>
                                     <a href="#editEmployeeModal-{{ forloop.counter }}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                     <a href="#deleteEmployeeModal-{{ forloop.counter }}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
