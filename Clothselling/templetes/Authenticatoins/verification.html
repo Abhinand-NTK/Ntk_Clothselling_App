@@ -3,15 +3,32 @@
 {% load static %}
 
 {% block content%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+
+</head>
+
 
 <body style="background-color: #fbfcf9f7;">
-<!-- <body style="background-color: #f5c5cf;" ></body> -->
+    <!-- <body style="background-color: #f5c5cf;" ></body> -->
     <div class=" container vh-80 d-flex justify-content-center align-items-center ">
         <div class="col-md-6 text-center d-none d-md-block">
-            <img style="height: 90vh; width: 90vh;" src="https://img.freepik.com/free-photo/portrait-young-smiling-lady-sunglasses-standing-with-colorful-shopping-bags-hands-pink-background-pretty-woman-standing-white-shirt-denim-shorts_574295-1176.jpg?w=2000" class="img-fluid" alt="Image">
+            <img style="height: 90vh; width: 90vh;"
+                src="https://img.freepik.com/free-photo/portrait-young-smiling-lady-sunglasses-standing-with-colorful-shopping-bags-hands-pink-background-pretty-woman-standing-white-shirt-denim-shorts_574295-1176.jpg?w=2000"
+                class="img-fluid" alt="Image">
         </div>
         <div class="col-md-6 d-flex justify-content-center ">
-            <form style="height: 60vh; width: 60vh;"  class="row d-flex justify-content-between mt-5" method="POST" action="">
+            <form style="height: 60vh; width: 60vh;" class="row d-flex justify-content-between mt-5" method="POST"
+                action="">
                 {% csrf_token %}
                 {% if messages %}
                 {% for message in messages %}
@@ -29,7 +46,8 @@
                     <input type="text" class="form-control" value="" placeholder="OTP" name="otp">
                 </div>
                 <div class="form-group text-dark">
-                        <button style="width: 25vh; height: 6vh;" type="submit" class="btn btn-danger text-center">Verify Code</button>
+                    <button style="width: 25vh; height: 6vh;" type="submit" class="btn btn-danger text-center">Verify
+                        Code</button>
                 </div>
             </form>
         </div>
@@ -37,6 +55,7 @@
 
 
 </body>
+
 </html>
 
 {% endblock content%}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user_auth',
     'admin_auth',
     'cart',
+    'order'
     
 ]
 

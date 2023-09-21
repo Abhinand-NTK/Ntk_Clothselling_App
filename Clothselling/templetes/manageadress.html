@@ -47,7 +47,7 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <span>Personal information</span>
+                        <span>Manage Adress</span>
                     </div>
                 </div>
             </div>
@@ -61,16 +61,16 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="checkout__order">
-                        <h5><a class="text-dark" href="">Your order</a></h5>
+                        <h5><a class="text-dark" href="/myorder/">Your order</a></h5>
                         <div class="dropdown">
                             <h5><a class="text-dark" href="#">Account Settings</a></h5>
                             <div class="dropdown-content">
-                                <a class="dropdown-item" href="#">Personal Information</a>
-                                <a class="dropdown-item" href="#">Manage Address</a>
+                                <a class="dropdown-item" href="/myprofile/">Personal Information</a>
+                                <a class="dropdown-item" href="/manageadress/">Manage Address</a>
                             </div>
                         </div>
-                        <h5>Payements</h5>
-                        <h5>My Stuf</h5>
+                        <h5><a href="/mywallet">Mywallet</a></h5>
+                        <h5><a href="/mywishlist">mywishlist</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -88,10 +88,11 @@
                                 <div class="checkout__form__input">
                                     {% for i in address_user %}
                                     <div class="border p-3">
-                                        <a data-toggle="modal" class="text-success" data-target="#editModal-{{i.id}}" href="#">Edit</a>
-                                        <a class="text-danger" href="/user/manageadress_delete/{{ i.id }}">Delete</a>
+                                        <a data-toggle="modal" class="text-success" data-target="#editModal-{{i.id}}"
+                                            href="#">Edit</a>
+                                        <a class="text-danger" href="/manageadress_delete/{{ i.id }}">Delete</a>
                                         <hr>
-                                        <span>{{ i.first_name }} {{ i.last_name }}</span><span>&nbsp;&nbsp;{{i.phonenumber }}</span>
+                                        <span>{{ i.first_name }} {{ i.last_name}}</span><span>&nbsp;&nbsp;{{i.phonenumber }}</span>
                                         <p>{{ i.address }} {{ i.zip_code }}</p>
                                     </div>
                                     {% endfor %}
@@ -116,7 +117,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/user/manageadress/" method="POST">
+                    <form action="/manageadress/" method="POST">
                         {% csrf_token %}
                         <div class="row">
                             <div class="form-group col-lg-6 col-6 col-md-6">
@@ -178,7 +179,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/user/manageadress_edit/{{ i.id }}" method="POST">
+                <form action="/manageadress_edit/{{ i.id }}" method="POST">
                     {% csrf_token %}
                         <div class="row">
                             <div class="form-group col-lg-6 col-6 col-md-6">
@@ -187,7 +188,7 @@
                             </div>
                             <div class="form-group col-lg-6 col-6 col-md-6">
                                 <label for="lastname ">Lastname</label>
-                                <input type="text" class="form-control" id="lastname" value="{{i.last_name}}" name="lastname">
+                                <input type="text" class="form-control" id="lastname" value="{{i.lastname}}" name="lastname">
                             </div>
                         </div>
                         <div class="form-group">

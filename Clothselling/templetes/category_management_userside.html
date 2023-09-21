@@ -4,435 +4,384 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="zxx">
+
+<style>
+  .slidecontainer {
+    width: 12%;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    width: 800%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+
+  .slider:hover {
+    opacity: 1;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #B71C41;
+    cursor: pointer;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #04AA6D;
+    cursor: pointer;
+  }
+
+  /* Style the checkbox and change the tick color */
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .checkbox {
+    margin-right: 10px;
+    /* Hide the default checkbox tick */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  /* Style the tick when the checkbox is checked */
+  .checkbox:checked::before {
+    content: '\2713';
+    /* Unicode checkmark character */
+    font-size: 18px;
+    color: #dc3545;
+    /* Change the tick color to red */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .label {
+    color: #dc3545;
+    font-weight: bold;
+  }
+
+  .red {
+    background-color: #dc3545;
+    border: none;
+    font-weight: 100;
+    color: white;
+    /* Add text color to make it visible */
+    padding: 10px 20px;
+    /* Add padding to adjust the button size */
+    border-radius: 5px;
+    /* Add rounded corners for a nicer look */
+    cursor: pointer;
+  }
+ 
+</style>
+
 <body>
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="/products"><i class="fa fa-home"></i> Home</a>
-                        <span>Shop</span>
-                    </div>
-                </div>
-            </div>
+  <!-- Breadcrumb Begin -->
+  <div class="breadcrumb-option">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="breadcrumb__links">
+            <a href="/products"><i class="fa fa-home"></i> Home</a>
+            <span>Shop</span>
+          </div>
         </div>
-    </div>
-    <!-- Breadcrumb End -->
-
-    <!-- Shop Section Begin -->
-    <section class="shop spad">
-        <div class="container">
+        <div class="col-lg-8 ">
+          <div class="breadcrumb__links">
             <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <div class="shop__sidebar">
-                        <div class="sidebar__categories">
-                            <div class="section-title">
-                                <h4>Categories</h4>
-                            </div>
-                            <div class="categories__accordion">
-                                <div class="accordion" id="accordionExample">
-                                    <div class="card">
-                                        <div class="card-heading active">
-                                            <a data-toggle="collapse" data-target="#collapseOne">Women</a>
-                                        </div>
-                                        <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <ul>
-                                                    <li><a href="#">Coats</a></li>
-                                                    <li><a href="#">Jackets</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">T-shirts</a></li>
-                                                    <li><a href="#">Jeans</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseTwo">Men</a>
-                                        </div>
-                                        <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <ul>
-                                                    <li><a href="#">Coats</a></li>
-                                                    <li><a href="#">Jackets</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">T-shirts</a></li>
-                                                    <li><a href="#">Jeans</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseThree">Kids</a>
-                                        </div>
-                                        <div id="collapseThree" class="collapse" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <ul>
-                                                    <li><a href="#">Coats</a></li>
-                                                    <li><a href="#">Jackets</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">T-shirts</a></li>
-                                                    <li><a href="#">Jeans</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                     <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseThree">Combos</a>
-                                        </div>
-                                        <div id="collapseThree" class="collapse" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <ul>
-                                                    <li><a href="#">Coats</a></li>
-                                                    <li><a href="#">Jackets</a></li>
-                                                    <li><a href="#">Dresses</a></li>
-                                                    <li><a href="#">Shirts</a></li>
-                                                    <li><a href="#">T-shirts</a></li>
-                                                    <li><a href="#">Jeans</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sidebar__filter">
-                            <div class="section-title">
-                                <h4>Shop by price</h4>
-                            </div>
-                            <div class="filter-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="99"></div>
-                                <div class="range-slider">
-                                    <div class="price-input">
-                                        <p>Price:</p>
-                                        <input type="text" id="minamount">
-                                        <input type="text" id="maxamount">
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">Filter</a>
-                        </div>
-                        <div class="sidebar__sizes">
-                            <div class="section-title">
-                                <h4>Shop by size</h4>
-                            </div>
-                            <div class="size__list">
-                                <label for="xxs">
-                                    xxs
-                                    <input type="checkbox" id="xxs">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="xs">
-                                    xs
-                                    <input type="checkbox" id="xs">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="xss">
-                                    xs-s
-                                    <input type="checkbox" id="xss">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="s">
-                                    s
-                                    <input type="checkbox" id="s">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="m">
-                                    m
-                                    <input type="checkbox" id="m">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="ml">
-                                    m-l
-                                    <input type="checkbox" id="ml">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="l">
-                                    l
-                                    <input type="checkbox" id="l">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="xl">
-                                    xl
-                                    <input type="checkbox" id="xl">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="sidebar__color">
-                            <div class="section-title">
-                                <h4>Shop by Color</h4>
-                            </div>
-                            <div class="size__list color__list">
-                                <label for="black">
-                                    Blacks
-                                    <input type="checkbox" id="black">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="whites">
-                                    Whites
-                                    <input type="checkbox" id="whites">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="reds">
-                                    Reds
-                                    <input type="checkbox" id="reds">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="greys">
-                                    Greys
-                                    <input type="checkbox" id="greys">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="blues">
-                                    Blues
-                                    <input type="checkbox" id="blues">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="beige">
-                                    Beige Tones
-                                    <input type="checkbox" id="beige">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="greens">
-                                    Greens
-                                    <input type="checkbox" id="greens">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label for="yellows">
-                                    Yellows
-                                    <input type="checkbox" id="yellows">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9 col-md-9">
-                    
-                    <div class="row">
-                        {% for i in products%}
-                        <!-- <div class="col-lg-4 col-md-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{i.images.url}}">
-                                    <div class="label new">New</div>
-                                    <ul class="product__hover">
-                                        <li><a href="img/shop/shop-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#">Furry hooded parka</a></h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="product__price">$ 59.0</div>
-                                </div>
-                            </div>
-                        </div> -->
-
-                        <div class="col-lg-4 col-md-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" style="width: 100; height: 100;" data-setbg="{{i.images.url}}">
-                                    <div class="label new">New</div>
-                                    <ul class="product__hover">
-                                        <li><a href="{% static 'img/product/product-1.jpg' %}" class="image-popup"><span
-                                                    class="fa fa-search"></span></a></li>
-                                        <li><a href="#"><span class="fa fa-heart"></span></a></li>
-                                        <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="/products/products_details/{{i.id}}">{{i.name}}</a></h6>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <!-- <div class="product__price">$ 59.0</div> -->
-                                </div>
-                            </div>
-                        </div>
-                
-                        {% if forloop.counter|divisibleby:4 %}
-                            </div><div class="row property__gallery">
-                        {% endif %}
-                        {% endfor %}
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Shop Section End -->
-
-    <!-- Instagram Begin -->
-    <div class="instagram">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-6.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Instagram End -->
-
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-7">
-                    <div class="footer__about">
-                        <div class="footer__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                        cilisis.</p>
-                        <div class="footer__payment">
-                            <a href="#"><img src="img/payment/payment-1.png" alt=""></a>
-                            <a href="#"><img src="img/payment/payment-2.png" alt=""></a>
-                            <a href="#"><img src="img/payment/payment-3.png" alt=""></a>
-                            <a href="#"><img src="img/payment/payment-4.png" alt=""></a>
-                            <a href="#"><img src="img/payment/payment-5.png" alt=""></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-5">
-                    <div class="footer__widget">
-                        <h6>Quick links</h6>
-                        <ul>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Blogs</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">FAQ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-4">
-                    <div class="footer__widget">
-                        <h6>Account</h6>
-                        <ul>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Orders Tracking</a></li>
-                            <li><a href="#">Checkout</a></li>
-                            <li><a href="#">Wishlist</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-8 col-sm-8">
-                    <div class="footer__newslatter">
-                        <h6>NEWSLETTER</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Email">
-                            <button type="submit" class="site-btn">Subscribe</button>
-                        </form>
-                        <div class="footer__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    <div class="footer__copyright__text">
-                        <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-                    </div>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+              <div class="col-12 col-md-9 mb-3 p-0 me-0">
+                <form method="POST" action="/products/multiple_filter/{{heading}}">
+                  {%csrf_token%}
+                  <input type="text" name="name_search" id="searchInput" style="z-index: 3;" class="form-control" placeholder="Search for products...">
+                <div id="suggestionsContainer" style="position: absolute; z-index: 3; background-color: #fff;" ></div>
+              </div>
+              <div class="col-12 col-md-3 p-0 ms-0 mb-3">
+                <button class="btn btn-danger w-100" type="submit">Apply</button>
+              </div>
             </form>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Search End -->
+  </div>
+  <!-- Breadcrumb End -->
 
-    <!-- Js Plugins -->
-    <!-- <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/main.js"></script> -->
+  <!-- Shop Section Begin -->
+  <section class="shop spad">
+    <div class="container">
+      <div class="row ">
+        <div class="col-lg-3 col-md-3 ">
+          <div class="shop__sidebar">
+            <div class="sidebar__filter">
+              <div class="section-title">
+                <!-- <h4>Shop by price</h4> -->
+                <h4>Filter By</h4>
+                <form action="/products/multiple_filter/{{heading}}" id="myForm" method="POST">
+                  <!-- CSRF token -->
+
+                  {% csrf_token %}
+
+                  <!-- <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> -->
+
+                  <div class="checkbox-container">
+                    <input type="checkbox" name="enableFilter" class="checkbox" id="enableFilterCheckbox">
+                    <label for="enableFilterCheckbox">Enable Price Filter</label>
+                  </div>
+
+                  <div class="slidecontainer">
+                    <input type="range" min="200" max="3000" value="300" class="slider" id="myRangeMin"
+                      name="myRangeMin" disabled>
+                    <input type="range" min="300" max="3000" value="300" class="slider" id="myRangeMax"
+                      name="myRangeMax" disabled>
+
+                  </div>
+                  <p class="label">Min ₹: <span id="demoMin">25</span></p>
+                  <p class="label">Max ₹ : <span id="demoMax">75</span></p>
+
+                  <div class="container">
+                    <label for="colorCheckbox" class="font-weight-bold label"> Select Color</label>
+                    <br>
+                    {% for i in color %}
+                    <input type="checkbox" name="colorCheckbox" value="{{i.id}}" class="checkbox"
+                      id="colorCheckbox">{{i.name}}
+                    <br>
+                    {% endfor %}
+                    <label for="sizeCheckbox" class="font-weight-bold label">Choose Size</label>
+                    <br>
+                    {% for i in size %}
+                    <input type="checkbox" name="sizeCheckbox" value="{{i.id}}" class="checkbox"
+                      id="sizeCheckbox">{{i.name}}
+                    <br>
+                    {%endfor %}
+
+                    <label for="sizeCheckbox" class="font-weight-bold label">Choose Brand</label>
+                    <br>
+                    <br>
+                    <button type="submit" class="red mt-2" id="submitButton">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-9 " id="hide">
+
+
+          <div class="row">
+            
+            {% for i,y in zipped_data%}
+
+            <div class="col-lg-4 col-md-6 ">
+              <div class="product__item">
+                <div class="product__item__pic set-bg" style="width: 100; height: 100;" data-setbg=""
+                  id="product_image-{{forloop.counter}}">
+                  <img src="{{i.images.url}}" alt="" style="width: 100%; height: 35rem;">
+                  {% if forloop.counter <= 3 and page.number == 1  %}
+                  <div class="label new">New</div>
+                  {% endif %}
+                  <ul class="product__hover" >
+                    <li><a href="{{i.images.url}}" class="image-popup" id="product_images-{{forloop.counter}}" ><span
+                          class="fa fa-search"></span></a></li>
+                    <li><a href="#"><span class="fa fa-heart"></span></a></li>
+                    <li><a href="#"><span class="fa fa-shopping-cart"></span></a></li>
+                  </ul>
+                </div>
+                <h6 class="mt-4 "><a class="font-weight-bold fs-6 text-black"
+                    href="/products/products_details/{{i.id}}">₹ {{y}}</a></h6>
+
+                <h6>Sizes:
+                  {% for key, value in sizes.items %}
+                  {%if key == i.name%}
+                  {% for size in value %}
+                  {{size}}
+                  {% endfor %}
+                  {% endif %}
+                  {% endfor %}
+                </h6>
+                <h6><a class="text-black" href="/products/products_details/{{i.id}}">{{i.name}}</a></h6>
+
+                <div class="product__item__text">
+                  <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                  </div>
+                  <!-- <div class="product__price">$ 59.0</div> -->
+                </div>
+              </div>
+            </div>
+
+            {% if forloop.counter|divisibleby:9 %}
+          </div>
+          {% endif %}
+          {% endfor %}
+          <div class="row property__gallery">
+          
+          </div>
+          
+        </div>
+        <div class="col-lg-9 col-md-9" id="compensate">
+          <div id="product-images">
+            {% for product in data.products %}
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </section>
+
+  <div class="d-flex justify-content-between ">
+    <div class="pagination-list">
+      {% if page.has_previous %}
+      <a href="?page=1" class="text-dark font-weight-bold">&laquo; First</a>
+      <a href="?page={{ page.previous_page_number }}" class="text-dark font-weight-bold">Previous</a>
+      {% endif %}
+    </div>
+      
+      <span class="text-dark font-weight-bold">Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+    
+    <div class="pagination-list  ">
+      {% if page.has_next %}
+      <a href="?page={{ page.next_page_number }}" class="text-dark font-weight-bold">Next</a>
+      <a href="?page={{ page.paginator.num_pages }}" class="text-dark font-weight-bold">Last &raquo;</a>
+      {% endif %}
+    </div>
+</div>
+
+
+
+  <!-- Search Begin -->
+  <div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+      <div class="search-close-switch">+</div>
+      <form class="search-model-form">
+        <input type="text" id="search-input" placeholder="Search here.....">
+      </form>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const submitButton = document.getElementById("submitButton");
+      const form = document.getElementById("myForm");
+      const rangeMin = document.getElementById("myRangeMin");
+      const rangeMax = document.getElementById("myRangeMax");
+      const demoMin = document.getElementById("demoMin");
+      const demoMax = document.getElementById("demoMax");
+      const enableFilterCheckbox = document.getElementById("enableFilterCheckbox");
+
+      function toggleSliderState() {
+        var isEnabled = enableFilterCheckbox.checked;
+        console.log(isEnabled)
+        rangeMin.disabled = !isEnabled;
+        rangeMax.disabled = !isEnabled;
+      }
+
+      rangeMin.addEventListener("input", function () {
+        demoMin.innerText = rangeMin.value; // Update the displayed value
+      });
+
+      rangeMax.addEventListener("input", function () {
+        demoMax.innerText = rangeMax.value; // Update the displayed value
+      });
+
+      enableFilterCheckbox.addEventListener("change", toggleSliderState);
+
+      toggleSliderState();
+
+      form.addEventListener("submit", function (event) {
+        // event.preventDefault(); // Comment this line to allow the form to submit
+        // You can add your custom logic here for handling the form submission
+      });
+    });
+
+
+
+
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsContainer = document.getElementById('suggestionsContainer');
+
+    var names=[];
+
+    searchInput.addEventListener('input', function () {
+        const query = this.value;
+
+        console.log("Testing is under !!!!!!!!!!!!!! :- " ,query)
+
+        // Clear previous suggestions
+        suggestionsContainer.innerHTML = '';
+
+        if (query.trim() === '') {
+            return; // No need to make an empty search
+        }
+
+        fetch(`/products/search_products/${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                // Process and display the product suggestions
+                data.forEach(product => {
+                    //console.log(names)
+
+                  //console.log(product.name)
+                  names.push(product.name)
+                    const suggestion = document.createElement('div');
+                    suggestion.innerText = product.name;
+                    suggestion.addEventListener('click', function () {
+                        // Handle suggestion click (e.g., fill the search box with the suggestion)
+                        searchInput.value = product.name;
+                        suggestionsContainer.innerHTML = ''; // Clear suggestions
+                    });
+                    suggestionsContainer.appendChild(suggestion);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching product suggestions:', error);
+            });
+          se
+    });
+
+    
+
+
+  </script>
+<div>
+  {%for i in data.product %}
+
+</div>
+
+
 </body>
+{%endfor%}
 {% endblock%}
+
+
 
 </html>

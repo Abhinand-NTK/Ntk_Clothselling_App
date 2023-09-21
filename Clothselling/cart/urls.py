@@ -22,5 +22,6 @@ urlpatterns = [
         path('cart_item/',views.Cart_page,name='cart_item'),
         path('delete_from_cart/<str:delete_id>',views.Cart_delete,name='delete_from_cart'),
         path('check_out/',views.Checkout,name='check_out'),
+        path('cart_item/update_quantity/',views.update_cart_item_quantity,name='update_quantity'),
 
 ]

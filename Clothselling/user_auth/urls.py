@@ -25,8 +25,13 @@ urlpatterns = [
     path('otpverifiaction/<int:user_id>',views.User_otpverification,name='otp_verification'),
     path('resetpas/<int:user_id>',views.User_resetpassword,name='reset_password'),
     path('myprofile/',views.Myprofile,name='myprofile'),
-    path('edit_myprofile/',views.Edit_profile,name='edit_myprofile'),
+    path('myprofile_edit/',views.Edit_profile,name='myprofile_edit'),
     path('manageadress/',views.Manage_Address,name='manageadress'),
     path('manageadress_edit/<int:adress_id>',views.Manage_Edit_Address,name='manageadress_edit'),
     path('manageadress_delete/<int:adress_id>',views.Manage_Address_delete,name='manageadress_delete'),
+    path('myorder/',views.Myorder,name='myorder'),
+    path('coupenslist/',views.Coupenlist,name='coupenslist'),
+    path('mywallet/',views.Mywallet,name='mywallet'),
+    path('mywishlist/<int:varient_id>',views.Mywishlist,name='mywishlist'),
+
 ]

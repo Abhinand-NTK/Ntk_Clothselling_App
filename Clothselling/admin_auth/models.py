@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import  BaseUserManager,AbstractUser, Group, Permission
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 # from django.contrib.postgres.fields import ArrayField
 
 
@@ -38,20 +39,34 @@ class  Subcategory(models.Model):
     def __str__(self):
         return self.name
 
-class Coupon(models.Model):
-    code = models.CharField(max_length=20, unique=True)
-    discount = models.DecimalField(max_digits=5, decimal_places=2)
-    valid_from = models.DateField()
-    valid_to = models.DateField()
-    active = models.BooleanField(default=True,null=True,blank=True)
+
+
+
+class Coupons(models.Model):
+    description = models.TextField(blank=True)
+    coupon_code = models.CharField(max_length=20, unique=True,default=None)
+    coupon_title = models.CharField(max_length=250, blank=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(100)], blank=True, null=True)
+    valid_from = models.DateField(null=True)
+    valid_to = models.DateField(null=True)
+    quantity = models.PositiveIntegerField(null=True)
+    minimum_order_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    maximum_order_amount_the_discount_percenetage_applicable_for=models.DecimalField(max_digits=20,decimal_places=2,null=True,blank=True)
+    active = models.BooleanField(default=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.code
+        return self.coupon_code
+
+    
 
 class Banner(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='photos/banners')
-    link = models.URLField()
+    link = models.URLField(null=True,blank=True)
+    linkfordata = models.CharField(null=True,blank=True)
     active = models.BooleanField(default=True,null=True,blank=True)
 
     def __str__(self):
@@ -136,6 +151,10 @@ class CustomUser(AbstractUser):
     is_blocked = models.BooleanField(default=False)
 
     otp = models.CharField(max_length=6, null=True, blank=True)
+
+
+    wallet = models.DecimalField(default=0, decimal_places=2, max_digits=10,null=True,blank=True)
+
 
     
     # required

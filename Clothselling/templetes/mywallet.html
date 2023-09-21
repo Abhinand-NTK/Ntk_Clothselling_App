@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<style>
+    .modal-header {
+        background-color: #B71C41;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+        display: block;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<body>
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>My Orders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="checkout__order">
+                        <h5><a class="text-dark" href="/myorder/">Your order</a></h5>
+                        <div class="dropdown">
+                            <h5><a class="text-dark" href="#">Account Settings</a></h5>
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" href="/myprofile/">Personal Information</a>
+                                <a class="dropdown-item" href="">Manage Address</a>
+                            </div>
+                        </div>
+                        <h5><a href="/mywallet">Mywallet</a></h5>
+                        <h5><a href="/mywishlist">mywishlist</a></h5>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="font-center">
+                        <h5 class="font-weight-bold text-center">My Wallet</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="checkout__form__input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-12 col-md-8 col-sm-8 ">
+                            <div class="checkout__form__input">
+                                
+                                <div class="container borderd mt-3 ">
+                                    <div class="border mb-3 w-100 h-50 d-flex flex-column">
+                                            <div class="col-lg font-color-danger text-center">
+                                                User Name :-     <span class="font-weight-bold">Abhinand</span>
+                                            </div>
+                                            <div class="col-lg text-center">
+                                                Wallet Amount :- <span class="font-weight-bold">4000</span> 
+                                            </div>
+                                    </div>
+                                    
+                                    <div class="border p-3">
+                                        <div class="d-flex justify-content-md-between align-content-between">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="row">Sl No</th>
+                                                        <th>Payment Method</th>
+                                                        <th>Date of Payment</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Credit Card</td>
+                                                        <td>2023-09-28</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>PayPal</td>
+                                                        <td>2023-09-30</td>
+                                                    </tr>
+                                                    <!-- Add more rows as needed -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                        <!-- <div class="border font-weight-bold text-light bg-black mt-2 "
+                                            style=" height: 3rem;">
+                                            <a href="/order/order_details/{{ order_id }}"
+                                                class="text-light align-text-center">Order-id: -
+                                            </a>
+                                        </div> -->
+                                        <!-- 
+
+                                        <div class="d-flex justify-content-between mt-3 border p-3">
+                                            <div class="row">
+                                                <div style="width: 3rem; height: 2rem;"><img
+                                                        src="{{ item.variant.product.images.url }}" alt=""></div>
+                                                <div>Size: - </div>
+                                                <div>Color: - </div>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                </div>
+                                            </div>
+                                            <div>
+
+                                            </div>
+                                            <div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+
+
+
+    <!--Modal: modalDiscount-->
+    <div class="modal fade right" id="modalDiscount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" data-backdrop="true">
+        <div class="modal-dialog modal-side modal-bottom-right modal-notify modal-danger" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <p class="text-center text-black">Order Confirmation</p>
+                    <button type="button" class="close" aria-label="Close">
+                        <a href="/order/remove-show-modal/" class="text-black"><span aria-hidden="true"
+                                class="white-text">&times;</span></a>
+                    </button>
+                </div>
+
+                <!--Body-->
+                <div class="modal-body">
+
+                    <div>
+
+                        <h5 class="text-ceter"><span
+                                class="text-success text-center🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳">Congrats🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳</span>
+                            <hr> Your order is confirmed</h1>
+                    </div>
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer flex-center">
+                    <a href="/order/remove-show-modal/" class="btn btn-danger">
+                        Exit
+                        <i class="far fa-gem ml-1 white-text"></i>
+                    </a>
+                    <a class="btn btn-outline-danger waves-effect" href="">Check Order Details</a>
+
+                    <!-- <a type="submit" class="btn btn-outline-danger waves-effect" data-dismiss="modal" href="/myorder/">Check Orderdetails</a> -->
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+
+    <script>
+        // Set a JavaScript variable with the session value
+        var showModal = '{{ request.session.show_modal|default:"False"|lower }}';
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the JavaScript variable 'showModal' is set to true
+            if (showModal === "true") {
+                // Display the modal on page load
+                $('#modalDiscount').modal('show');
+
+                // Remove the 'show_modal' session variable using a fetch request
+                fetch('/order/remove-show-modal/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,  // Replace with your CSRF token if needed
+                    },
+                }).then(function (response) {
+                    // Handle the response here if needed
+                    if (response.status === 200) {
+                        // Session variable removed
+                    } else {
+                        // Handle error if the removal fails
+                    }
+                });
+            }
+        });
+    </script>
+
+    {% endblock%}
+
+</body>
+
+
+
+
+
+
+</html>

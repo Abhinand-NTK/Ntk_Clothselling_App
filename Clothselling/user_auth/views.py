@@ -1,4 +1,5 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse,get_object_or_404
+from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -8,6 +9,8 @@ from user_auth.models import UserAdress
 from django.contrib.auth import authenticate,login,logout
 from django.conf import settings
 from random import randint
+from order.models import *
+from collections import defaultdict
 
 # Create your views here.
 
@@ -41,15 +44,11 @@ def User_login(request):
                     userlogin(request, user)  # Log the user in
                     request.session['user'] = email
                     # if user in request.session:
+                    
                     return redirect('home')
                 else:
                     return redirect('otp_verification', user_id=user.id)
-            # else: 
-            #     # request.session.flush
-            #     print("Its coming here !!!")
-            #     messages.error(request,"Your Acccount is blocked")
-            #     User_logout()
-            #     # return redirect('user_login')
+          
         else:
             messages.error(request, "Check the email or password")
             # return redirect('user_login')
@@ -170,16 +169,9 @@ def User_resetpassword(request, user_id):
     
     return render(request, 'Authenticatoins/resetpassword.html', {'user': user})
 
-def Myprofile(request):
-    if 'user' in request.session:
-        
-        personal_details = CustomUser.objects.all()
-        context = {'personal_details': personal_details}
-        
-    return render(request, 'myprofile.html', context)
-   
     
 def Manage_Address(request):
+    current_path = request.path
     if 'user' in request.session:
         user=request.user
     
@@ -199,11 +191,6 @@ def Manage_Address(request):
             nearbylocation=request.POST['nearbylocation']
             district=request.POST['district']
 
-
-            # if not firstname or not lastname:
-            #     firstname=user.first_name
-            #     lastname=user.lastname
-            # else:
             address=UserAdress(
                 user=user,
                 first_name=first_name,
@@ -216,7 +203,11 @@ def Manage_Address(request):
                 district=district
                 )
             address.save()
-            return redirect('manageadress')
+
+            if '/cart/check_out' in request.META['HTTP_REFERER']:
+                 return redirect('check_out')
+            elif '/manageadress' in request.META['HTTP_REFERER']:
+                return redirect('manageadress')
     address_user=UserAdress.objects.filter(user=user)
     context={
         'address_user':address_user
@@ -225,52 +216,54 @@ def Manage_Address(request):
   
     return render(request,'manageadress.html',context)  
 
-def Manage_Edit_Address(request,adress_id):
+def Manage_Edit_Address(request, adress_id):
     if 'user' in request.session:
-        user=request.user
-    
+        user = request.user
     else:
-        messages.error(request,'Sesson time Out')
+        messages.error(request, 'Session time Out')
         return redirect('user_login')
         
-    if request.method=='POST':
-            print("Abhinand")
-            
-            first_name=request.POST['firstname']
-            last_name=request.POST['lastname']
-            phonenumber=request.POST['phonenumber']
-            address=request.POST['address']
-            town=request.POST['town']
-            zip_code=request.POST['zipcode']
-            nearbylocation=request.POST['nearbylocation']
-            district=request.POST['district']
+    try:
+        address = UserAdress.objects.get(id=adress_id, user=user)
+    except UserAdress.DoesNotExist:
+        messages.error(request, 'Address not found')
+        return redirect('manageadress')
+    
+    if request.method == 'POST':
+        # Get the form data
+        first_name = request.POST['firstname']
+        last_name = request.POST['lastname']
+        phonenumber = request.POST['phonenumber']
+        address_text = request.POST['address']
+        town = request.POST['town']
+        zip_code = request.POST['zipcode']
+        nearby_location = request.POST['nearbylocation']
+        district = request.POST['district']
 
+        # Update the address fields
+        address.first_name = first_name
+        address.last_name = last_name
+        address.phonenumber = phonenumber
+        address.address = address_text
+        address.town = town
+        address.zip_code = zip_code
+        address.nearbylocation = nearby_location
+        address.district = district
 
-            # if not firstname or not lastname:
-            #     firstname=user.first_name
-            #     lastname=user.lastname
-            # else:
-            address=UserAdress.objects.get(id=adress_id)
-            address=UserAdress(
-                user=user,
-                first_name=first_name,
-                last_name=last_name,
-                phonenumber=phonenumber,
-                address=address,
-                town=town,
-                zip_code=zip_code,
-                nearbylocation=nearbylocation,
-                district=district
-                )
-            address.save()
-            return redirect('manageadress')
-    address_user=UserAdress.objects.filter(user=user)
-    context={
-        'address_user':address_user
+        # Save the changes
+        address.save()
+        if '/cart/check_out' in request.META['HTTP_REFERER']:
+                 return redirect('check_out')
+        elif '/manageadress' in request.META['HTTP_REFERER']:
+                return redirect('manageadress')
+
+        # return redirect('manageadress')
+
+    context = {
+        'address_user': [address],  # Pass the address as a list to the template
     }
 
-  
-    return render(request,'manageadress.html',context)  
+    return render(request, 'manageadress.html', context)
 
 def Manage_Address_delete(request,adress_id):
     if 'user' in request.session:
@@ -282,15 +275,33 @@ def Manage_Address_delete(request,adress_id):
         return redirect('user_login')
     address=UserAdress.objects.get(id=adress_id)
     address.delete()
-    return redirect('manageadress')
+    if '/cart/check_out' in request.META['HTTP_REFERER']:
+                 return redirect('check_out')
+    elif '/manageadress' in request.META['HTTP_REFERER']:
+                return redirect('manageadress')
 
+
+def Myprofile(request):
+    if 'user' in request.session:
+        if request.method=='POST':
+            return render(request, 'manageadress.html')
+
+        
+    personal_details = CustomUser.objects.all()
+    context = {'personal_details': personal_details}
+        
+    return render(request, 'myprofile.html', context)
+    
+
+
+    
 def Edit_profile(request):
-    if "user" in request.session:
+    # if 'user' in request.session:
          print("Hello world!!!")
          if request.method == 'POST':
             # return HttpResponse(True)
             print('Abhinand is a brillent Man  !!!!!!!!!!!!!!!!!!!!')
-            firstname = request.POST['first_name']
+            firstname = request.POST['firstname']
             lastname = request.POST['lastname']
             password = request.POST['password']
             user_email = request.user  # Access the email using request.user.email
@@ -306,14 +317,67 @@ def Edit_profile(request):
             else:
                 messages.error(request, "Incorrect password")
                 return redirect('myprofile')
+            
+         return render(request,'myprofile.html')
+    # else:
+    #     return redirect('myprofile')
 
+
+def Myorder(request):
+
+    # if 'show_modal' in request.session:
+    #     del request.session['show_modal']
         
-    else:
-        print("Hello world!!!")
-        return HttpResponse(False)
-        messages.error(request,'Sesson time Out')
-        return redirect('user_login')
+    user = request.user
+    orders = OrderProduct.objects.filter(customer=user)
+    # return HttpResponse(orders)
+    
+    order_dict = defaultdict(list)
+
+    for order in orders:
+        order_dict[order.order_id].append(order)
+
+    context = {
+        'order': orders,
+        'order_dict': dict(order_dict),  # Convert defaultdict to a regular dictionary
+    }
+
+    return render(request, 'myorder.html', context)
+def Coupenlist(requset):
+    coupens=Coupons.objects.all()
+    context={
+         'coupens':coupens
+         }
+    return render(requset,'coupenlistuserside.html',context)
+
+def Mywallet(request):
+     return render(request,'mywallet.html')
+
+def Mywishlist(request, varient_id):
+    color = ''  # Initialize color variable
+
+    if varient_id: 
+        product_variant_instance = get_object_or_404(ProductVariant, id=varient_id)
+
+        try:
+            wishlist_exist_or_not = Wishlist.objects.get(product=product_variant_instance)
+            wishlist_exist_or_not.check_color=False
+            wishlist_exist_or_not.delete()
+            color = 'red'  # Set color to 'red' when an item is removed
+            return JsonResponse({'message': 'The item is removed from the Wishlist'})
+        except Wishlist.DoesNotExist:
+            wishlist = Wishlist(product=product_variant_instance)
+            wishlist_exist_or_not.check_color=True
+            wishlist.save()
+            color = 'black'  # Set color to 'black' when an item is added
+            return JsonResponse({'message': 'The item is added to the Wishlist'})
         
+    return render(request, 'wishlist.html', {'color': color})
+
+
+
+
+    
 
    
         

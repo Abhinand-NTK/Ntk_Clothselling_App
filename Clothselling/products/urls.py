@@ -25,5 +25,12 @@ urlpatterns=[
     path('kids/',views.kids,name='kids'),
     path('combos/',views.combos,name='combos'),
     path('products_details/<int:id>',views.product_details,name='details'),
+    path('filtering_varient/', views.Filtering_in_Prouduct_details_page, name='filtering_varient'),
+    path('filter/<str:category_id>/<str:heading>', views.Filter, name='filter'),
+    path('multiple_filter/<str:heading>', views.filter_Accordence_multiple_input, name='multiple_filter'),
+    path('search_products/<str:query>', views.search_products, name='search_products'),
+
+
+    # path('filtering_varient/<str:varient_id>',views.product_details,name='filtering_varient'),
       ]
 

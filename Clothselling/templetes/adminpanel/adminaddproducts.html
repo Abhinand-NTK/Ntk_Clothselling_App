@@ -1,26 +1,367 @@
-{% extends 'adminpanel/admin_basic.html' %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
-<div class="mt-2">
-    <div class="row"> 
-        <div class="col-md-2  d-none d-md-block ">
-            <div class="selectable-list text-light d-flex justify-content-center">
-                <ul class="list-unstyled mt-5">
-                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Dashboard</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/users/">Users</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/products/">Product</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/category/">Category</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/addcategory/">Coupons</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Orders</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Banners</a></li>
-                    <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
-                    <!-- Add more list items as needed -->
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-10">
-            <!-- Your main content area here -->
-        </div>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .slidecontainer {
+      width: 12%;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 15px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+
+    .slider:hover {
+      opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #ca1515;
+      cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #04AA6D;
+      cursor: pointer;
+    }
+
+    /* Style the checkbox and change the tick color */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .checkbox {
+      margin-right: 10px;
+      /* Hide the default checkbox tick */
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #333;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* Style the tick when the checkbox is checked */
+    .checkbox:checked::before {
+      content: '\2713';
+      /* Unicode checkmark character */
+      font-size: 18px;
+      color: red;
+      /* Change the tick color to red */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Round Range Slider</h1>
+
+  <form action="" id="myForm">
+    <!-- CSRF token -->
+    <input type="hidden" name="csrf_token" value="your_csrf_token_here">
+
+    <div class="checkbox-container">
+      <input type="checkbox" name="enableFilter" class="checkbox" id="enableFilterCheckbox">
+      <label for="enableFilterCheckbox">Enable Price Filter</label>
     </div>
-</div>
-{% endblock %}
+
+    <div class="slidecontainer">
+      <input type="range" min="1" max="100" value="25" class="slider" id="myRangeMin" name="myRangeMin" disabled>
+      <input type="range" min="1" max="100" value="75" class="slider" id="myRangeMax" name="myRangeMax" disabled>
+      <p>Initial Value: <span id="demoMin">25</span></p>
+      <p>Final Value: <span id="demoMax">75</span></p>
+    </div>
+
+    <div class="checkbox-container">
+      <input type="checkbox" name="colorCheckbox" value="rose" class="checkbox" id="colorCheckbox">Color
+      <input type="checkbox" name="sizeCheckbox" value="L" class="checkbox" id="sizeCheckbox">Size
+      <button id="submitButton">Submit</button>
+    </div>
+  </form>
+
+  <script>
+    const slider = document.getElementById("myRangeMin"); // Change the ID to "myRangeMin"
+    const slider2 = document.getElementById("myRangeMax"); // Change the ID to "myRangeMin"
+    const sliderValue = document.getElementById("demoMin"); // Change the ID to "demoMin"
+    const sliderValue2 = document.getElementById("demoMax"); // Change the ID to "demoMin"
+    const enableSlider = document.getElementById("enableFilterCheckbox");
+    const enableSlider2 = document.getElementById("enableFilterCheckbox");
+    const csrfToken = "your_csrf_token_here"; // Replace with your actual CSRF token
+
+    // Function to enable or disable the slider based on the checkbox state
+    function toggleSliderState1() {
+      slider.disabled = !enableSlider.checked;
+    }
+    function toggleSliderState2() {
+      slider2.disabled = !enableSlider.checked;
+    }
+
+    // Update the slider value when it changes
+    slider.addEventListener("input", function () {
+      sliderValue.textContent = this.value;
+    });
+
+    slider2.addEventListener("input", function () {
+      sliderValue2.textContent = this.value;
+    });
+
+    // Add an event listener to the enable slider checkbox
+    enableSlider.addEventListener("change", toggleSliderState1);
+    enableSlider2.addEventListener("change", toggleSliderState2);
+
+    // Function to send form data to the backend using Fetch
+    function sendFormDataToBackend() {
+      const formData = new FormData();
+      formData.append("sliderValue", slider.value);
+      formData.append("csrf_token", csrfToken);
+
+      fetch("/your-backend-url", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-CSRFToken": csrfToken, // Include the CSRF token in the headers
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response from the backend
+          console.log("Response from backend:", data);
+          // You can update the UI or perform further actions based on the response
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+
+    // Add an event listener to the submit button
+    const submitButton = document.getElementById("submitButton");
+    submitButton.addEventListener("click", sendFormDataToBackend);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    let selectedColors;
+
+    let selectedSizes;
+
+  </script>
+
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const submitButton = document.getElementById("submitButton");
+      const form = document.getElementById("myForm");
+
+    });
+
+
+    submitButton.addEventListener("click", function () {
+      selectedColors = Array.from(form.querySelectorAll('input[name="colorCheckbox"]:checked'))
+        .map(checkbox => checkbox.value);
+
+      selectedSizes = Array.from(form.querySelectorAll('input[name="sizeCheckbox"]:checked'))
+        .map(checkbox => checkbox.value);
+      console.log(selectedColors)
+      console.log(selectedSizes)
+      var rangeMin = document.getElementById("myRangeMin");
+      var rangeMax = document.getElementById("myRangeMax");
+      var demoMin = document.getElementById("demoMin");
+      var demoMax = document.getElementById("demoMax");
+      var enableFilterCheckbox = document.getElementById("enableFilterCheckbox");
+
+      // Function to enable or disable the slider based on the checkbox state
+      function toggleSliderState() {
+        var isEnabled = enableFilterCheckbox.checked;
+        rangeMin.disabled = !isEnabled;
+        rangeMax.disabled = !isEnabled;
+      }
+
+      // Update the initial and final values when the range inputs change
+      rangeMin.addEventListener("input", function () {
+        demoMin.innerText = rangeMin.value;
+      });
+
+      rangeMax.addEventListener("input", function () {
+        demoMax.innerText = rangeMax.value;
+      });
+
+      // Add an event listener to the enable filter checkbox
+      enableFilterCheckbox.addEventListener("change", toggleSliderState);
+
+      // Initially, set the slider state based on the checkbox state
+      toggleSliderState();
+
+
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+
+        // Create a FormData object to access the form's data
+        var formData = new FormData(form);
+
+        // Access form data using FormData methods
+
+        var minRangeValue = formData.get("myRangeMin");
+        var maxRangeValue = formData.get("myRangeMax");
+        var csrfToken = formData.get("csrf_token"); // Get the CSRF token
+        console.log("Min Range Value:", minRangeValue);
+        console.log("Max Range Value:", maxRangeValue);
+        console.log("CSRF Token:", csrfToken); // Log the CSRF token
+
+        // You can also send this data to the backend using Fetch or another method
+        // Example: sendFormToBackend(formData);
+
+        fetch("/products/multiple_filter/", {
+          method: "POST",
+          body: formData,
+          headers: {
+            "X-CSRFToken": csrfToken, // Include the actual CSRF token here
+          },
+        })
+          .then(response => response.json())
+          .then(data => {
+            var elementToHide = document.getElementById("hide");
+            var elementToHide1 = document.getElementById("compensate");
+
+
+
+
+            // Handle the response from the backend
+            console.log("Response from backend:", data);
+            //console.log(date.products.name)
+
+            //console.log("Products:", products);
+
+            // You can iterate over 'products' and access individual product properties
+            data.products.forEach((product, index) => {
+
+              console.log(`${index}`);
+              console.log("Product Name:", product.name);
+              console.log("Product Color:", product.color);
+              console.log("Product image:", product.image);
+              // ... (access other product properties)
+            });
+
+
+
+            data.products.forEach((product, index) => {
+              var productElement = document.getElementById(`product-${index}`);
+              console.log(`product-${index}`)
+              console.log(`${index}`);
+              console.log(productElement)
+              if (productElement) {
+                productElement.setAttribute('src', product.image);
+              }
+
+            });
+
+            // You can update the UI or perform further actions based on the response
+          })
+          .catch(error => {
+            console.error("Error:", error);
+          });
+
+
+
+        // Function to send form data to the backend using Fetch
+
+      });
+
+    });
+
+
+
+
+    var form = document.getElementById("myForm");
+
+  </script>
+
+
+
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const submitButton = document.getElementById("submitButton");
+      const form = document.getElementById("myForm");
+
+    });
+
+
+    submitButton.addEventListener("click", function () {
+      selectedColors = Array.from(form.querySelectorAll('input[name="colorCheckbox"]:checked'))
+        .map(checkbox => checkbox.value);
+
+      selectedSizes = Array.from(form.querySelectorAll('input[name="sizeCheckbox"]:checked'))
+        .map(checkbox => checkbox.value);
+      console.log(selectedColors)
+      console.log(selectedSizes)
+      var rangeMin = document.getElementById("myRangeMin");
+      var rangeMax = document.getElementById("myRangeMax");
+      var demoMin = document.getElementById("demoMin");
+      var demoMax = document.getElementById("demoMax");
+      var enableFilterCheckbox = document.getElementById("enableFilterCheckbox");
+
+      // Function to enable or disable the slider based on the checkbox state
+      function toggleSliderState() {
+        var isEnabled = enableFilterCheckbox.checked;
+        rangeMin.disabled = !isEnabled;
+        rangeMax.disabled = !isEnabled;
+      }
+
+      // Update the initial and final values when the range inputs change
+      rangeMin.addEventListener("input", function () {
+        demoMin.innerText = rangeMin.value;
+      });
+
+      rangeMax.addEventListener("input", function () {
+        demoMax.innerText = rangeMax.value;
+      });
+
+      // Add an event listener to the enable filter checkbox
+      enableFilterCheckbox.addEventListener("change", toggleSliderState);
+
+      // Initially, set the slider state based on the checkbox state
+      toggleSliderState();
+    });
+
+  </script>
