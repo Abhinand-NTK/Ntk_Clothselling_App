@@ -26,6 +26,7 @@ class UserAdress(models.Model):
 
 class Wishlist(models.Model):
 
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     product=models.ForeignKey(ProductVariant,on_delete=models.CASCADE)
     created = models.DateField(auto_now_add=True)
     check_color=models.BooleanField(default=False,null=True,blank=True)

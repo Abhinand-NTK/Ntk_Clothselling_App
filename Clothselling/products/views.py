@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.http import JsonResponse
 from admin_auth.models import *
+from user_auth.models import *
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.core import serializers
@@ -364,6 +365,9 @@ def combos(request,id=None):
 
 def product_details(request,id):
 
+    wishlist=Wishlist.objects.all()
+    varinet_data=ProductVariant.objects.all()
+
     product = get_object_or_404(Product, id=id)
     product_variants = ProductVariant.objects.filter(product=product)
     serialized_product_variants = serializers.serialize('json', product_variants)
@@ -386,6 +390,7 @@ def product_details(request,id):
     product_vareint_data=[]
     for varient in product_variants:
         varient_data={
+            'id':variant.id,
             'color' : varient.color,
             'price' : varient.price,
             'size' : varient.size,
@@ -408,7 +413,7 @@ def product_details(request,id):
     size=Size.objects.all()
     color=Color.objects.all()
 
-    context = {'size':size,'color':color,'product': product, 'product_variants': product_variants, 'images': images,'product_vareint_data':product_vareint_data,'product_variant_images': product_variant_images}
+    context = {'wishlist':wishlist,'varinet_data':varinet_data,'size':size,'color':color,'product': product, 'product_variants': product_variants, 'images': images,'product_vareint_data':product_vareint_data,'product_variant_images': product_variant_images}
    
     return render(request,'products_detalils.html',context)
 

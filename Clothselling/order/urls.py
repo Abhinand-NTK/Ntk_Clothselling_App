@@ -19,6 +19,7 @@ from django.urls import path
 
 urlpatterns = [
         path('placeorder/',views.Place_Order,name='placeorder'),
+        path('placeorder_online/',views.Place_Order_online_Payment,name='placeorder_online'),
         path('remove-show-modal/', views.remove_show_modal_session, name='remove_show_modal_session'),
         path('order_details/<int:order_id>/', views.Order_deatails, name='order_details'),
         path('returnorder/<int:order_id>/', views.Returntheorder, name='returnorder'),
@@ -26,6 +27,7 @@ urlpatterns = [
         path('returnindivudal/<int:id>/', views.Cancel_indivdal_items, name='returnindivudal'),
         path('get-address-details/', views.get_address_details, name='get_address_details'),
         path('proceed-to-pay/', views.razorpaycheck, name='proceed-to-pay'),
+        path('returnindivudalproducts/<int:itemid>', views.Refunded_for_indivdal_items, name='returnindivudalproducts'),
 
 
 ]

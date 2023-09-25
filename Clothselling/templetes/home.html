@@ -72,7 +72,7 @@
                             </ul>
                         </div>
                         <div class="product__item__text">
-                            <h6><a href="#">{{i.name}}</a></h6>
+                            <h6><a href="/products/products_details/{{i.id}}">{{i.name}}</a></h6>
                             <div class="rating">
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
@@ -91,9 +91,7 @@
                 {% endif %}
                 {% endfor %}
             </div>
-
         </div>
-
     </section>
 
 
@@ -114,7 +112,6 @@
                             </div>
                         </div>
                         {% for i in brand %}
-
                         <div class="banner__item d-flex justify-content-center">
                             <div class="banner__text">
 

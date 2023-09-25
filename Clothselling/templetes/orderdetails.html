@@ -69,8 +69,8 @@
                                 <a class="dropdown-item" href="">Manage Address</a>
                             </div>
                         </div>
-                        <h5><a href="/mywallet">Mywallet</a></h5>
-                        <h5><a href="/mywishlist">mywishlist</a></h5>
+                        <h5><a class="text-dark" href="/mywallet">Mywallet</a></h5>
+                        <h5><a class="text-dark" href="/mywishlist/0">mywishlist</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -134,7 +134,13 @@
                                                         <p><strong>Quantity:</strong> {{ item.quandity }}</p>
                                                     </div>
                                                     <div class="col-md-3 col-12">
+                                                        {% if item.return_request == False %}
                                                         <p><strong>Status:</strong> {{ item.order_id.status }}</p>
+                                                        {% elif item.return_request == True and item.return_accept == False %}
+                                                        <p><strong>Status:</strong>  Return Requested </p>
+                                                        {% elif item.return_accept == True %}
+                                                        <p><strong>Status:</strong>  Return Approved & Refunded </p>
+                                                        {% endif %}
                                                         {% if not item.return_request and details.status == 'Delivered' %}
                                                         <a class="btn btn-danger text-light font-weight-bold"
                                                             onclick="toggleReturnSingleReason();">Return Single</a>
@@ -163,12 +169,6 @@
 
                                                     </div>
                                                     {% endfor %}
-
-
-
-
-
-
 
 
 
@@ -233,33 +233,7 @@
 
 
     <script>
-        function toggleReturnReason() {
-            var returnReasonBox = document.getElementById('return-reason-box');
-            if (returnReasonBox.style.display === 'none') {
-                returnReasonBox.style.display = 'block';
-            } else {
-                returnReasonBox.style.display = 'none';
-            }
-        }
-
-        function togglecancelReason() {
-            var cancelReasonBox = document.getElementById('cancel-reason-box');
-            if (cancelReasonBox.style.display === 'none') {
-                cancelReasonBox.style.display = 'block';
-            } else {
-                cancelReasonBox.style.display = 'none';
-            }
-        }
-
-        function toggleReturnSingleReason() {
-            var returnsingleReasonBox = document.getElementById('return_single_reason');
-            if (returnsingleReasonBox.style.display === 'none') {
-                returnsingleReasonBox.style.display = 'block';
-            } else {
-                returnsingleReasonBox.style.display = 'none';
-            }
-        }
-
+        
 
     </script>
 

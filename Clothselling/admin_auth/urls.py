@@ -70,6 +70,12 @@ urlpatterns = [
     path('delete_banner/<int:delete_id>', views.Delete_banner, name='delete_banner'),
     path('edit_banner/<int:edit_id>', views.Edit_banner, name='edit_banner'),
 
+
+
+    path('totalorders/', views.Dashboard, name='totalorders'),
+
+
+
 ]
    
 

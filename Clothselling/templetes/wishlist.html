@@ -41,6 +41,39 @@
     .dropdown-item:hover {
         background-color: #f5f5f5;
     }
+
+    .alert {
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        margin-bottom: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .alert-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+    
+    .alert-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    .alert.show {
+        opacity: 1;
+    }
+    
 </style>
 
 <body>
@@ -72,11 +105,19 @@
                                 <a class="dropdown-item" href="">Manage Address</a>
                             </div>
                         </div>
-                        <h5><a href="/mywallet">Mywallet</a></h5>
-                        <h5><a href="/mywishlist">mywishlist</a></h5>
+                        <h5><a class="text-dark" href="/mywallet">Mywallet</a></h5>
+                        <h5><a class="text-dark" href="/mywishlist/0">mywishlist</a></h5>
                     </div>
                 </div>
+                    
                 <div class="col-lg-8">
+                    {% if messages %}
+                      {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                       {% endfor %}
+                    {% endif %}
                     <h5 class="d-flex justifycontent-between font-weight-bold">My Wishlist</h5>
                     <!-- <h5><a class="text-success" data-toggle="modal" data-target="#exampleModal" type="submit"
                                 href="">Add</a>&nbsp;&nbsp;&nbsp; New Addess</h5> -->
@@ -86,27 +127,57 @@
                             </div>
                         </div>
                     </div>
+
+                    {% if not wishlist %}
                     <div class="row mt-3">
-                        <div class="col-lg-12 col-md-8 col-sm-8 ">
-                            <div class="checkout__form__input">
-                                <div class="container borderd mt-3 ">
-                                    <div class="border p-3 d-flex justify-content-between " >
-                                        <div class="col-lg-2">
-                                            1
+                        <div class="col-lg-12 col-md-8 col-sm-8">
+                            <div class="checkout__form__input ">
+                                <div class="container borderd mt-3">
+                                    <div class="border p-3 d-flex justify-content-between ">
+                                        <div class="font-weight-bold" style="color: #B71C41;">
+                                            Your Wishlist is Empty
                                         </div>
-                                        <div class="col-lg-2">
-                                                <img src="https://images.unsplash.com/photo-1682685797661-9e0c87f59c60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxzZWFyY2h8MXx8bmlnaHR8ZW58MHx8MHx8fDA%3D&w=1000&q=80" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% for wish in wishlist %}
+                    <div class="row mt-3">
+                        <div class="col-lg-12 col-md-8 col-sm-8">
+                            <div class="checkout__form__input ">
+                                <div class="container borderd mt-3">
+                                    <div class="border p-3 d-flex justify-content-between">
+                                        <div class="col-lg-1">
+                                            {{forloop.counter}}
+                                        </div>
+                                        <div class="col-lg-2" style="width: 5rem; height: 5rem;">
+                                            <img src="{{wish.product.product.images.url}}"
+                                                alt="noimage">
                                         </div>
                                         <div class="col-lg-3">
-                                                    Description
+                                            {{wish.product.product.name}}
                                         </div>
-                                        <div class="col-lg-3">
-                                            price
+                                        <div class="col-lg-2">
+                                            {{wish.product.price}}
 
                                         </div>
                                         <div class="col-lg-2 text-center">
-                                            <a href="">
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3C140.6 6.8 151.7 0 163.8 0zM32 128H416L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32 128zm192 64c-6.4 0-12.5 2.5-17 7l-80 80c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V408c0 13.3 10.7 24 24 24s24-10.7 24-24V273.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-4.5-4.5-10.6-7-17-7z"/></svg>
+                                            <form action="/addtocartfromwishlist/{{wish.id}}" method="POST">
+                                                {%csrf_token%}
+                                                <input type="hidden" name="quantity" value="1" id="">
+                                                <button class="fs-8 btn btn-danger font-weight-bold" type="submit">+ Cart</button>
+                                            </form>
+                                            
+                                        </div>
+                                        <div class="col-lg-2 text-center">
+                                            <a href="" onclick="delete_wishlist()"><input id="delete_" type="hidden" value="{{wish.id}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                                    viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                    <path
+                                                        d="M163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3C140.6 6.8 151.7 0 163.8 0zM32 128H416L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32 128zm192 64c-6.4 0-12.5 2.5-17 7l-80 80c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V408c0 13.3 10.7 24 24 24s24-10.7 24-24V273.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-4.5-4.5-10.6-7-17-7z" />
+                                                </svg>
                                             </a>
                                         </div>
                                     </div>
@@ -114,6 +185,8 @@
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
+
                 </div>
             </div>
     </section>
@@ -123,75 +196,15 @@
 
 
 
-          <!--Modal: modalDiscount-->
-          <div class="modal fade right" id="modalDiscount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-            aria-hidden="true" data-backdrop="true">
-            <div class="modal-dialog modal-side modal-bottom-right modal-notify modal-danger" role="document">
-              <!--Content-->
-              <div class="modal-content">
-                <!--Header-->
-                <div class="modal-header">
-                  <p class="text-center text-black">Order Confirmation</p>
-                  <button type="button"  class="close"  aria-label="Close">
-                    <a href="/order/remove-show-modal/" class="text-black"><span aria-hidden="true" class="white-text">&times;</span></a> 
-                  </button>
-                </div>
-      
-                <!--Body-->
-                <div class="modal-body">
-      
-                  <div>
-    
-                    <h5 class="text-ceter"><span class="text-success text-center🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳">Congrats🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳</span> <hr> Your order is confirmed</h1>
-                  </div>
-                </div>
-      
-                <!--Footer-->
-                <div class="modal-footer flex-center">
-                  <a href="/order/remove-show-modal/" class="btn btn-danger">
-                    Exit
-                    <i class="far fa-gem ml-1 white-text"></i>
-                  </a>
-                  <a class="btn btn-outline-danger waves-effect" href="">Check Order Details</a>
-    
-                  <!-- <a type="submit" class="btn btn-outline-danger waves-effect" data-dismiss="modal" href="/myorder/">Check Orderdetails</a> -->
-                </div>
-              </div>
-              <!--/.Content-->
-            </div>
-          </div>
 
+    <script>
 
-          <script>
-            // Set a JavaScript variable with the session value
-            var showModal = '{{ request.session.show_modal|default:"False"|lower }}';
-        </script>
         
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Check if the JavaScript variable 'showModal' is set to true
-                if (showModal === "true") {
-                    // Display the modal on page load
-                    $('#modalDiscount').modal('show');
         
-                    // Remove the 'show_modal' session variable using a fetch request
-                    fetch('/order/remove-show-modal/', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': csrftoken,  // Replace with your CSRF token if needed
-                        },
-                    }).then(function (response) {
-                        // Handle the response here if needed
-                        if (response.status === 200) {
-                            // Session variable removed
-                        } else {
-                            // Handle error if the removal fails
-                        }
-                    });
-                }
-            });
-        </script>
+    </script>
 
+
+    
     {% endblock%}
 
 </body>

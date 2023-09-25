@@ -12,8 +12,11 @@ from django.utils import timezone
 
 def Cart_page(request):
 
+    user = request.session['user']
+    user_id = CustomUser.objects.get(email=user)
+
     if 'user' in request.session:
-        cart = Cart.objects.all()
+        cart = Cart.objects.filter(user=user_id)
         total_price = 0  # Initialize total price
 
         for cart_item in cart:
@@ -70,7 +73,7 @@ def Checkout(request):
         user = request.session['user']
         user_id = CustomUser.objects.get(email=user)
     
-        cart = Cart.objects.all()
+        cart = Cart.objects.filter(user=user_id)
         total_price = 0  # Initialize total price
         discount_price = 0  # Initialize discount price
         tax = 0 #for intial tax

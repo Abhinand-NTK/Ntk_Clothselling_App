@@ -11,6 +11,7 @@ from django.conf import settings
 from random import randint
 from order.models import *
 from collections import defaultdict
+from cart.models import *
 
 # Create your views here.
 
@@ -130,6 +131,7 @@ def User_otpverification(request,user_id):
         if verification==user.otp:
             user.otp = ''
             user.is_verified = True
+            user.wallet = 100
             user.save()  # Save the user after updating is_email_verified
             messages.success(request, 'Email verification is successful')
             return redirect('user_login')  # Use return to perform the redirect
@@ -351,28 +353,84 @@ def Coupenlist(requset):
     return render(requset,'coupenlistuserside.html',context)
 
 def Mywallet(request):
-     return render(request,'mywallet.html')
+     
+    user = request.session['user']
+    user_id = CustomUser.objects.get(email=user)
 
-def Mywishlist(request, varient_id):
-    color = ''  # Initialize color variable
+    
+
+     
+    return render(request,'mywallet.html')
+
+def Mywishlist(request, varient_id=None):
+
+
+    user = request.session['user']
+    user_id = CustomUser.objects.get(email=user)
+
+    wishlist=Wishlist.objects.filter(user=user_id)
+
+
 
     if varient_id: 
         product_variant_instance = get_object_or_404(ProductVariant, id=varient_id)
 
         try:
             wishlist_exist_or_not = Wishlist.objects.get(product=product_variant_instance)
-            wishlist_exist_or_not.check_color=False
             wishlist_exist_or_not.delete()
-            color = 'red'  # Set color to 'red' when an item is removed
             return JsonResponse({'message': 'The item is removed from the Wishlist'})
         except Wishlist.DoesNotExist:
-            wishlist = Wishlist(product=product_variant_instance)
-            wishlist_exist_or_not.check_color=True
+            wishlist = Wishlist(user=user_id,product=product_variant_instance)
+            wishlist.check_color=True
             wishlist.save()
-            color = 'black'  # Set color to 'black' when an item is added
-            return JsonResponse({'message': 'The item is added to the Wishlist'})
+            check=Wishlist.objects.get(product=product_variant_instance)
+            check_Color=check.check_color
+            print(check_Color)
+            return JsonResponse({'message': 'The item is added to the Wishlist','check':check_Color})
         
-    return render(request, 'wishlist.html', {'color': color})
+    return render(request, 'wishlist.html',{'wishlist':wishlist})
+
+
+def Delete_wish(requset,delete_id):
+    Wishlis=Wishlist.objects.get(id=delete_id)
+    Wishlis.delete()
+    return JsonResponse("Success")
+
+def Add_item_to_Cart(request,product_vareint_id=None):
+
+   
+    user = request.session['user']
+    user_id = CustomUser.objects.get(email=user)
+
+    check_wish=Wishlist.objects.get(id=product_vareint_id)
+
+    varient=ProductVariant.objects.get(id=check_wish.product.id)
+
+
+
+    check_is_the_item_in_Cart_or_not=Cart.objects.filter(user=user_id, products=varient)
+
+    if check_is_the_item_in_Cart_or_not:
+         messages.info(request,"The item is already in the cart")
+         return redirect('mywishlist', varient_id = 0)
+
+    
+    else:
+
+        if request.method == 'POST':
+                quantity = int(request.POST['quantity'])
+
+                cart_item, created = Cart.objects.get_or_create(
+                    user=user_id,
+                    products=varient,
+                    defaults={'quantity': quantity}
+                )
+
+                if not created:
+                    cart_item.quantity += quantity
+                    cart_item.save()
+                return redirect('cart_item')
+
 
 
 

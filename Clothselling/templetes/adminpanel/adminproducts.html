@@ -21,13 +21,12 @@
             <li class="admin"><a class="item" href="/admin_c/ordermanagement/">Orders</a></li>
             <li class="admin"><a class="item" href="/admin_c/bannermanagement/">Banners</a></li>
             <li class="admin"><a class="item" href="/admin_c/dashboard/">Payments</a></li>
-            <!-- Add more list items as needed -->
           </ul>
         </div>
 
 
       </div>
-      <div class="col-md-10 col-10">
+      <div class="col-lg-10 col-md-9 col-sm-8" style="overflow-x: auto;">
         <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addProductModal">
           Add Product
         </button>
@@ -198,12 +197,6 @@
               <input type="file" class="form-control-file" id="images" name="image" multiple accept="image/*">
             </div>
             <button type="submit" class="btn btn-success">Add Products</button>
-            <!-- <div class="form-group">
-                  <label class="text-danger" for="images">Choose Images for Your Products</label>
-                  <input type="file" class="form-control-file" id="images" name="image" multiple accept="image/*" >
-                </div>
-              <button type="submit" class="btn btn-primary">Add Product</button> -->
-
           </form>
         </div>
         <div class="modal-footer">
@@ -234,7 +227,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form method="POST" action="{% url 'editproducts' i.id %}" enctype="multipart/form-data">
+          <form method="POST" action="{% url 'editproducts' i.id %}" enctype="multipart/form-data" >
             {% csrf_token %}
             <div class="form-group">
               <label for="productName">Product Name</label>
@@ -332,17 +325,7 @@
 
 
 </body>
-<script>
-  document.getElementById("imageUploadForm").addEventListener("submit", function (event) {
-    var imageInput = document.getElementById("images");
-    var selectedImages = imageInput.files;
 
-    if (selectedImages.length !== 4) {
-      alert("Please select exactly 4 images.");
-      event.preventDefault(); // Prevent form submission
-    }
-  });
-</script>
 
 </html>
 {% endblock content%}

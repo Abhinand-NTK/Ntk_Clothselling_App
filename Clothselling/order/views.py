@@ -9,13 +9,153 @@ from collections import defaultdict
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from user_auth.models import UserAdress  
+from user_auth.models import UserAdress 
+import json
+
 
 
 # Create your views here.
 
 def Place_Order(request):
 
+   
+    if 'user' in request.session:
+        user = request.session['user']
+        userid = CustomUser.objects.get(email=user)
+
+        if request.method == 'POST':
+           
+            data = json.loads(request.body)
+            address_id = data.get('address',None)
+            total = data.get('total',None)
+            order_total = float(data.get('order_total'))
+            payement_method = data.get('payment_method',None)
+            discount = data.get('discount_price',None)
+            tax = data.get('tax',None)
+
+            coupencode = request.session.get('coupencode', None)
+           
+            if order_total<=0:
+                messages.error(request,"Choose Your products to Continue!!")
+                return redirect('check_out')
+
+            address = UserAdress.objects.get(id=address_id)
+
+            if not address:
+                messages.error(request, 'Choose an Address to proceed')
+                
+
+            order = Order()
+            order.user = userid
+            order.address = address
+            order.total = total
+            order.discount = discount
+            order.order_total = order_total
+            order.tax = tax
+            order.paid_amount = order_total
+            order.save()
+
+            payment = Payments()
+            payment.user = userid
+            payment.payement_method = payement_method
+            payment.total_amount = order_total
+            payment.save()
+
+            if payement_method == "cod":
+                payment.status = 'Pending'
+                payment.save()
+                order.payment_method="Cod"
+                order.save()
+
+
+            elif payement_method == "op":
+                payment.status=="Credited"
+                payment.payement_method="Op"
+                payment.is_paid=True
+                payment.save()
+            
+            elif payement_method == "wallet":
+                payment.status=="Credited"
+                payment.is_paid=True
+                payment.save()
+                order.payment_method="Wallet"
+                order.save()
+
+
+
+            yr = int(datetime.date.today().strftime('%Y'))
+            dt = int(datetime.date.today().strftime('%d'))
+            mt = int(datetime.date.today().strftime('%m'))
+            d = datetime.date(yr, mt, dt)
+            current_date = d.strftime("%Y%m%d")
+            order_id = current_date + str(order.id)
+            order.order_id = order_id
+            order.save()
+
+            if payement_method == "cod":
+                payment.payment_id = order_id + "COD"
+                payment.save()
+            elif payement_method == "op":
+                payment.payment_id = order_id + "OP"
+                payment.status = "paid"
+                payment.save()
+                
+            elif payement_method == "wallet":
+                payment.payment_id = order_id + "Wallet"
+                payment.status = "paid"
+                payment.save()
+                
+                
+
+            if coupencode:
+                coupon = Coupons.objects.get(coupon_code=coupencode)
+                order.coupon = coupon
+                order.save()
+
+            cart_items = Cart.objects.filter(user=userid)
+            for item in cart_items:
+                variant = ProductVariant.objects.get(id=item.products.id)
+                order_item = OrderProduct.objects.create(
+                    order_id=order,
+                    customer=userid,
+                    variant=variant,
+                    quandity=item.quantity,
+                    product_price=item.products.price,
+                    ordered="True",
+                    payment=payment,
+
+                )
+                order.payement = payment
+                variant.stock = variant.stock - item.quantity
+                variant.save()
+                # order.status=''
+                order.is_ordered=True
+                order.save()
+                item.delete()
+
+            # Set the 'show_modal' session variable to True
+            if payement_method=="cod":
+                pass    
+                # request.session['show_modal'] = "True"
+                # request.session.save()
+                # return redirect('myorder')
+            if payement_method=="op":
+               response_d={'order_id': order_id}
+               return JsonResponse(response_d)
+            
+            response_data = {'message': 'Data received successfully','order_id': order_id}
+            return JsonResponse(response_data)
+
+    return JsonResponse(response_data)
+
+
+
+
+
+
+def Place_Order_online_Payment(request):
+
+   
     if 'user' in request.session:
         user = request.session['user']
         userid = CustomUser.objects.get(email=user)
@@ -59,15 +199,16 @@ def Place_Order(request):
             payment.total_amount = order_total
             payment.save()
 
-            if payement_method == "cod":
-                payment.status = 'Pending'
-                payment.save()
+            
 
 
-            elif payement_method == "op":
+            if payement_method == "op":
                 payment.status=="Credited"
                 payment.is_paid=True
                 payment.save()
+                order.payment_method="Op"
+                order.save()
+
 
 
             yr = int(datetime.date.today().strftime('%Y'))
@@ -79,10 +220,8 @@ def Place_Order(request):
             order.order_id = order_id
             order.save()
 
-            if payement_method == "cod":
-                payment.payment_id = order_id + "COD"
-                payment.save()
-            elif payement_method == "op":
+        
+            if payement_method == "op":
                 payment.payment_id = order_id + "OP"
                 payment.save()
                 
@@ -113,19 +252,14 @@ def Place_Order(request):
                 order.save()
                 item.delete()
 
-            # Set the 'show_modal' session variable to True
-            if payement_method=="cod":
-                request.session['show_modal'] = "True"
-                request.session.save()
-                return redirect('myorder')
             if payement_method=="op":
                response_d={'order_id': order_id}
                return JsonResponse(response_d)
+    return JsonResponse(response_d)
+        
 
 
-            return redirect('myorder')
 
-    return redirect('check_out')  # Handle other cases here
 
 
 def remove_show_modal_session(request):
@@ -187,9 +321,23 @@ def Cancel_indivdal_items(request,id):
         product=OrderProduct.objects.get(id=id)
         product.return_request='True'
         product.return_reason=return_Reason
-        product.save()    
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
-    return redirect('order_details',product.order_id)
+        print(return_Reason)
+
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+        product.save() 
+        return redirect('order_details',product.order_id)
 
 
 
@@ -250,6 +398,43 @@ def razorpaycheck(request):
     else:
         # Handle other HTTP methods or errors
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+    
+
+def Refunded_for_indivdal_items(request,itemid):
+        
+        product=OrderProduct.objects.get(id=itemid)
+        order=Order.objects.get(order_id=product.order_id)
+        order_amount=order.order_total
+        amount_of_the_product=product.variant.price * product.quandity
+        # order_amount=order_amount-float(amount_of_the_product)
+        # order.order_total=order_amount
+        # order.save()
+        user_wallet=CustomUser.objects.get(id=order.user.id)
+        user_wallet.wallet=user_wallet.wallet+amount_of_the_product
+        user_wallet.save()
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print(product)
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!")
+
+        product.return_accept='True'
+
+        product.save() 
+        refunded=True  
+
+        return JsonResponse({'refunded':refunded}) 
+    
+
+        # return redirect('order_details',product.order_id)
+
+
 
 
 

@@ -33,5 +33,8 @@ urlpatterns = [
     path('coupenslist/',views.Coupenlist,name='coupenslist'),
     path('mywallet/',views.Mywallet,name='mywallet'),
     path('mywishlist/<int:varient_id>',views.Mywishlist,name='mywishlist'),
+    path('deletewish/<int:delete_id>',views.Delete_wish,name='deletewish'),
+    path('addtocartfromwishlist/<int:product_vareint_id>',views.Add_item_to_Cart,name='addtocartfromwishlist'),
+
 
 ]

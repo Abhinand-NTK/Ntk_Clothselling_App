@@ -47,7 +47,7 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     coupon = models.ForeignKey(Coupons, on_delete=models.SET_NULL, null=True)
-
+    payment_method=models.CharField(default=None,null=True,blank=True)
     
 
 
@@ -67,6 +67,8 @@ class OrderProduct(models.Model):
     return_accept = models.BooleanField(default=False)
     is_returned = models.BooleanField(default=False)
     return_reason = models.TextField(blank=True)
+    retrunsingleordernote=models.CharField(max_length=50,blank=True,null=True)
+
 
     def __str__(self):
         return self.customer.email

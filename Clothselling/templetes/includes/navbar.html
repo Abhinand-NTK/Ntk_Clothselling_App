@@ -92,10 +92,6 @@
                                 {% endfor %}
                             </ul>
                             {%endif %}
-
-
-
-
                         </li>
                         <li><a href="/products/kids/">Kids</a>
                             {% if heading == "Kids" %}
@@ -105,8 +101,6 @@
                                 {% endfor %}
                             </ul>
                             {%endif %}
-
-
                         </li>
                         <li><a href="/products/combos/">Combos</a>
                             {% if heading == "Combos" %}
@@ -117,8 +111,6 @@
                                 {% endfor %}
                             </ul>
                             {%endif %}
-
-
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
                         {% if user.is_authenticated and user.is_verified %}
@@ -133,7 +125,6 @@
                             </ul>
                         </li>
                         {%endif%}
-
                     </ul>
                 </nav>
             </div>
@@ -180,7 +171,7 @@
                     </div>
                     <ul class="header__right__widget list-inline ">
                         <li>
-                            <a href="#">
+                            <a href="/mywishlist/0">
                                 <span class="fa fa-heart text-danger"></span>
                             </a>
                         </li>

@@ -53,7 +53,8 @@
             </div>
             <div class="checkout__order__total">
                 <div class="coupon__input ">
-                    <button class="btn btn-success" data-target="#leftSideModal" data-toggle="modal">Find Your Coupens</button>
+                    <button class="btn btn-success" data-target="#leftSideModal" data-toggle="modal">Find Your
+                        Coupens</button>
                     <form action="{% url 'check_out' %}" method="POST">
                         {% csrf_token %}
                         {% if messages %}
@@ -68,7 +69,7 @@
                         {% endif %}
                         <div class="input-group p-3 d-flex justify-content-end ">
                             <div class="form-group">
-                                <label for="coupon-code" >Enter Coupon Code:</label>
+                                <label for="coupon-code">Enter Coupon Code:</label>
                                 <div class="row">
                                     <input type="text" class="form-control" id="coupon-code"
                                         placeholder="Enter Coupon Code" name="coupencode" />
@@ -175,18 +176,35 @@
                                 <input type="radio" value="op" name="payment-method" id="paypal">
                                 <span class="checkmark"></span>
                             </label>
+                            {%if user.wallet > 0 %}
+                            <label class="form-check-label">
+                                Wallet Amount
+                                <input type="radio" value="wallet" name="payment-method" id="wallet_payment_check">
+                                <span class="checkmark"></span>
+                            </label>
+                            {% endif %}
                         </div>
 
-                        <button type="submit" class="site-btn" id="placeOrderButton">Place Order</button>
+                        <button type="button" onclick="walletpayment()" class="site-btn" id="placeOrderButton">Place
+                            Order</button>
                         <button type="button" class="site-btn  payonline" id="onlinePaymentButton">Online
                             Payment</button>
+                        <div class="" id="wallet_payment">
+                            <ul class="list-unstyled ml-4">
+                                <li>
+                                    <span class="font-weight-bold underline">Total Wallet Amount <span
+                                            class="text-danger font-weight-bold ml-4">₹ {{user.wallet}}</span> </span>
 
-
+                                </li>
+                                <br>
+                            </ul>
+                            <button onclick="walletpayment()" type="button" class="site-btn  wallet"
+                                id="onlinePaymentButton">Wallet Payment</button>
+                            <br>
+                            <br>
+                        </div>
                     </div>
             </form>
-
-
-
         </div>
         </div>
         </div>
@@ -488,10 +506,15 @@
     // Add an event listener to the radio buttons
     var codRadioButton = document.getElementById('check-payment');
     var onlineRadioButton = document.getElementById('paypal');
+    var walletpayementButton = document.getElementById('wallet_payment');
+    var walletRadioButton = document.getElementById('wallet_payment_check');
     var placeOrderButton = document.getElementById('placeOrderButton');
     var onlinePaymentButton = document.getElementById('onlinePaymentButton');
     placeOrderButton.style.display = 'none';
     onlinePaymentButton.style.display = 'none';
+    walletpayementButton.style.display = 'none';
+    console.log(walletRadioButton)
+
 
 
 
@@ -501,9 +524,21 @@
             placeOrderButton.style.display = 'block';
             // Hide the "Online Payment" button
             onlinePaymentButton.style.display = 'none';
+            walletpayementButton.style.display = 'none';
+            console.log("Succeddd")
         }
-        else {
+        else if (onlineRadioButton.checked) {
             placeOrderButton.style.display = 'none';
+            console.log("Succcedvdeddd")
+
+
+        }
+        else if (walletRadioButton.checked) {
+            console.log("Succe5454ddd")
+            placeOrderButton.style.display = 'none';
+            // Hide the "Online Payment" button
+            onlinePaymentButton.style.display = 'none';
+            walletpayementButton.style.display = 'block';
 
         }
     });
@@ -514,8 +549,21 @@
             onlinePaymentButton.style.display = 'block';
             // Hide the "Place Order" button
             placeOrderButton.style.display = 'none';
+            walletpayementButton.style.display = 'none';
+
         }
     });
+    walletRadioButton.addEventListener('change', function () {
+        if (walletRadioButton.checked) {
+            // Show the "Online Payment" button for online payment
+            onlinePaymentButton.style.display = 'none';
+            // Hide the "Place Order" button
+            placeOrderButton.style.display = ' none';
+            walletpayementButton.style.display = 'block';
+
+        }
+    });
+
 
 </script>
 
@@ -526,198 +574,6 @@
 <script>
 
 
-    //For sending the details to the back end and collect the address data for initiziate the online payement//
-
-    // Global Variables for shariing the details of the project to diffrent post and access them it in separeatly in the sucess functions
-
-    var addressDetailsFromFirstAjax;
-
-    var selectedAddressId;
-
-    var payement_method_for_Shopping;
-
-    $(document).ready(function () {
-        $('input[type=radio][name=address]').change(function () {
-            selectedAddressId = $(this).val();
-            console.log('Selected Address ID:', selectedAddressId);
-            var selectedAddressId1 = $(this).attr('id'); // Retrieve the ID of the selected radio button
-            address_id = selectedAddressId
-
-            payement_method_for_Shopping =
-
-                console.log('Selected Address ID:', selectedAddressId1);
-            //var selectn =  document.getElementById("addressDetails").textContent
-            //console.log(se)
-            // Make an AJAX request to retrieve address details
-            $.ajax({
-                url: '/order/get-address-details/',
-                method: 'GET',
-                dataType: 'json', // Specify that the response is JSON
-                data: { id: selectedAddressId },
-                success: function (addressDetails) {
-
-
-                    // Store the data in the variable
-                    addressDetailsFromFirstAjax = addressDetails;
-
-                    // Now, you can access the JSON data directly
-                    var first_name = addressDetails.first_name
-                    console.log(first_name)
-                    console.log('First Name:', addressDetails.first_name);
-                    console.log('Last Name:', addressDetails.last_name);
-                    console.log('Phone Number:', addressDetails.phonenumber);
-                    console.log('Address:', addressDetails.address);
-                    console.log('Town:', addressDetails.town);
-                    console.log('Zip Code:', addressDetails.zip_code);
-                    console.log('Nearby Location:', addressDetails.nearbylocation);
-                    console.log('District:', addressDetails.district);
-                    console.log('Created:', addressDetails.created);
-                    console.log('Id:', selectedAddressId);
-                    console.log('payement_method_for_Shopping:', addressDetails.payement_method);
-
-                    // You can also update other parts of your UI with these variables
-                    $('#streetInput').val(addressDetails.address);
-                    $('#cityInput').val(addressDetails.town);
-                    $('#stateInput').val(addressDetails.district);
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-
-            });
-        });
-    });
-
-
-    $(document).ready(function () {
-
-        $('.payonline').click(function (e) {
-            e.preventDefault();
-            var formData = new FormData(document.getElementById('addressForm'));
-            var first_name = addressDetailsFromFirstAjax.first_name;
-            var last_name = addressDetailsFromFirstAjax.last_name;
-            var phonenumber = addressDetailsFromFirstAjax.phonenumber;
-            var town = addressDetailsFromFirstAjax.town;
-            var address = addressDetailsFromFirstAjax.address;
-            var district = addressDetailsFromFirstAjax.district;
-            var zip_code = addressDetailsFromFirstAjax.zip_code;
-            var nearbylocation = addressDetailsFromFirstAjax.nearbylocation;
-
-
-
-            if (first_name == "" || last_name == "" || phonenumber == "" || town == "" || address == "" || town == "" || district == "" || zip_code == "" || nearbylocation == "") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'All fields are madaratory!',
-                    footer: '<a href="">Why do I have this issue?</a>'
-                })
-            }
-            else {
-                $.ajax({
-                    url: '/order/proceed-to-pay/', // Replace with your backend endpoint
-                    method: 'POST',
-                    data: formData,
-                    processData: false, // Prevent jQuery from processing the data
-                    contentType: false,
-                    success: function (response) {
-
-                        console.log(response)
-
-                        // Data for setting the order
-
-                        var total_price = response.total_price
-                        var GrandTotal = response.GrandTotal
-                        var discount_price = response.discount_price
-                        var tax = response.tax
-                        var payement_method = response.payment_method
-                        var token = $("[name='csrfmiddlewaretoken']").val()
-                        console.log(payement_method)
-
-
-                        var options = {
-                            "key": "rzp_test_RyZUgsGPNnwtiQ", // Enter the Key ID generated from the Dashboard
-                            "amount": response.GrandTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                            "currency": "INR",
-                            "name": "Ntk Online Shopping ", //your business name
-                            "description": "Thanku for Choosing us , Have a Great Day",
-                            "image": "https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg",
-                            //"order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                            "handler": function (response) {
-                                //alert(response.razorpay_payment_id);
-                                data = {
-                                    "address": selectedAddressId,
-                                    "total_price": total_price,
-                                    "GrandTotal": GrandTotal,
-                                    "discount_price": discount_price,
-                                    "tax": tax,
-                                    "payment-method": payement_method,
-                                    csrfmiddlewaretoken: token
-                                }
-                                $.ajax({
-                                    method: 'POST',  // Corrected method definition
-                                    url: "/order/placeorder/",
-                                    data: data,
-                                    success: function (responseB) {
-
-                                        Swal.fire({
-                                            position: 'center',
-                                            icon: 'success',
-                                            title: '<span style="font-weight: bold; font-size: 18px;">Thank You for Shopping With Us</span>',
-                                            html: '<p style="font-size: 16px;">Your Order Number is: <strong>' + responseB.order_id + '</strong></p>',
-                                            footer: '<a href="/myorder/" style="font-size: 14px;">Go to My Orders</a>',
-                                            showConfirmButton: false,
-                                            width: '50%',
-                                        });
-
-                                        // Handle the success of the AJAX request here
-                                    },
-                                    // You can also handle error and other events as needed
-                                });
-
-
-                            },
-                            "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-                                "name": first_name + " " + last_name, //your customer's name
-                                "email": "None",
-                                "contact": phonenumber  //Provide the customer's phone number for better conversion rates 
-                            },
-                            "notes": {
-                                "address": "Ntk Online Shopping Co.Ltd"
-                            },
-                            "theme": {
-                                "color": "#3399cc"
-                            }
-                        };
-                        var rzp1 = new Razorpay(options);
-                        rzp1.on('payment.failed', function (response) {
-                            alert(response.error.code);
-                            alert(response.error.description);
-                            alert(response.error.source);
-                            alert(response.error.step);
-                            alert(response.error.reason);
-                            alert(response.error.metadata.order_id);
-                            alert(response.error.metadata.payment_id);
-                        });
-
-                        rzp1.open();
-
-
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-
-                });
-
-
-            }
-
-
-
-
-        });
-    });
 
 </script>
 

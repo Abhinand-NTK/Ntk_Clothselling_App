@@ -1,10 +1,12 @@
-from .models import Product, Brand, Subcategory,Banner
+from django.core.paginator import Paginator
+from django.shortcuts import render
+from .models import Product, Brand, Subcategory, Banner
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, HttpResponse
 from admin_auth.models import *
-from cart.models import*
-from order.models import*
+from cart.models import *
+from order.models import *
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -12,17 +14,180 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.cache import cache_control
-
-
-from django.http import FileResponse
-from django.shortcuts import render
-from order.models import Payments
+from user_auth.models import *
+from django.db.models import Q
+from django.db.models import Count
+from django.db.models.functions import ExtractMonth
+from order.models import Order
 from django.db.models import Sum
 from datetime import datetime
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+import io
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib import colors
+import json
+
 
 # Create your views here.
+
+
+@staff_member_required(login_url='adminlogin')
+@cache_control(no_store=True, no_cache=True)
+def admindashboard(request):
+
+    total_orders = Order.objects.all().count()
+    total_revenue_data = Order.objects.filter(status='Delivered')
+    total_profit_data = Order.objects.filter(status='Delivered')
+    total_revenue = 0
+    total_profit = 0
+
+    for item in total_revenue_data:
+        total_revenue = total_revenue + (item.paid_amount-item.tax)
+
+    for item in total_profit_data:
+        total_profit = total_profit + ((item.paid_amount-item.tax)*.2)
+
+    Payment_Analayis = [Order.objects.filter(payment_method='Cod').count(),
+                        Order.objects.filter(payment_method='Op').count(),
+                        Order.objects.filter(payment_method='Wallet').count()
+                        ]
+    category_names = Subcategory.objects.values_list('name', flat=True)
+
+    Category_Analysi_keys = []
+    Category_Analysi_Values = []
+
+    for category_name in category_names:
+        order_products_for_category = OrderProduct.objects.filter(
+            variant__product__subcategory__name=category_name
+        )
+
+        num_items_in_category = order_products_for_category.count()
+
+        Category_Analysi_keys.append(category_name)
+        Category_Analysi_Values.append(num_items_in_category)
+
+
+
+    year_to_query = 2023
+
+
+    sales_counts = (
+        Order.objects
+        .filter(created__year=year_to_query)
+        .values('created__month')
+        .annotate(sales_count=Count('id'))
+        .order_by('created__month')
+    )
+
+    monthly_sales = [0] * 12
+
+    for entry in sales_counts:
+        month = entry['created__month'] - 1
+        sales_count = entry['sales_count']
+        monthly_sales[month] = sales_count
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(monthly_sales)
+    print(monthly_sales)
+    print(monthly_sales)
+    print(monthly_sales)
+    print(monthly_sales)
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+
+    Category_Analysi_keys_json = json.dumps(Category_Analysi_keys)
+
+    response = {
+        'total_orders': total_orders,
+        'total_revenue_data': total_revenue,
+        'total_profit_data': total_profit,
+        'Payment_Analayis': Payment_Analayis,
+        'Category_Analysi_keys': Category_Analysi_keys_json,
+        'Category_Analysi_Values': Category_Analysi_Values,
+        'monthly_sales':monthly_sales,
+    }
+
+    return render(request, 'adminpanel/admindashboard.html', response)
+
+
+def Dashboard(request):
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        print(data)
+        print(data)
+        print(data)
+        print(data)
+
+        start_date_orders = data.get('start_date_orders', None)
+        end_date_orders = data.get('end_date_orders', None)
+
+        print(start_date_orders)
+        print(end_date_orders)
+
+        total_orders = Order.objects.filter(
+            created__range=(
+                datetime.strptime(
+                    data.get('start_date_orders', None), '%Y-%m-%d'),
+                datetime.strptime(
+                    data.get('end_date_orders', None), '%Y-%m-%d')
+            ),
+        ).count() if data.get('start_date_orders') else 0
+
+        print(total_orders)
+
+        total_revenue_data = Order.objects.filter(
+            created__range=(
+                datetime.strptime(
+                    data.get('start_date_revenue', None), '%Y-%m-%d'),
+                datetime.strptime(
+                    data.get('end_date_revenue', None), '%Y-%m-%d')
+            ),
+            status='Delivered'
+        ) if data.get('start_date_revenue') else 0
+
+        total_revenue = -1
+        if total_revenue_data != 0:
+            for item in total_revenue_data:
+                print("Paid Amount is this much :-", item.paid_amount)
+                total_revenue = total_revenue + (item.paid_amount-item.tax)
+            total_revenue = total_revenue + 1
+
+        total_profit_data = Order.objects.filter(
+            created__range=(
+                datetime.strptime(
+                    data.get('start_date_profit', None), '%Y-%m-%d'),
+                datetime.strptime(
+                    data.get('end_date_profit', None), '%Y-%m-%d')
+            ),
+            status='Delivered'
+        )if data.get('start_date_profit') else 0
+
+        total_profit = -1
+        if total_profit_data != 0:
+            for item in total_profit_data:
+                total_profit = total_profit + ((item.paid_amount-item.tax)*.2)
+            total_profit = total_profit + 1
+
+        response = {
+            'total_orders': total_orders,
+            'total_revenue_data': total_revenue,
+            'total_profit_data': total_profit
+
+        }
+
+        return JsonResponse(response)
+
 
 def adminlogin(request):
 
@@ -51,16 +216,9 @@ def adminlogin(request):
 
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
-def admindashboard(request):
-    return render(request, 'adminpanel/admindashboard.html')
-
-
-@staff_member_required(login_url='adminlogin')
-@cache_control(no_store=True, no_cache=True)
 def adminusers(request):
 
     users = CustomUser.objects.filter(is_superuser=False)
-    
 
     per_page = 7  # You can change this to your desired number
 
@@ -74,8 +232,6 @@ def adminusers(request):
 
     return render(request, 'adminpanel/adminusers.html', context)
 
-from django.core.paginator import Paginator
-from django.shortcuts import render
 
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
@@ -135,7 +291,7 @@ def adminproductsvarients(request):
         price = float(request.POST.get('price'))
         stock = float(request.POST.get('stock'))
 
-        if product_id and size_id and color_id and price >=0 and stock >=0 :
+        if product_id and size_id and color_id and price >= 0 and stock >= 0:
             product = Product.objects.get(id=product_id)
             color = Color.objects.get(id=color_id)
             size = Size.objects.get(id=size_id)
@@ -160,12 +316,9 @@ def adminproductsvarients(request):
             messages.success(request, "Product Varient added successfully")
             return redirect('productvarients')
         else:
-            messages.error(request,"Fill all the fields Correctly")
+            messages.error(request, "Fill all the fields Correctly")
             return redirect('productvarients')
 
-            
-
-       
     products = Product.objects.all()
     sizes = Size.objects.all()
     colors = Color.objects.all()
@@ -179,7 +332,7 @@ def adminproductsvarients(request):
     page = paginator.get_page(page_number)
 
     context = {'products': products, 'colors': colors,
-               'sizes': sizes, 'images': images,'page':page}
+               'sizes': sizes, 'images': images, 'page': page}
     return render(request, 'adminpanel/adminproducts_varient.html', context)
 
 
@@ -197,14 +350,12 @@ def admineditproductsvarients(request, id):
         price = request.POST.get('price')
         stock = request.POST.get('stock')
 
-       
-
         if product_id and size_id and color_id and price and stock:
-            
+
             product = Product.objects.get(id=product_id)
             color = Color.objects.get(id=color_id)
             size = Size.objects.get(id=size_id)
-            
+
             product_variant = ProductVariant(
                 id=id,
                 product=product,
@@ -215,8 +366,6 @@ def admineditproductsvarients(request, id):
             )
             product_variant.save()
 
-            
-
             multiple_images = request.FILES.getlist('image', None)
 
             if multiple_images:
@@ -225,11 +374,12 @@ def admineditproductsvarients(request, id):
                 photos = Multipleimges.objects.filter(product=product_variant)
 
                 for image in multiple_images:
-                   new_image = Multipleimges(product=product_variant, images=image)
-                   new_image.save()
-                   photos = photos | Multipleimges.objects.filter(id=new_image.id)
+                    new_image = Multipleimges(
+                        product=product_variant, images=image)
+                    new_image.save()
+                    photos = photos | Multipleimges.objects.filter(
+                        id=new_image.id)
 
-        
     return redirect('productvarients')
 
 
@@ -310,7 +460,7 @@ def list_unlist_products_vareints(request):
 def admincategory(request):
     cat = Category.objects.all()
     print(cat)
-   
+
     subcat = Subcategory.objects.all()
     print(subcat)
     context1 = {
@@ -323,7 +473,7 @@ def admincategory(request):
     page = paginator.get_page(page_number)
     context = {
         'cat': cat,
-        'page':page,
+        'page': page,
     }
     mer = {**context, **context1}
     return render(request, 'adminpanel/admincateogry.html', mer)
@@ -564,7 +714,7 @@ def logout_admin(request):
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
 def admin_user_list_unlist(request):
-    if 'admin'in request.session:
+    if 'admin' in request.session:
         if request.method == 'POST':
             user_id = request.POST['user_id']
             message = request.POST['check']
@@ -577,37 +727,39 @@ def admin_user_list_unlist(request):
         user.save()
         return redirect('adminusers')
 
+
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
 def Coupen_Management(request):
 
-   if 'admin' in request.session:
-    if request.method == 'POST':
-        description = request.POST['description']
-        coupon_code = request.POST['coupon_code']
-        coupon_title = request.POST['coupon_title']
-        discount_amount = request.POST['discount_amount']
-        discount = request.POST['discount_percentage']
-        max_discount_amount = request.POST['max_discount_amount']
-        valid_from = request.POST['valid_from']
-        valid_to = request.POST['valid_to']
-        quantity = request.POST['quantity']
-        minimum_order_amount = request.POST['minimum_order_amount']
+    if 'admin' in request.session:
+        if request.method == 'POST':
+            description = request.POST['description']
+            coupon_code = request.POST['coupon_code']
+            coupon_title = request.POST['coupon_title']
+            discount_amount = request.POST['discount_amount']
+            discount = request.POST['discount_percentage']
+            max_discount_amount = request.POST['max_discount_amount']
+            valid_from = request.POST['valid_from']
+            valid_to = request.POST['valid_to']
+            quantity = request.POST['quantity']
+            minimum_order_amount = request.POST['minimum_order_amount']
 
-        coupon = Coupons(
-            description=description,
-            coupon_code=coupon_code,
-            coupon_title=coupon_title,
-            discount_amount=discount_amount,
-            discount=discount,
-            maximum_order_amount_the_discount_percenetage_applicable_for=max_discount_amount ,
-            valid_from=valid_from,
-            valid_to=valid_to,
-            quantity=quantity,
-            minimum_order_amount=minimum_order_amount,
-        )
-        coupon.save()
-        return redirect('coupen')
+            coupon = Coupons(
+                description=description,
+                coupon_code=coupon_code,
+                coupon_title=coupon_title,
+                discount_amount=discount_amount,
+                discount=discount,
+                maximum_order_amount_the_discount_percenetage_applicable_for=max_discount_amount,
+                valid_from=valid_from,
+                valid_to=valid_to,
+                quantity=quantity,
+                minimum_order_amount=minimum_order_amount,
+            )
+            coupon.save()
+            return redirect('coupen')
+
 
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
@@ -623,7 +775,8 @@ def Coupen_Management_Edit(request, edit_coupen_id):
             coupon.coupon_title = request.POST['coupon_title']
             coupon.discount_amount = request.POST['discount_amount']
             coupon.discount = request.POST['discount_percentage']
-            coupon.maximum_order_amount_the_discount_percenetage_applicable_for = request.POST['max_discount_amount']
+            coupon.maximum_order_amount_the_discount_percenetage_applicable_for = request.POST[
+                'max_discount_amount']
             coupon.valid_from = request.POST['valid_from']
             coupon.valid_to = request.POST['valid_to']
             coupon.quantity = request.POST['quantity']
@@ -635,48 +788,49 @@ def Coupen_Management_Edit(request, edit_coupen_id):
 
             return redirect('coupen')
 
-
     # return render(request,'adminpanel\coupenmanagment.html')
+
+
 @staff_member_required(login_url='adminlogin')
-@cache_control(no_store=True, no_cache=True) 
+@cache_control(no_store=True, no_cache=True)
 def Coupen(request):
     if 'admin' in request.session:
-        coupen=Coupons.objects.all()
+        coupen = Coupons.objects.all()
 
-        
         per_page = 5  # You can change this to your desired number
 
         paginator = Paginator(coupen, per_page)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
-        context={'page':page}
+        context = {'page': page}
 
-    return render(request,'adminpanel\coupenmanagment.html',context)
+    return render(request, 'adminpanel\coupenmanagment.html', context)
+
 
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
 def Order_Management(request):
     if 'admin' in request.session:
 
-        orders=Order.objects.all()
+        orders = Order.objects.all()
 
         per_page = 7  # You can change this to your desired number
 
         paginator = Paginator(orders, per_page)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
-        context={'page':page}
-     
-    return render(request,'adminpanel/adminordermanagement.html',context)
+        context = {'page': page}
+
+    return render(request, 'adminpanel/adminordermanagement.html', context)
+
 
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
-def Orderdetailsmanagement(request,manageorder_id):
+def Orderdetailsmanagement(request, manageorder_id):
     if 'admin' in request.session:
-        
 
         status_choices = Order.STATUS
-       
+
         details = Order.objects.get(order_id=manageorder_id)
 
         user = request.user
@@ -689,42 +843,44 @@ def Orderdetailsmanagement(request,manageorder_id):
 
             'status_choices': status_choices,
         }
-    return render(request,'adminpanel/adminorderdetailspage.html',context)
+    return render(request, 'adminpanel/adminorderdetailspage.html', context)
 
 
-def Updatetheoderstatus(request,order_id):
-    if request.method=='POST':
-        status=request.POST['status']
-        order=Order.objects.get(id=order_id)
-        
-        order.status=status
+def Updatetheoderstatus(request, order_id):
 
+    if request.method == 'POST':
+        status = request.POST['status']
+        order = Order.objects.get(id=order_id)
+
+        if status == 'Delivered':
+            pay = order.payement
+            pay.status = 'Paid'
+            pay.is_paid = True
+            pay.save()
+
+        if status == 'Returned':
+            pay = order.payement
+            pay.status = 'Returned'
+            pay.save()
+            walllet = CustomUser.objects.get(id=order.user.id)
+            walllet.wallet = float(walllet.wallet) + order.paid_amount
+            walllet.save()
+
+        order.status = status
         order.save()
 
-        return redirect('orderdetailsmanagement',order.order_id)
-    
-    
+        return redirect('orderdetailsmanagement', order.order_id)
+
+
 @staff_member_required(login_url='adminlogin')
-@cache_control(no_store=True, no_cache=True)    
-def Productvarientdetails(request,id):
-    Productdetails=ProductVariant.objects.get(id=id)
+@cache_control(no_store=True, no_cache=True)
+def Productvarientdetails(request, id):
+    Productdetails = ProductVariant.objects.get(id=id)
 
-    images=Multipleimges.objects.filter(product=Productdetails)
-    context={'images':images,'Productdetails':Productdetails}
-    return render(request,'adminpanel\productvarientdetailspage.html',context)
+    images = Multipleimges.objects.filter(product=Productdetails)
+    context = {'images': images, 'Productdetails': Productdetails}
+    return render(request, 'adminpanel\productvarientdetailspage.html', context)
 
-
-
-from django.http import HttpResponse
-from django.shortcuts import render
-from order.models import Order
-from django.db.models import Sum
-from datetime import datetime
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-import io
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib import colors
 
 def Admin_Sales_Report(request):
     if request.method == 'POST':
@@ -751,32 +907,32 @@ def Admin_Sales_Report(request):
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),  
-            ('TEXTCOLOR', (0, 1), (-1, 1), colors.black),  
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('TEXTCOLOR', (0, 1), (-1, 1), colors.black),
         ]))
         elements.append(header_table)
 
         table_data = []
-        table_data.append(['Order ID', 'User', 'Total Amount', 'Status', 'Created Date'])
+        table_data.append(
+            ['Order ID', 'User', 'Total Amount', 'Status', 'Created Date'])
 
         for order in orders:
-            table_data.append([order.order_id, order.user.first_name + order.user.lastname, f'₹{order.total:.2f}', order.status, str(order.created)])
+            table_data.append([order.order_id, order.user.first_name + order.user.lastname,
+                              f'₹{order.total:.2f}', order.status, str(order.created)])
 
         order_table = Table(table_data, colWidths=[100, 120, 80, 100, 200])
         order_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.white),  
+            ('BACKGROUND', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white), 
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ]))
         elements.append(order_table)
 
-        
         doc.build(elements)
 
-        
         buffer.seek(0)
         response = HttpResponse(buffer.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="sales_report.pdf"'
@@ -786,21 +942,19 @@ def Admin_Sales_Report(request):
     return render(request, 'sales_report_page.html')
 
 
-
-
 def Banner_Management(request):
-   
+
     if request.method == 'POST':
 
-
         title = request.POST.get('title')
-        image = request.FILES.get('image',None)  
+        image = request.FILES.get('image', None)
         link_for_pic = request.POST.get('link_for_pic')
-        url_for_data = request.POST.get('url_for_data',None)
-        
+        url_for_data = request.POST.get('url_for_data', None)
+
         if image or link_for_pic and title and url_for_data:
 
-            banner=Banner(title=title,image=image,link=link_for_pic,linkfordata=url_for_data)
+            banner = Banner(title=title, image=image,
+                            link=link_for_pic, linkfordata=url_for_data)
             banner.save()
 
             return redirect('bannermanagement')
@@ -811,31 +965,33 @@ def Banner_Management(request):
     paginator = Paginator(Banner_Details, per_page)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    context={'page':page}
+    context = {'page': page}
 
-    context={'Banner_Details':Banner_Details,'page':page}
-        
-    return render(request,'adminpanel/bannermanagement.html',context)
+    context = {'Banner_Details': Banner_Details, 'page': page}
 
-def Delete_banner(request,delete_id):
+    return render(request, 'adminpanel/bannermanagement.html', context)
 
-    delete_item=Banner.objects.get(id=delete_id)
+
+def Delete_banner(request, delete_id):
+
+    delete_item = Banner.objects.get(id=delete_id)
     delete_item.delete()
     return redirect('bannermanagement')
 
-def Edit_banner(request,edit_id):
+
+def Edit_banner(request, edit_id):
 
     if request.method == 'POST':
         title = request.POST.get('title')
-        image = request.FILES.get('image',None)  
+        image = request.FILES.get('image', None)
         link_for_pic = request.POST.get('link_for_pic')
-        url_for_data = request.POST.get('url_for_data',None)
+        url_for_data = request.POST.get('url_for_data', None)
 
-        edit_banner=Banner.objects.get(id=edit_id) 
+        edit_banner = Banner.objects.get(id=edit_id)
 
-        edit_banner.title=title
-        edit_banner.image=image
-        edit_banner.link=link_for_pic
-        edit_banner.linkfordata=url_for_data
+        edit_banner.title = title
+        edit_banner.image = image
+        edit_banner.link = link_for_pic
+        edit_banner.linkfordata = url_for_data
         edit_banner.save()
         return redirect('bannermanagement')
