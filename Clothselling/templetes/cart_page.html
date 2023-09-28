@@ -8,6 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
+
 <body>
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
@@ -59,13 +60,7 @@
                                         <img src="{{i.products.product.images.url}}" alt="" style="width: 2rem;">
                                         <div class="cart__product__item__title">
                                             <h6>{{i.products.product.name}}</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
+                                            
                                         </div>
                                     </td>
                                     <td class="cart__price">₹ {{i.products.price}}</td>
@@ -74,14 +69,14 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-prepend">
                                                     <button class="btn btn-outline-danger bg-danger text-light"
-                                                        type="button" onclick="updateqty({{ i.id }}, 'decr')">-</button>
+                                                        type="button" onclick="updateqty({{ i.id }}, 'decr',{{i.products.id}})">-</button>
                                                 </div>
 
                                                 <input type="text" class="col-sm-5" name="" value="{{ i.quantity }}"
-                                                    id="qty{{ i.id }}">
+                                                    id="qty{{ i.id }}" readonly style="width: 60px;">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-outline-secondary bg-danger text-light"
-                                                        type="button" onclick="updateqty({{ i.id }}, 'incr')">+</button>
+                                                        type="button" onclick="updateqty({{ i.id }}, 'incr',{{i.products.id}})">+</button>
                                                 </div>
 
 
@@ -91,7 +86,7 @@
 
                                     <td>
                                         <div class="form col-sm-12 font-weight-bold">
-                                            <input type="text" class="form-control" value="{{i.total_price}}"
+                                            <input type="text" class="form-control" value="₹ {{i.total_price}}"
                                                 id="totalPriceInput{{ i.id }}" readonly>
                                         </div>
                                     </td>
@@ -114,22 +109,44 @@
             </div>
             <a href="/products/" class="primary-btn">Countinue Shopping</a>
             <div class="d-flex justify-content-end">
-
-                <div class="col-lg-3 offset-lg-2">
+               
+                <!-- <div class="col-lg-3 offset-lg-2">
                     <div class="">
+                        <a href="/cart/check_out/" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <!-- <div class="discount__content">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">Apply</button>
+                        </form>
+                    </div> -->
+                </div>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <p class="font-weight-bold fs-4 text-black">Cart Total</p>
+                        <ul>
+                            <li>Subtotal <span>₹ {{total_price}}</span></li>
+                        </ul>
                         <a href="/cart/check_out/" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-
-
-
+   
     {% endblock%}
 
-
 </body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script src="{% static 'js/cartpage.js' %}"></script>
+
+
 
 </html>

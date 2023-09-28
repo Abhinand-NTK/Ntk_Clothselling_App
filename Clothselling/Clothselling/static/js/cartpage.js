@@ -1,6 +1,8 @@
-function updateqty(id, action) {
+
+function updateqty(id, action, var_id) {
     var quantityElement = document.getElementById('qty' + id);
-    var totalPriceInput = document.getElementById('totalPriceInput' + id); // Add an ID to the total price input
+    var totalPriceInput = document.getElementById('totalPriceInput' + id);
+
 
     $.ajax({
         url: 'update_quantity/',
@@ -10,22 +12,39 @@ function updateqty(id, action) {
         },
         data: {
             id: id,
-            action: action
+            action: action,
+            var_id: var_id,
         },
         success: function (response) {
             // Set the input box value to the new quantity
-            quantityElement.value = response.new_quantity;
-
-            // Set the total price to the new total price
-            if (totalPriceInput) {
-                totalPriceInput.value = '₹ ' + response.new_total_price; // Update the total price input
+            if (response.new_quantity == 0) {
+                window.alert("The minimum quantity is 1")
             }
 
-            // Update the total price span if needed
-            var totalPriceSpan = document.querySelector('.total-price[data-item-id="' + id + '"]');
-            if (totalPriceSpan) {
-                totalPriceSpan.textContent = '₹ ' + response.new_total_price;
+            else if (response.new_quantity <= response.cart_Stock) {
+                quantityElement.value = response.new_quantity;
+
+                if (totalPriceInput) {
+                    totalPriceInput.value = '₹ ' + response.new_total_price; // Update the total price input
+                }
+
+                // Update the total price span if needed
+                var totalPriceSpan = document.querySelector('.total-price[data-item-id="' + id + '"]');
+                if (totalPriceSpan) {
+                    totalPriceSpan.textContent = '₹ ' + response.new_total_price;
+                }
             }
+            else {
+                window.alert('The item is out of stock Please choose the last quantitiy or less for purchase!!')
+            }
+
+            console.log(response.message)
+            console.log(response.message)
+            console.log(response.message)
+            console.log(response.new_quantity)
+            console.log(response.new_quantity)
+
+
         },
         error: function () {
             // Handle AJAX request error, and potentially revert the changes

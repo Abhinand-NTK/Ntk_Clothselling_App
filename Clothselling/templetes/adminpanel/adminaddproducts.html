@@ -1,367 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html  lang="en" xmlns:th = "https://www.thymeleaf.org">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    .slidecontainer {
-      width: 12%;
-    }
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>home</title>
 
-    .slider {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 15px;
-      border-radius: 5px;
-      background: #d3d3d3;
-      outline: none;
-      opacity: 0.7;
-      -webkit-transition: .2s;
-      transition: opacity .2s;
-    }
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* Style the image container */
+        .image-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
 
-    .slider:hover {
-      opacity: 1;
-    }
+        /* Style the images */
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
 
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background: #ca1515;
-      cursor: pointer;
-    }
+        /* Style the image text overlay */
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0; /* Initially hide the text */
+            transition: opacity 0.3s ease;
+        }
 
-    .slider::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background: #04AA6D;
-      cursor: pointer;
-    }
+        /* Show the text overlay on hover */
+        .image-container:hover .image-text {
+            opacity: 2;
+        }
 
-    /* Style the checkbox and change the tick color */
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
+        /* Style the title and description */
+        .image-text h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
 
-    .checkbox {
-      margin-right: 10px;
-      /* Hide the default checkbox tick */
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #333;
-      border-radius: 4px;
-      cursor: pointer;
-      position: relative;
-    }
+        .image-text p {
+            font-size: 16px;
+        }
 
-    /* Style the tick when the checkbox is checked */
-    .checkbox:checked::before {
-      content: '\2713';
-      /* Unicode checkmark character */
-      font-size: 18px;
-      color: red;
-      /* Change the tick color to red */
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  </style>
+    </style>
 </head>
 
 <body>
+   
 
-  <h1>Round Range Slider</h1>
+    <div th:replace="fragments/header::header"></div>
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    <div class="image-container">
+                        <img src="/homeImages/bannerPedal4.jpeg" alt="Image 1">
+                        <div class="image-text">
+                            <h3>
+                                "Eco-Friendly Commuting: Explore Electric Vehicles!"</h3>
+                            <p>"Charge into the Future: Discover Electric Mobility!"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="image-container">
+                        <img src="/homeImages/bannerPedal3.jpeg" alt="Image 2">
+                        <div class="image-text">
+                            <h3>"Explore the Latest in Bicycles!"</h3>
+                            <p>Pedal into the future with our newest bicycle arrivals. </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add similar code for other images -->
+            </div>
+        </div>
+    </section>
 
-  <form action="" id="myForm">
-    <!-- CSRF token -->
-    <input type="hidden" name="csrf_token" value="your_csrf_token_here">
+    <!-- Categories Section End -->
+<!-- Product Section Begin -->
+    <section class="product spade">
+        <style>
+            /* Define styles for the product cards */
+            .product__item {
+                display: flex; /* Use Flexbox to align items */
+                flex-direction: column; /* Stack child elements vertically */
+                height: 100%; /* Make each card take up the full height */
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                background-color: white; /* Optional: Add a white background color to the cards */
+            }
 
-    <div class="checkbox-container">
-      <input type="checkbox" name="enableFilter" class="checkbox" id="enableFilterCheckbox">
-      <label for="enableFilterCheckbox">Enable Price Filter</label>
+            /* Adjust styles for the inner elements */
+            .product_item_pic {
+                flex-grow: 1; /* Allow the image to grow and take up remaining space */
+            }
+
+            .product_item_text {
+                padding: 15px;
+            }
+        </style>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix women card my-2 " th:each="product, iStat : ${availableproducts}">
+                    <div class="product__item">
+                        <div class="product_item_pic set-bg">
+                            <a th:href="@{/shop/single-product/{id}(id=${product.id})}">
+                                    <!-- Display the first image for the product -->
+                                    <img src="@{${'/Images/product/' + product.images[0].imagePath}}" alt="Product Image">
+                            </a>
+                        </div>
+                        <div class="product_item_text">
+                            <!-- Apply styles for the product name and price -->
+                            <h6><a href="#" th:text="${product.name}" style="font-weight: bold;">Buttons tweed blazer</a></h6>
+                            <span style="font-size: 24px; font-weight: bold;">RS . <span style="font-size: 20px;" th:text="${product.price}"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Product Section End -->
+
+
+<!-- Services Section Begin -->
+<section class="services spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-car"></i>
+                    <h6>Free Shipping</h6>
+                    <p>For all oder over $99</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-money"></i>
+                    <h6>Money Back Guarantee</h6>
+                    <p>If good have Problems</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-support"></i>
+                    <h6>Online Support 24/7</h6>
+                    <p>Dedicated support</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-headphones"></i>
+                    <h6>Payment Secure</h6>
+                    <p>100% secure payment</p>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
+<!-- Services Section End -->
+<div th:replace="fragments/footer::footer"></div>
 
-    <div class="slidecontainer">
-      <input type="range" min="1" max="100" value="25" class="slider" id="myRangeMin" name="myRangeMin" disabled>
-      <input type="range" min="1" max="100" value="75" class="slider" id="myRangeMax" name="myRangeMax" disabled>
-      <p>Initial Value: <span id="demoMin">25</span></p>
-      <p>Final Value: <span id="demoMax">75</span></p>
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
     </div>
+</div>
 
-    <div class="checkbox-container">
-      <input type="checkbox" name="colorCheckbox" value="rose" class="checkbox" id="colorCheckbox">Color
-      <input type="checkbox" name="sizeCheckbox" value="L" class="checkbox" id="sizeCheckbox">Size
-      <button id="submitButton">Submit</button>
-    </div>
-  </form>
 
-  <script>
-    const slider = document.getElementById("myRangeMin"); // Change the ID to "myRangeMin"
-    const slider2 = document.getElementById("myRangeMax"); // Change the ID to "myRangeMin"
-    const sliderValue = document.getElementById("demoMin"); // Change the ID to "demoMin"
-    const sliderValue2 = document.getElementById("demoMax"); // Change the ID to "demoMin"
-    const enableSlider = document.getElementById("enableFilterCheckbox");
-    const enableSlider2 = document.getElementById("enableFilterCheckbox");
-    const csrfToken = "your_csrf_token_here"; // Replace with your actual CSRF token
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!sessionStorage.getItem('alertShown')) {
+        Swal.fire(
+            'Welcome!',
+            'Check your Wallet bonus added',
+            'success'
+        );
 
-    // Function to enable or disable the slider based on the checkbox state
-    function toggleSliderState1() {
-      slider.disabled = !enableSlider.checked;
+
+        sessionStorage.setItem('alertShown', 'true');
     }
-    function toggleSliderState2() {
-      slider2.disabled = !enableSlider.checked;
-    }
-
-    // Update the slider value when it changes
-    slider.addEventListener("input", function () {
-      sliderValue.textContent = this.value;
-    });
-
-    slider2.addEventListener("input", function () {
-      sliderValue2.textContent = this.value;
-    });
-
-    // Add an event listener to the enable slider checkbox
-    enableSlider.addEventListener("change", toggleSliderState1);
-    enableSlider2.addEventListener("change", toggleSliderState2);
-
-    // Function to send form data to the backend using Fetch
-    function sendFormDataToBackend() {
-      const formData = new FormData();
-      formData.append("sliderValue", slider.value);
-      formData.append("csrf_token", csrfToken);
-
-      fetch("/your-backend-url", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "X-CSRFToken": csrfToken, // Include the CSRF token in the headers
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the response from the backend
-          console.log("Response from backend:", data);
-          // You can update the UI or perform further actions based on the response
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-    }
-
-    // Add an event listener to the submit button
-    const submitButton = document.getElementById("submitButton");
-    submitButton.addEventListener("click", sendFormDataToBackend);
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <script>
-    let selectedColors;
-
-    let selectedSizes;
-
-  </script>
-
-
-  <script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const submitButton = document.getElementById("submitButton");
-      const form = document.getElementById("myForm");
-
-    });
-
-
-    submitButton.addEventListener("click", function () {
-      selectedColors = Array.from(form.querySelectorAll('input[name="colorCheckbox"]:checked'))
-        .map(checkbox => checkbox.value);
-
-      selectedSizes = Array.from(form.querySelectorAll('input[name="sizeCheckbox"]:checked'))
-        .map(checkbox => checkbox.value);
-      console.log(selectedColors)
-      console.log(selectedSizes)
-      var rangeMin = document.getElementById("myRangeMin");
-      var rangeMax = document.getElementById("myRangeMax");
-      var demoMin = document.getElementById("demoMin");
-      var demoMax = document.getElementById("demoMax");
-      var enableFilterCheckbox = document.getElementById("enableFilterCheckbox");
-
-      // Function to enable or disable the slider based on the checkbox state
-      function toggleSliderState() {
-        var isEnabled = enableFilterCheckbox.checked;
-        rangeMin.disabled = !isEnabled;
-        rangeMax.disabled = !isEnabled;
-      }
-
-      // Update the initial and final values when the range inputs change
-      rangeMin.addEventListener("input", function () {
-        demoMin.innerText = rangeMin.value;
-      });
-
-      rangeMax.addEventListener("input", function () {
-        demoMax.innerText = rangeMax.value;
-      });
-
-      // Add an event listener to the enable filter checkbox
-      enableFilterCheckbox.addEventListener("change", toggleSliderState);
-
-      // Initially, set the slider state based on the checkbox state
-      toggleSliderState();
-
-
-
-      form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent the default form submission behavior
-
-
-        // Create a FormData object to access the form's data
-        var formData = new FormData(form);
-
-        // Access form data using FormData methods
-
-        var minRangeValue = formData.get("myRangeMin");
-        var maxRangeValue = formData.get("myRangeMax");
-        var csrfToken = formData.get("csrf_token"); // Get the CSRF token
-        console.log("Min Range Value:", minRangeValue);
-        console.log("Max Range Value:", maxRangeValue);
-        console.log("CSRF Token:", csrfToken); // Log the CSRF token
-
-        // You can also send this data to the backend using Fetch or another method
-        // Example: sendFormToBackend(formData);
-
-        fetch("/products/multiple_filter/", {
-          method: "POST",
-          body: formData,
-          headers: {
-            "X-CSRFToken": csrfToken, // Include the actual CSRF token here
-          },
-        })
-          .then(response => response.json())
-          .then(data => {
-            var elementToHide = document.getElementById("hide");
-            var elementToHide1 = document.getElementById("compensate");
-
-
-
-
-            // Handle the response from the backend
-            console.log("Response from backend:", data);
-            //console.log(date.products.name)
-
-            //console.log("Products:", products);
-
-            // You can iterate over 'products' and access individual product properties
-            data.products.forEach((product, index) => {
-
-              console.log(`${index}`);
-              console.log("Product Name:", product.name);
-              console.log("Product Color:", product.color);
-              console.log("Product image:", product.image);
-              // ... (access other product properties)
-            });
-
-
-
-            data.products.forEach((product, index) => {
-              var productElement = document.getElementById(`product-${index}`);
-              console.log(`product-${index}`)
-              console.log(`${index}`);
-              console.log(productElement)
-              if (productElement) {
-                productElement.setAttribute('src', product.image);
-              }
-
-            });
-
-            // You can update the UI or perform further actions based on the response
-          })
-          .catch(error => {
-            console.error("Error:", error);
-          });
-
-
-
-        // Function to send form data to the backend using Fetch
-
-      });
-
-    });
-
-
-
-
-    var form = document.getElementById("myForm");
-
-  </script>
-
-
-
-
-  <script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const submitButton = document.getElementById("submitButton");
-      const form = document.getElementById("myForm");
-
-    });
-
-
-    submitButton.addEventListener("click", function () {
-      selectedColors = Array.from(form.querySelectorAll('input[name="colorCheckbox"]:checked'))
-        .map(checkbox => checkbox.value);
-
-      selectedSizes = Array.from(form.querySelectorAll('input[name="sizeCheckbox"]:checked'))
-        .map(checkbox => checkbox.value);
-      console.log(selectedColors)
-      console.log(selectedSizes)
-      var rangeMin = document.getElementById("myRangeMin");
-      var rangeMax = document.getElementById("myRangeMax");
-      var demoMin = document.getElementById("demoMin");
-      var demoMax = document.getElementById("demoMax");
-      var enableFilterCheckbox = document.getElementById("enableFilterCheckbox");
-
-      // Function to enable or disable the slider based on the checkbox state
-      function toggleSliderState() {
-        var isEnabled = enableFilterCheckbox.checked;
-        rangeMin.disabled = !isEnabled;
-        rangeMax.disabled = !isEnabled;
-      }
-
-      // Update the initial and final values when the range inputs change
-      rangeMin.addEventListener("input", function () {
-        demoMin.innerText = rangeMin.value;
-      });
-
-      rangeMax.addEventListener("input", function () {
-        demoMax.innerText = rangeMax.value;
-      });
-
-      // Add an event listener to the enable filter checkbox
-      enableFilterCheckbox.addEventListener("change", toggleSliderState);
-
-      // Initially, set the slider state based on the checkbox state
-      toggleSliderState();
-    });
-
-  </script>
+});
+    </script>
+</body>
+
+</html>

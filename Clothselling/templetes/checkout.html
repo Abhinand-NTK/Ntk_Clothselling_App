@@ -46,10 +46,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="row">
-                <!-- <div class="col-lg-12">
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
-                        here to enter your code.</h6>
-                </div> -->
+               
             </div>
             <div class="checkout__order__total">
                 <div class="coupon__input ">
@@ -350,43 +347,35 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% for coupen in coupen %}
-
+                {% for coupon in coupen %}
                 <div class="border p-3 bg-black">
                     <div class="font-weight-bold text-light">
-                    {{coupen.coupon_title}}
+                        {{ coupon.coupon_title }}
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <div class="row">
-
+                            <!-- Add other information here if needed -->
                         </div>
-                        <div>
-
-                        </div>
-
-                        <!-- Add other information here if needed -->
                     </div>
-
                 </div>
-
+            
                 <div class="border p-3">
                     <div class="d-flex justify-content-between mt-3">
                         <div class="row">
-
-                            <!-- <div class="font-weight-bold underline text-decoration-underline">{{coupen.coupon_title}}</div> -->
-                            <div>{{coupen.description}}</div>
-                            <div>Coupon_code :-{{coupen.coupon_code}} <span class="font-weight-bold"> -- : Choose The Coupen code for get offer</span> </div>
-                            <div>Minimum_order_amount :-{{coupen.minimum_order_amount}}</div>
-                            <div>{{coupen.}}</div>
-                            <div>{{coupen.}}</div>
-                            
-
+                            <div class="font-weight-bold text-danger">{{ coupon.description }}</div>
+                            <div>Coupon Code: <span id="couponCode{{ coupon.id }}">{{ coupon.coupon_code }}</span> <button class="copy-button" onclick="copyCouponCode('{{ coupon.coupon_code }}')">Copy Coupon Code</button></div>
+                            <div>
+                                <span class="font-weight-bold">Copy The Coupon Code to Get the Offer</span>
+                            </div>
+                            <div>Minimum Order Amount: {{ coupon.minimum_order_amount }}</div>
+                            <div>Some Other Data: {{ coupon.something_else }}</div>
                         </div>
-                        
                     </div>
                 </div>
                 {% endfor %}
             </div>
+            
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
             </div>
@@ -566,6 +555,32 @@
 
 
 </script>
+
+<script>
+    function copyCouponCode(couponCode) {
+        // Create a new textarea element to hold the coupon code
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = couponCode;
+
+        // Append the textarea to the document
+        document.body.appendChild(tempTextArea);
+
+        // Select the coupon code text
+        tempTextArea.select();
+        tempTextArea.setSelectionRange(0, 99999); // For mobile devices
+
+        // Copy the selected text to the clipboard
+        document.execCommand('copy');
+
+        // Remove the temporary textarea
+        document.body.removeChild(tempTextArea);
+
+        // Optionally, you can provide a user feedback here (e.g., show a tooltip or message)
+        alert('Coupon code copied to clipboard: ' + couponCode);
+    }
+</script>
+
+
 
 
 

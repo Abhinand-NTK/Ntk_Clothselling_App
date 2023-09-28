@@ -26,19 +26,18 @@ function Wishlist(id) {
 
             console.log(data.message)
 
-            if (data.message == 'The item is added to the Wishlist')
-            {
-                colorchange_Accoding_wishlist.style.color='#ff0000';
-                    
-            }
-            else{
+            if (data.message == 'The item is added to the Wishlist') {
+                colorchange_Accoding_wishlist.style.color = '#ff0000';
 
-                colorchange_Accoding_wishlist.style.color='#000';
             }
-            
-            
+            else {
 
-            button.setAttribute('data-bs-content','')
+                colorchange_Accoding_wishlist.style.color = '#000';
+            }
+
+
+
+            button.setAttribute('data-bs-content', '')
             button.setAttribute('data-bs-content', data.message);
 
             const popover = new bootstrap.Popover(button);
@@ -61,11 +60,15 @@ function Wishlist(id) {
 
 
 
-
-
+let varientId;
 
 var myResult = document.getElementById("myresult");
 myResult.style.display = "none";
+
+const hide_review_box = document.getElementById('ratingwindow1112');
+
+hide_review_box.style.display = 'none'
+
 
 function ready(variant_id, color) {
     console.log(variant_id);
@@ -100,18 +103,49 @@ function ready(variant_id, color) {
         .then(responseData => {
             console.log('Response:', responseData);
 
-            // Handle the response data here
-            console.log(responseData.varient_color);
-            console.log(responseData.varient_price);
-            console.log(responseData.varient_size);
-            console.log(responseData.varient_stock);
-            console.log(responseData.varient_id);
+
             var varient_color = responseData.varient_color;
             let varient_price = responseData.varient_price;
             let varient_size = responseData.varient_size;
             let varient_stock = responseData.varient_stock;
-            const varientId = responseData.varient_id;
+            varientId = responseData.varient_id;
+            const varientIdInput = document.getElementById('varient_id');
+            varientIdInput.value = varientId;
+            //hide_review_box.style.display = 'block'
 
+
+
+            raritng_box = JSON.parse(document.getElementById('rating_data').value)
+            raritng_box1 = JSON.parse(document.getElementById('order_list_id').value)
+
+
+
+
+
+            // JSON.parse(document.getElementById('monthly_sales').value);
+
+
+            for (let i = 0; i < raritng_box1.length; i++) {
+
+
+                if (raritng_box1[i] == variant_id) {
+
+                    hide_review_box.style.display = 'block'
+
+                }
+
+            }
+
+            for (let i = 0; i < raritng_box.length; i++) {
+
+
+                if (raritng_box[i] == variant_id) {
+
+                    hide_review_box.style.display = 'none'
+
+                }
+
+            }
 
             const cartForm = document.getElementById('cartForm');
             cartForm.action = `/cart/addtocart/${varientId}`;
@@ -119,6 +153,11 @@ function ready(variant_id, color) {
 
             const varientPriceContainer = document.getElementById('price');
             price.textContent = responseData.varient_price;
+
+            const varientPriceContainer_1 = document.getElementById('productname');
+            price.textContent = responseData.varient_price;
+
+            
 
             //tStockContainer.textContent = responseData.varient_stock;
 
@@ -252,3 +291,9 @@ function resetImageZoom() {
     imageZoom.style.transformOrigin = 'center center';
     imageZoom.style.transform = 'scale(1)';
 }
+
+
+
+
+
+
