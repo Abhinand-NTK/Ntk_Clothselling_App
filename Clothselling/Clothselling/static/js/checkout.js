@@ -81,8 +81,7 @@
         // Now you have the selected payment method in the selectedPaymentMethod variable
         console.log('Selected payment method:', selectedPaymentMethod);
 
-        var discount = formData1.total_price_input.value;
-        var discount = formData1.total_price_input.value;
+        var discount = formData1.discount_price.value;
         var tax = formData1.tax_input.value;
 
         console.log("The isuse is here", selectedAddressId)
@@ -108,7 +107,6 @@
                 'tax': tax,
             };
 
-            console.log(data)
 
             // Get the CSRF token from the form
             var csrfToken = formData1.csrfmiddlewaretoken.value;
@@ -142,6 +140,9 @@
                         html: '<p style="font-size: 16px;">Your Order Number is: <strong>' + data.order_id + '</strong></p>',
                         footer: '<a href="/myorder/" style="font-size: 14px;">Go to My Orders</a>',
                     }) // Handle the response data
+                    setTimeout(() => {
+                        window.location.href='/myorder/'
+                        }, 2000);
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
@@ -234,6 +235,11 @@
                                             showConfirmButton: false,
                                             width: '50%',
                                         });
+                                        console.log(formData)
+                                        //formData.reset()
+                                        setTimeout(() => {
+                                        window.location.href='/myorder/'
+                                        }, 2000);
 
                                         // Handle the success of the AJAX request here
                                     },

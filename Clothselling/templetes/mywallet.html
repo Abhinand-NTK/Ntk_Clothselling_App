@@ -110,16 +110,13 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {% for item in waller_history %}
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Credit Card</td>
-                                                        <td>2023-09-28</td>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{item.paymenttype}}</td>
+                                                        <td>{{item.created}}</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>PayPal</td>
-                                                        <td>2023-09-30</td>
-                                                    </tr>
+                                                    {% endfor %}
                                                     <!-- Add more rows as needed -->
                                                 </tbody>
                                             </table>

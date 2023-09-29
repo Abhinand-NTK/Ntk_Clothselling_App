@@ -374,7 +374,7 @@ def Myorder(request):
 
     try:
         user = request.user
-        orders = OrderProduct.objects.filter(customer=user)
+        orders = OrderProduct.objects.filter(customer=user).order_by('id')
         
         order_dict = defaultdict(list)
 
@@ -410,14 +410,27 @@ def Mywallet(request):
      
         user = request.session['user']
         user_id = CustomUser.objects.get(email=user)
+        waller_history=Payementwallet.objects.filter(user__email=user)
 
-        
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
-        
-        return render(request,'mywallet.html')
+        print(waller_history)
+        print(waller_history)
+        print(waller_history)
+
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+
+        return render(request,'mywallet.html',{'waller_history': waller_history})
     except Exception as e:
         print(e)
-        return render(request,'mywallet.html')
+        return render(request,'mywallet.html',{'waller_history': waller_history})
 
 
 def Mywishlist(request, varient_id=None):
@@ -536,4 +549,17 @@ def Submit_rating(request, variant_id):
     except Exception as e:
         print(e)
         return JsonResponse({'message': 'Rating submitted successfully'})
+
+def Print_invoice(request,order_id):
+    
+    order=Order.objects.filter(order_id=order_id).order_by('id')
+    order_product=OrderProduct.objects.filter(order_id__order_id=order_id)
+    eachproduct_quantity_price = []
+    for item in order_product:
+        eachproduct_quantity_price.append(item.quandity * item.variant.price)
+
+    zipdata = zip(order_product, eachproduct_quantity_price)
+
+
+    return render(request,'invoice.html',{'zipdata':zipdata,'order':order,'order_product':order_product,'eachproduct_quantity_price':eachproduct_quantity_price,})
 

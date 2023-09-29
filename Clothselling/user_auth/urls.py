@@ -36,6 +36,8 @@ urlpatterns = [
     path('deletewish/<int:delete_id>',views.Delete_wish,name='deletewish'),
     path('addtocartfromwishlist/<int:product_vareint_id>',views.Add_item_to_Cart,name='addtocartfromwishlist'),
     path('rating/<int:variant_id>', views.Submit_rating, name='submit_rating'),
+    path('printinvoice/<int:order_id>',views.Print_invoice,name='printinvoice'),
+
     
 
 

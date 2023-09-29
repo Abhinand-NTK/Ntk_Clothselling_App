@@ -69,8 +69,8 @@
                                 <a class="dropdown-item" href="">Manage Address</a>
                             </div>
                         </div>
-                        <h5><a  class="text-dark" href="/mywallet">Mywallet</a></h5>
-                        <h5><a  class="text-dark" href="/Mywishlist/0">mywishlist</a></h5>
+                        <h5><a class="text-dark" href="/mywallet">Mywallet</a></h5>
+                        <h5><a class="text-dark" href="/Mywishlist/0">mywishlist</a></h5>
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -88,10 +88,20 @@
                             <div class="checkout__form__input">
                                 <div class="container borderd mt-3 ">
                                     {% for order_id, items in order_dict.items %}
-                                    <div class="border p-3" >
-                                        <div class="border font-weight-bold text-light bg-black mt-2 " style=" height: 3rem;">
-                                            <a href="/order/order_details/{{ order_id }}" class="text-light align-text-center">Order-id: -
-                                                {{ order_id }}</a>
+                                    <div class="border p-3">
+                                        <div class="border font-weight-bold text-light bg-black mt-2 justify-content-between d-flex "
+                                            style=" height: 3rem;">
+                                            <div>
+                                                <a href="/order/order_details/{{ order_id }}"
+                                                    class="text-light align-text-center">Order-id: -
+                                                    {{ order_id }}</a>
+                                            </div>
+
+                                            <div>
+                                                <a class="font-weight-bold text-light mr-2"
+                                                    href="/printinvoice/{{ order_id }}">Print Invoice</a>
+                                            </div>
+
                                         </div>
 
                                         <!-- <div class="border font-weight-bold text-light bg-black mt-2"><a href="/order/order_details/"></a>Order-id: - {{order_id }}</div> -->
@@ -131,64 +141,7 @@
     </section>
     <!-- Checkout Section End -->
 
-
-
-
-
-          <!--Modal: modalDiscount-->
-          <div class="modal fade right" id="modalDiscount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-            aria-hidden="true" data-backdrop="true">
-            <div class="modal-dialog modal-side modal-bottom-right modal-notify modal-danger" role="document">
-              <!--Content-->
-              <div class="modal-content">
-                <!--Header-->
-                <div class="modal-header">
-                  <p class="text-center text-black">Order Confirmation</p>
-                  <button type="button"  class="close"  aria-label="Close">
-                    <a href="/order/remove-show-modal/" class="text-black"><span aria-hidden="true" class="white-text">&times;</span></a> 
-                  </button>
-                </div>
-      
-                <!--Body-->
-                <div class="modal-body">
-      
-                  <div>
-    
-                    <h5 class="text-ceter"><span class="text-success text-center🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳">Congrats🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳🥳</span> <hr> Your order is confirmed</h1>
-                  </div>
-                </div>
-      
-                <!--Footer-->
-                <div class="modal-footer flex-center">
-                  <a href="/order/remove-show-modal/" class="btn btn-danger">
-                    Exit
-                    <i class="far fa-gem ml-1 white-text"></i>
-                  </a>
-                  <a class="btn btn-outline-danger waves-effect" href="">Check Order Details</a>
-    
-                  <!-- <a type="submit" class="btn btn-outline-danger waves-effect" data-dismiss="modal" href="/myorder/">Check Orderdetails</a> -->
-                </div>
-              </div>
-              <!--/.Content-->
-            </div>
-          </div>
-
-
-          <script>
-            // Set a JavaScript variable with the session value
-        </script>
-        
-        <script>
-            
-        </script>
-
     {% endblock%}
 
 </body>
-
-
-
-
-
-
 </html>

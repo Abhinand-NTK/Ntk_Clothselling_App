@@ -16,11 +16,12 @@ from django.http import JsonResponse
 
 
 
+
 # Create your views here.
 
 def Place_Order(request):
 
-    try:
+    # try:
         if 'user' in request.session:
             user = request.session['user']
             userid = CustomUser.objects.get(email=user)
@@ -32,7 +33,7 @@ def Place_Order(request):
                 total = data.get('total',None)
                 order_total = float(data.get('order_total'))
                 payement_method = data.get('payment_method',None)
-                discount = data.get('discount_price',None)
+                discount = data.get('discount_price',None) 
                 tax = data.get('tax',None)
 
                 coupencode = request.session.get('coupencode', None)
@@ -82,6 +83,15 @@ def Place_Order(request):
                     payment.save()
                     order.payment_method="Wallet"
                     order.save()
+
+                    
+                    wallerhistory=Payementwallet(user=userid)
+                    wallerhistory.paymenttype="Credit"
+                    wallerhistory.save()
+
+                    walletmoney=CustomUser.objects.get(email=user)
+                    walletmoney.wallet = float(walletmoney.wallet )- order_total
+                    walletmoney.save() 
 
 
 
@@ -145,9 +155,9 @@ def Place_Order(request):
                 return JsonResponse(response_data)
 
         return JsonResponse(response_data)
-    except Exception as e:
-        print(e)
-        return JsonResponse(response_data)
+    # except Exception as e:
+    #     print(e)
+    #     return JsonResponse(response_data)
 
 
 def Place_Order_online_Payment(request):
@@ -418,6 +428,11 @@ def Refunded_for_indivdal_items(request,itemid):
             user_wallet=CustomUser.objects.get(id=order.user.id)
             user_wallet.wallet=user_wallet.wallet+amount_of_the_product
             user_wallet.save()
+
+            wallerhistory=Payementwallet(user=order.user)
+            wallerhistory.paymenttype="Credit"
+            wallerhistory.created=datetime.now()
+            wallerhistory.save()
         
             product.return_accept='True'
 

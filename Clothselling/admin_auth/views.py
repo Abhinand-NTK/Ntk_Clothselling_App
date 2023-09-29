@@ -964,6 +964,11 @@ def Updatetheoderstatus(request, order_id):
                 walllet.wallet = float(walllet.wallet) + order.paid_amount
                 walllet.save()
 
+                wallerhistory=Payementwallet(user=order.user)
+                wallerhistory.paymenttype="Credit"
+                wallerhistory.created=datetime.now()
+                wallerhistory.save()
+
             order.status = status
             order.save()
 

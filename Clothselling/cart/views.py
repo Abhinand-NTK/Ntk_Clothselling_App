@@ -121,7 +121,7 @@ def Checkout(request):
                             discount_price = (total_price * coupon.discount) / 100
                         else:
                             discount_price = (
-                                coupon.maximum_order_amount_the_discount_percenetage_applicable_for * coupon.	discount) / 100
+                                coupon.maximum_order_amount_the_discount_percenetage_applicable_for * coupon.discount) / 100
                     else:
                         messages.error(
                             request, f"Applicable only for :- {coupon.minimum_order_amount}")
