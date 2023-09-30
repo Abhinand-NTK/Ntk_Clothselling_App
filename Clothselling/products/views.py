@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.core import serializers
 from user_auth.forms import RatingForm
 from order.models import *
+from cart.models import *
 
 # Create your views here.
 
@@ -17,6 +18,9 @@ from order.models import *
 def home(request):
         
     try:
+
+        user = request.session.get('user') 
+
 
         products = Product.objects.all().order_by('-id')[:8]
         productsvarient = ProductVariant.objects.all()
@@ -39,8 +43,12 @@ def home(request):
         count4 = combos.count()  
         request.session.save()
 
+        
+        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+
         context = {'count1': count1, 'count2': count2, 'count3': count3, 'count4': count4, 'products': products,
-                'brand': brand, 'banner': banner}
+                'brand': brand, 'banner': banner,}
 
         return render(request, "home.html", context)
     except Exception as e:
@@ -414,6 +422,10 @@ def product_details(request, id=None):
         user = request.session.get('user') 
         user_id=CustomUser.objects.get(email=user
                                     ) 
+
+        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+
         ordercheck=OrderProduct.objects.filter(variant__product__id=id,customer=user_id)  
 
         order_list_id=[]

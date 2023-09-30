@@ -168,6 +168,29 @@
                         {%endif%}
                     </div>
                     <ul class="header__right__widget list-inline ">
+                        {% if user.is_authenticated and not user.is_blocked and user.is_verified%}
+                        <li>
+                            <a href="/mywishlist/0">
+                                <span class="position-relative">
+                                    <span class="fa fa-heart text-danger"></span>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary" style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
+                                        {{ request.session.wishlist_count|default:"0" }}
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/cart/cart_item/">
+                                <span class="position-relative">
+                                    <span class="fa fa-shopping-cart text-danger"></span>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary" style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
+                                        {{ request.session.cart_count|default:"0" }}
+                                    </span>
+                                    
+                                </span>
+                            </a>
+                        </li>
+                        {%else%}
                         <li>
                             <a href="/mywishlist/0">
                                 <span class="fa fa-heart text-danger"></span>
@@ -177,7 +200,8 @@
                             <a href="/cart/cart_item/">
                                 <span class="fa fa-shopping-cart text-danger"></span>
                             </a>
-                        </li>
+                        </li> 
+                        {%endif%}
                         {% if user.is_authenticated and not user.is_blocked and user.is_verified%}
 
                         <li>

@@ -50,30 +50,30 @@
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
     }
-    
+
     .alert-success {
         background-color: #d4edda;
         color: #155724;
     }
-    
+
     .alert-info {
         background-color: #d1ecf1;
         color: #0c5460;
     }
-    
+
     .alert-warning {
         background-color: #fff3cd;
         color: #856404;
     }
-    
+
     .alert-danger {
         background-color: #f8d7da;
         color: #721c24;
     }
+
     .alert.show {
         opacity: 1;
     }
-    
 </style>
 
 <body>
@@ -109,14 +109,14 @@
                         <h5><a class="text-dark" href="/mywishlist/0">mywishlist</a></h5>
                     </div>
                 </div>
-                    
+
                 <div class="col-lg-8">
                     {% if messages %}
-                      {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                        </div>
-                       {% endfor %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                     {% endif %}
                     <h5 class="d-flex justifycontent-between font-weight-bold">My Wishlist</h5>
                     <!-- <h5><a class="text-success" data-toggle="modal" data-target="#exampleModal" type="submit"
@@ -133,11 +133,10 @@
                         <div class="col-lg-12 col-md-8 col-sm-8">
                             <div class="checkout__form__input ">
                                 <div class="container borderd mt-3">
-                                    <div class="border p-3 d-flex justify-content-between ">
-                                        <div class="font-weight-bold" style="color: #B71C41;">
-                                            Your Wishlist is Empty
-                                        </div>
+                                    <div class="checkout__form__input bg-danger" style="height: 5rem;">
+                                        <p class="text-light text-center p-4 font-weight-bold">Wish list is Empty</strong></p>
                                     </div>
+                                    <a href="/products/" class="btn btn-black text-dark font-weight-bold">Find more items from the shop</a>
                                 </div>
                             </div>
                         </div>
@@ -153,8 +152,7 @@
                                             {{forloop.counter}}
                                         </div>
                                         <div class="col-lg-2" style="width: 5rem; height: 5rem;">
-                                            <img src="{{wish.product.product.images.url}}"
-                                                alt="noimage">
+                                            <img src="{{wish.product.product.images.url}}" alt="noimage">
                                         </div>
                                         <div class="col-lg-3">
                                             {{wish.product.product.name}}
@@ -167,12 +165,14 @@
                                             <form action="/addtocartfromwishlist/{{wish.id}}" method="POST">
                                                 {%csrf_token%}
                                                 <input type="hidden" name="quantity" value="1" id="">
-                                                <button class="fs-8 btn btn-danger font-weight-bold" type="submit">+ Cart</button>
+                                                <button class="fs-8 btn btn-danger font-weight-bold" type="submit">+
+                                                    Cart</button>
                                             </form>
-                                            
+
                                         </div>
                                         <div class="col-lg-2 text-center">
-                                            <a href="" onclick="delete_wishlist()"><input id="delete_" type="hidden" value="{{wish.id}}">
+                                            <a href="" onclick="delete_wishlist()"><input id="delete_" type="hidden"
+                                                    value="{{wish.id}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em"
                                                     viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                                     <path
@@ -199,12 +199,12 @@
 
     <script>
 
-        
-        
+
+
     </script>
 
 
-    
+
     {% endblock%}
 
 </body>

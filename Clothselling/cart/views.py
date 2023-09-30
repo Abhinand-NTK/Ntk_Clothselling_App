@@ -6,7 +6,7 @@ from products import *
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
-
+from django.db.models import Sum
 
 
 def Cart_page(request):
@@ -14,6 +14,9 @@ def Cart_page(request):
     try:
         user = request.session['user']
         user_id = CustomUser.objects.get(email=user)
+
+        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
 
         if 'user' in request.session:
             cart = Cart.objects.filter(user=user_id)
@@ -38,11 +41,14 @@ def Add_to_Cart(request, product_vareint_id):
             user = request.session['user']
             user_id = CustomUser.objects.get(email=user)
 
+         
             if request.method == 'POST':
                 quantity = int(request.POST['quantity'])
                 product_variant = ProductVariant.objects.get(id=product_vareint_id)
 
-                if product_variant.stock < quantity:
+                cart_item_total_quantity = Cart.objects.filter(products=product_variant).aggregate(Sum('quantity'))['quantity__sum'] or 0
+
+                if product_variant.stock < quantity or (cart_item_total_quantity is not None and product_variant.stock < cart_item_total_quantity + quantity):
                     messages.error(request, "The item is out of stock")
                     return redirect('details', id=product_variant.product.id)
 
@@ -56,7 +62,13 @@ def Add_to_Cart(request, product_vareint_id):
                 if not created:
                         cart_item.quantity += quantity
                         cart_item.save()
+                request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+                request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+
                 return redirect('cart_item')
+            # request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+            # request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+
     except Exception as e:
         print(e)
         return redirect('cart_item')
@@ -168,7 +180,12 @@ def Checkout(request):
 
 
 def update_cart_item_quantity(request):
-    try:
+
+ 
+
+    # try:
+
+
         if request.method == 'POST':
             item_id = request.POST.get('id')
             action = request.POST.get('action')
@@ -193,15 +210,42 @@ def update_cart_item_quantity(request):
 
             message = "none"
 
+
+            user = request.session.get('user')
+            wishlist_count = Wishlist.objects.filter(user__email=user).count()
+            cart_count = Cart.objects.filter(user__email=user).count()
+            request.session['wishlist_count'] = request.session['wishlist_count']+ wishlist_count
+            request.session['cart_count'] = request.session['cart_count'] + cart_count
+
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+            print(cart_count)
+            print(cart_count)
+            print(cart_count)
+
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+
             total_price = cart_item.products.price * cart_item.quantity
 
             response_data = {'new_quantity': cart_item.quantity,
                             'new_total_price': total_price,
                             'message': message,
-                            'cart_Stock': cart_Stock}
+                            'cart_Stock': cart_Stock,
+                            'cart_count':cart_count,}
             return JsonResponse(response_data)
-    except Exception as e:
-        print(e)
-        return JsonResponse(response_data)
+    # except Exception as e:
+    #     print(e)
+    #     return JsonResponse(response_data)
 
 

@@ -17,6 +17,11 @@ function updateqty(id, action, var_id) {
         },
         success: function (response) {
             // Set the input box value to the new quantity
+
+            console.log(response)
+            console.log(response)
+            console.log(response)
+            console.log(response)
             if (response.new_quantity == 0) {
                 window.alert("The minimum quantity is 1")
             }

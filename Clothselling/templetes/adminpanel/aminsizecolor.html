@@ -26,10 +26,10 @@
       <div class="col-md-10">
         <div>
           <div class="row">
-            <div class="col-md-4 col-12">
+            <div class="col-md-3 ">
               <button id="showColorModalBtn" class="btn btn-dark" data-bs-toggle="modal"
                 data-bs-target="#colorModaledit">Add Color</button>
-              <table class="col-md-6 col-12 table table-striped table-hover table-borderd">
+              <table class="col-md-6 col-12 table table-striped table-hover border border-grey">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -54,11 +54,11 @@
                 </tbody>
               </table>
             </div>
-            <div class="col-md-4 col-12">
+            <div class="col-md-3 ml-5 ">
               <button id="showSizeModalBtn" class="btn btn-dark" data-bs-toggle="modal"
                 data-bs-target="#sizeModal">Add Size</button>
 
-              <table class="col-md-6 col-12 table table-striped table-hover">
+              <table class="col-md-6 col-12 table table-striped table-hover border border-grey">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -83,10 +83,10 @@
                 </tbody>
               </table>
             </div>
-            <div class="col-md-4 col-12">
+            <div class="col-md-4 ml-4 ">
               <button id="showBrandModalBtn" class="btn btn-dark" data-bs-toggle="modal"
                 data-bs-target="#brandModaledit">Add Brand</button>
-              <table class="col-md-6 col-12 table table-striped table-hover">
+              <table class="col-md-6 col-12 table table-striped table-hover border border-grey">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -106,11 +106,11 @@
                   
                     <td>
                       <button type="button" class="btn btn-dark edit-button" data-bs-toggle="modal"
-                        data-bs-target="#colorModal-{{ color.id }}">Edit</button>
+                        data-bs-target="#brandModal-{{ brand.id }}">Edit</button>
                     </td>
                     <td>
                       <button type="button" class="btn btn-dark edit-button" data-bs-toggle="modal"
-                         data-bs-target="#colorModal-{{ color.id }}">Delete</button> 
+                         data-bs-target="#brandModal-{{ brand.id }}">Delete</button> 
                     </td>
                   </tr>
                   {% endfor %}
@@ -240,6 +240,35 @@
        </div>
      </div>
    </div>
+   {% endfor %}
+   
+   <!-- modal for edit the brand -->
+   {% for brand in brands %}
+   
+   <div class="modal fade" id="brandModal-{{ brand.id }}" tabindex="-1" aria-labelledby="brandModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="brandModalLabel">Edit Brand</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/admin_c/editcolorsize/{{brand.id}}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="brandName" class="form-label">Brand Name</label>
+              <input type="text" class="form-control" id="brandName" name="brand" value="{{brand.name}}" placeholder="{{brand.name}}">
+            </div>
+            <div class="mb-3">
+              <label for="brandImage" class="form-label">Choose an image</label>
+              <input type="file" class="form-control" id="brandImage"  name="image">
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
    {% endfor %}
 </body>
 

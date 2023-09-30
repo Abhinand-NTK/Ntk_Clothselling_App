@@ -103,15 +103,16 @@ def User_signup(request):
                 user.otp=otp
                 user.save()
                 user_id=user.id
-                
 
-                send_mail(
-                    "Please use this otp for the further process",
-                    f"your otp for signup is :{otp}",
-                    "testntk123@gmail.com",
-                    [email,],
-                    fail_silently=False,
-                )
+
+                subject = "Email Confirmation OTP"
+                message = f"Your OTP for email confirmation is: {otp}"
+                from_email = "testntk123@gmail.com"  # Replace with your email
+                recipient_list = [email]  # 'email' is the recipient's email address
+
+                send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+                
                 return redirect('otp_verification',user_id)
             else:
                 messages.error(request,'Password fiels are Not matchining  !')
@@ -412,21 +413,6 @@ def Mywallet(request):
         user_id = CustomUser.objects.get(email=user)
         waller_history=Payementwallet.objects.filter(user__email=user)
 
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-        print(waller_history)
-        print(waller_history)
-        print(waller_history)
-
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-
         return render(request,'mywallet.html',{'waller_history': waller_history})
     except Exception as e:
         print(e)
@@ -437,6 +423,9 @@ def Mywishlist(request, varient_id=None):
     try:
         user = request.session['user']
         user_id = CustomUser.objects.get(email=user)
+        
+        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
 
         wishlist=Wishlist.objects.filter(user=user_id)
 
@@ -470,9 +459,14 @@ def Delete_wish(requset,delete_id):
 def Add_item_to_Cart(request,product_vareint_id=None):
 
     try:
+        
 
    
         user = request.session['user']
+
+        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+
         user_id = CustomUser.objects.get(email=user)
 
         check_wish=Wishlist.objects.get(id=product_vareint_id)

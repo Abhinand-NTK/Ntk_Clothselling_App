@@ -207,6 +207,7 @@
             </div>
           </div>
         </div>
+        {% if products %}
         <div class="col-lg-9 col-md-9 col-12 " id="hide">
           <div class="row">
             {% for i in products%}
@@ -233,16 +234,26 @@
               </h6>
               <h6><a class="text-black" href="/products/products_details/{{i.id}}">{{i.name}}</a></h6>
               <div class="product__item__text">
-               
+
               </div>
             </div>
           </div>
-
-          {% if forloop.counter|divisibleby:9 %}
-        </div>
-        <div class="row property__gallery">
-          {% endif %}
           {% endfor %}
+        </div>
+        {% else %}
+        fefefewfewfewfwefewf
+        <div class="col-lg-9 col-md-9 col-12" id="hide">
+          <div class="row">
+              <div class="col-12 mt-3">
+                  <p class="text-center text-dark">No itemvdvdsvdsvdsvss found.</p>
+              </div>
+          </div>
+      </div>
+      
+        {% endif %}
+
+
+        <div class="row property__gallery">
 
         </div>
       </div>

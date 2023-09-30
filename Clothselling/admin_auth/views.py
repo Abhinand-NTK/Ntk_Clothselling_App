@@ -30,6 +30,7 @@ import json
 from django.core.exceptions import ValidationError
 
 
+
 # Create your views here.
 
 
@@ -105,6 +106,8 @@ def admindashboard(request):
             'monthly_sales':monthly_sales,
         }
 
+     
+
         return render(request, 'adminpanel/admindashboard.html', response)
     except Exception as e:
         print(e)
@@ -166,6 +169,7 @@ def Dashboard(request):
                 for item in total_profit_data:
                     total_profit = total_profit + ((item.paid_amount-item.tax)*.2)
                 total_profit = total_profit + 1
+
 
             response = {
                 'total_orders': total_orders,
@@ -748,7 +752,9 @@ def edit_color_size(request, id):
         if request.method == 'POST':
             color = request.POST.get('color')
             size = request.POST.get('size')
-
+            brand_name = request.POST.get('brand')
+            brand_image = request.FILES.get('image')
+           
             if color:
                 try:
                     existing_color = Color.objects.get(id=id)
@@ -764,6 +770,18 @@ def edit_color_size(request, id):
                     existing_size.save()
                 except Size.DoesNotExist:
                     pass
+            if brand_name and brand_image:
+                try:
+                    existing_brand = Brand.objects.get(id=id)
+                    existing_brand.name=brand_name
+                    existing_brand.image=brand_image
+                    existing_brand.save()
+                except IntegrityError:
+                    pass
+            else:
+                messages.error(
+                    request, 'Plese select a brand and image for the brand')
+
 
             return redirect('addcolorsize')  # Redirect after processing
 
@@ -1133,3 +1151,6 @@ def Edit_banner(request, edit_id):
         return redirect('bannermanagement')
 
 
+
+def custom_404(request, exception):
+    return render(request, 'adminpanel/404.html', status=404)

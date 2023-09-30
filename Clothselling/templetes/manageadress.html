@@ -83,6 +83,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% if address_user %}
                         <div class="row mt-3">
                             <div class="col-lg-12 col-md-8 col-sm-8">
                                 <div class="checkout__form__input">
@@ -99,6 +100,15 @@
                                 </div>
                             </div>
                         </div>
+                        {%else%}
+                        <div class="row mt-3">
+                            <div class="col-lg-12 col-md-8 col-sm-8">
+                                <div class="checkout__form__input bg-danger" style="height: 5rem;">
+                                    <p class="text-light text-center p-4">Address Field is Empty!! <strong>Add a new address</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        {%endif%}
                 </div>
             </div>
     </section>
