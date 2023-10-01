@@ -21,7 +21,7 @@ from django.http import JsonResponse
 
 def Place_Order(request):
 
-    # try:
+    try:
         if 'user' in request.session:
             user = request.session['user']
             userid = CustomUser.objects.get(email=user)
@@ -155,9 +155,9 @@ def Place_Order(request):
                 return JsonResponse(response_data)
 
         return JsonResponse(response_data)
-    # except Exception as e:
-    #     print(e)
-    #     return JsonResponse(response_data)
+    except Exception as e:
+        print(e)
+        return JsonResponse(response_data)
 
 
 def Place_Order_online_Payment(request):
