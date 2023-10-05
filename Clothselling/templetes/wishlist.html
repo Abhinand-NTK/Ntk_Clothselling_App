@@ -119,8 +119,7 @@
                     {% endfor %}
                     {% endif %}
                     <h5 class="d-flex justifycontent-between font-weight-bold">My Wishlist</h5>
-                    <!-- <h5><a class="text-success" data-toggle="modal" data-target="#exampleModal" type="submit"
-                                href="">Add</a>&nbsp;&nbsp;&nbsp; New Addess</h5> -->
+                  
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
@@ -154,10 +153,10 @@
                                         <div class="col-lg-2" style="width: 5rem; height: 5rem;">
                                             <img src="{{wish.product.product.images.url}}" alt="noimage">
                                         </div>
-                                        <div class="col-lg-3">
-                                            {{wish.product.product.name}}
-                                        </div>
                                         <div class="col-lg-2">
+                                            {{ wish.product.product.name|slice:":20" }}
+                                        </div>
+                                        <div class="col-lg-1 ml-4">
                                             {{wish.product.price}}
 
                                         </div>
@@ -170,7 +169,7 @@
                                             </form>
 
                                         </div>
-                                        <div class="col-lg-2 text-center">
+                                        <div class="col-lg-1 text-center">
                                             <a href="" onclick="delete_wishlist()"><input id="delete_" type="hidden"
                                                     value="{{wish.id}}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em"
@@ -179,6 +178,13 @@
                                                         d="M163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3C140.6 6.8 151.7 0 163.8 0zM32 128H416L394.8 467c-1.6 25.3-22.6 45-47.9 45H101.1c-25.3 0-46.3-19.7-47.9-45L32 128zm192 64c-6.4 0-12.5 2.5-17 7l-80 80c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V408c0 13.3 10.7 24 24 24s24-10.7 24-24V273.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-4.5-4.5-10.6-7-17-7z" />
                                                 </svg>
                                             </a>
+                                        </div>
+                                        <div class="col-lg-3 text-center">
+                                            {% if wish.product.stock <= 0 %}
+                                            <p class='text-danger font-weight-bold fs-6'>Out of Stock</p>
+                                            {% else %}
+                                            <p class='text-success font-weight-bold fs-6'>Stock</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -193,25 +199,8 @@
     <!-- Checkout Section End -->
 
 
-
-
-
-
-    <script>
-
-
-
-    </script>
-
-
-
     {% endblock%}
 
 </body>
-
-
-
-
-
 
 </html>

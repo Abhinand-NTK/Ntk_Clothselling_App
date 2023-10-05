@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.db.models import Sum
 
 
+
 def Cart_page(request):
     
     try:
@@ -108,7 +109,7 @@ def Checkout(request):
             request.session['redirected'] = False
 
             if request.method == 'POST':
-                coupencode = request.POST.get('coupencode')
+                coupencode = request.POST.get('coupencode').strip()
 
                 request.session['coupencode'] = coupencode
 
@@ -217,23 +218,7 @@ def update_cart_item_quantity(request):
             request.session['wishlist_count'] = request.session['wishlist_count']+ wishlist_count
             request.session['cart_count'] = request.session['cart_count'] + cart_count
 
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-            print(cart_count)
-            print(cart_count)
-            print(cart_count)
-
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+           
 
 
             total_price = cart_item.products.price * cart_item.quantity

@@ -11,16 +11,16 @@ from django.core import serializers
 from user_auth.forms import RatingForm
 from order.models import *
 from cart.models import *
+from django.db.models import Avg
 
 # Create your views here.
 
 
 def home(request):
-        
+
     try:
 
-        user = request.session.get('user') 
-
+        user = request.session.get('user')
 
         products = Product.objects.all().order_by('-id')[:8]
         productsvarient = ProductVariant.objects.all()
@@ -28,34 +28,48 @@ def home(request):
         banner = Banner.objects.all().order_by('id')
 
         mens = Product.objects.filter(men=True)
-        count1 = mens.count()  
+        count1 = mens.count()
         request.session.save()
 
         Womans = Product.objects.filter(woman=True)
-        count2 = Womans.count()  
+        count2 = Womans.count()
         request.session.save()
 
         kids = Product.objects.filter(kids=True)
-        count3 = kids.count()  
+        count3 = kids.count()
         request.session.save()
 
         combos = Product.objects.filter(combos=True)
-        count4 = combos.count()  
+        count4 = combos.count()
         request.session.save()
 
+        request.session['wishlist_count'] = Wishlist.objects.filter(
+            user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(
+            user__email=user).count()
         
-        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
-        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+        average_ratings_list = []
+
+        for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
+                
+        print(average_ratings_list)
+        print(average_ratings_list)
+        print(average_ratings_list)
+                
+        data=zip(products,average_ratings_list)
+
 
         context = {'count1': count1, 'count2': count2, 'count3': count3, 'count4': count4, 'products': products,
-                'brand': brand, 'banner': banner,}
+                   'brand': brand, 'banner': banner,'data':data }
 
         return render(request, "home.html", context)
     except Exception as e:
         print(e)
         return render(request, "home.html", context)
-
-
 
 
 def product_category(request):
@@ -73,7 +87,6 @@ def product_category(request):
         return render(request, 'category_management_userside.html', context)
 
 
-
 def Womans(request, id=None):
 
     try:
@@ -83,14 +96,15 @@ def Womans(request, id=None):
         if id:
             id_sub = Subcategory.objects.get(name=id)
             products = Product.objects.filter(
-                Q(woman=True)).order_by('id')
+                Q(woman=True), subcategory=id_sub).order_by('id')
             min_prices_per_product = []
 
             min_prices_per_product = []
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
                 product_sizes = []  # Create a list to store sizes for the current product
@@ -107,6 +121,15 @@ def Womans(request, id=None):
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
+
         elif id == None:
             products = Product.objects.filter(
                 Q(woman=True))
@@ -115,10 +138,11 @@ def Womans(request, id=None):
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
-                product_sizes = set() 
+                product_sizes = set()
                 for variant in product_variants:
                     price = variant.price
                     size = variant.size
@@ -131,6 +155,14 @@ def Womans(request, id=None):
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
 
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
+
         elif request.method == 'POST':
             pass
 
@@ -142,25 +174,32 @@ def Womans(request, id=None):
             subcategory = product.subcategory
             cat.add(subcategory)
 
-        per_page = 6 
+        per_page = 6
 
         paginator = Paginator(products, per_page)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
 
-        zipped_data = zip(page, min_prices_per_product)
+        average_ratings_list = []
+
+        for product in products:
+            average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                Avg('rating_user'))['rating_user__avg']
+            average_ratings_list.append(
+                int(average_rating) if average_rating is not None else None)
+
+        zipped_data = zip(page, min_prices_per_product, average_ratings_list)
 
         size = Size.objects.all()
         color = Color.objects.all()
 
         context = {'page': page, 'products': products, 'cat': cat, 'heading': heading, 'min_prices_per_product':
-                min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes, 'size': size, 'color': color, }
+                   min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes, 'size': size, 'color': color, }
 
         return render(request, "category_management_userside.html", context)
     except Exception as e:
         print(e)
         return render(request, "category_management_userside.html", context)
-
 
 
 def Mens(request, id=None):
@@ -172,15 +211,16 @@ def Mens(request, id=None):
             id_sub = Subcategory.objects.get(name=id)
 
             products = Product.objects.filter(
-                Q(men=True) or Q(kids=True)).order_by('id')
+                Q(men=True) or Q(kids=True), subcategory=id_sub).order_by('id')
             min_prices_per_product = []
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
-                product_sizes = [] 
+                product_sizes = []
 
                 for variant in product_variants:
                     price = variant.price
@@ -193,6 +233,17 @@ def Mens(request, id=None):
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
+
+            print(average_ratings_list)
+
         else:
 
             products = Product.objects.filter(
@@ -201,7 +252,8 @@ def Mens(request, id=None):
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
                 product_sizes = set()  # Create a list to store sizes for the current product
@@ -213,10 +265,21 @@ def Mens(request, id=None):
                     if min_price is None or price < min_price:
                         min_price = price
 
-                    product_sizes.add(size)  # Add size to the product_sizes list
+                    # Add size to the product_sizes list
+                    product_sizes.add(size)
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+                average_ratings_list = []
+
+                for product in products:
+                    average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                        Avg('rating_user'))['rating_user__avg']
+                    average_ratings_list.append(
+                        int(average_rating) if average_rating is not None else None)
+
+        print(average_ratings_list)
 
         products_for_filter = Product.objects.filter(
             Q(men=True) or Q(kids=True)).order_by('id')
@@ -234,19 +297,27 @@ def Mens(request, id=None):
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
 
-        zipped_data = zip(page, min_prices_per_product)
+        average_ratings_list = []
+
+        for product in products:
+            average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                Avg('rating_user'))['rating_user__avg']
+            average_ratings_list.append(
+                int(average_rating) if average_rating is not None else None)
+
+        print(average_ratings_list)
+
+        zipped_data = zip(page, min_prices_per_product, average_ratings_list)
 
         size = Size.objects.all().order_by('id')
         color = Color.objects.all().order_by('id')
 
         context = {'page': page, 'products': products, 'cat': cat, 'heading': heading, 'min_prices_per_product':
-                min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes, 'size': size, 'color': color}
+                   min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes, 'size': size, 'color': color}
         return render(request, "category_management_userside.html", context)
     except Exception as e:
         print(e)
         return render(request, "category_management_userside.html", context)
-
-
 
 
 def kids(request, id=None):
@@ -255,13 +326,14 @@ def kids(request, id=None):
             id_sub = Subcategory.objects.get(name=id)
 
             products = Product.objects.filter(
-                Q(kids=True)).order_by('id')
+                Q(kids=True), subcategory=id_sub).order_by('id')
 
             min_prices_per_product = []
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
                 product_sizes = []  # Create a list to store sizes for the current product
@@ -278,6 +350,15 @@ def kids(request, id=None):
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
+
         else:
             products = Product.objects.filter(
                 Q(kids=True)).order_by('id')
@@ -285,7 +366,8 @@ def kids(request, id=None):
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
                 product_sizes = set()  # Create a list to store sizes for the current product
@@ -297,10 +379,19 @@ def kids(request, id=None):
                     if min_price is None or price < min_price:
                         min_price = price
 
-                    product_sizes.add(size)  # Add size to the product_sizes list
+                    # Add size to the product_sizes list
+                    product_sizes.add(size)
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
 
         products_filter = Product.objects.filter(
             Q(kids=True)).order_by('id')
@@ -317,18 +408,25 @@ def kids(request, id=None):
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
 
-        zipped_data = zip(page, min_prices_per_product)
+        average_ratings_list = []
+
+        for product in products:
+            average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                Avg('rating_user'))['rating_user__avg']
+            average_ratings_list.append(
+                int(average_rating) if average_rating is not None else None)
+
+        zipped_data = zip(page, min_prices_per_product, average_ratings_list)
 
         size = Size.objects.all().order_by('id')
         color = Color.objects.all().order_by('id')
 
         context = {'page': page, 'products': products, 'cat': cat, 'heading': heading, 'min_prices_per_product':
-                min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes, 'size': size, 'color': color}
+                   min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes, 'size': size, 'color': color}
         return render(request, "category_management_userside.html", context)
     except Exception as e:
         print(e)
         return render(request, "category_management_userside.html", context)
-
 
 
 def combos(request, id=None):
@@ -338,13 +436,14 @@ def combos(request, id=None):
             id_sub = Subcategory.objects.get(name=id)
 
             products = Product.objects.filter(
-                Q(combos=True))
+                Q(combos=True), subcategory=id_sub)
 
             min_prices_per_product = []
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
                 product_sizes = set()  # Create a list to store sizes for the current product
@@ -356,10 +455,19 @@ def combos(request, id=None):
                     if min_price is None or price < min_price:
                         min_price = price
 
-                    product_sizes.add(size)  # Add size to the product_sizes list
+                    # Add size to the product_sizes list
+                    product_sizes.add(size)
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
         else:
             products = Product.objects.filter(
                 Q(combos=True))
@@ -368,7 +476,8 @@ def combos(request, id=None):
             sizes = {}
 
             for product in products:
-                product_variants = ProductVariant.objects.filter(product=product)
+                product_variants = ProductVariant.objects.filter(
+                    product=product)
 
                 min_price = None
                 product_sizes = set()  # Create a list to store sizes for the current product
@@ -380,10 +489,19 @@ def combos(request, id=None):
                     if min_price is None or price < min_price:
                         min_price = price
 
-                    product_sizes.add(size)  # Add size to the product_sizes list
+                    # Add size to the product_sizes list
+                    product_sizes.add(size)
 
                 min_prices_per_product.append(min_price)
                 sizes[product.name] = product_sizes
+
+            average_ratings_list = []
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
 
         products_filter = Product.objects.filter(
             Q(combos=True))
@@ -400,39 +518,48 @@ def combos(request, id=None):
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
 
-        zipped_data = zip(page, min_prices_per_product)
+        average_ratings_list = []
+
+        for product in products:
+            average_rating = Rating.objects.filter(product_variant__product=product).aggregate(
+                Avg('rating_user'))['rating_user__avg']
+            average_ratings_list.append(
+                int(average_rating) if average_rating is not None else None)
+
+        zipped_data = zip(page, min_prices_per_product, average_ratings_list)
 
         size = Size.objects.all().order_by('id')
         color = Color.objects.all().order_by('id')
 
         context = {'page': page, 'size': size, 'color': color, 'products': products, 'cat': cat, 'heading': heading,
-                'min_prices_per_product': min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes}
+                   'min_prices_per_product': min_prices_per_product, 'zipped_data': zipped_data, 'sizes': sizes}
         return render(request, "category_management_userside.html", context)
     except Exception as e:
         print(e)
         return render(request, "category_management_userside.html", context)
 
 
-
 def product_details(request, id=None):
 
     try:
 
-    
-        user = request.session.get('user') 
-        user_id=CustomUser.objects.get(email=user
-                                    ) 
+        user = request.session.get('user')
+        user_id = None
 
-        request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
-        request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
+        if user:
+            user_id = CustomUser.objects.get(email=user)
 
-        ordercheck=OrderProduct.objects.filter(variant__product__id=id,customer=user_id)  
+        request.session['wishlist_count'] = Wishlist.objects.filter(
+            user__email=user).count()
+        request.session['cart_count'] = Cart.objects.filter(
+            user__email=user).count()
 
-        order_list_id=[]
+        ordercheck = OrderProduct.objects.filter(
+            variant__product__id=id, customer=user_id)
+
+        order_list_id = []
         for item in ordercheck:
             order_list_id.append(item.variant.id)
-        
-        
 
         wishlist = Wishlist.objects.all()
         varinet_data = ProductVariant.objects.all()
@@ -440,7 +567,9 @@ def product_details(request, id=None):
         product = get_object_or_404(Product, id=id)
         product_variants = ProductVariant.objects.filter(product=product)
 
-        
+        for i in product_variants:
+            print(i.id)
+
         serialized_product_variants = serializers.serialize(
             'json', product_variants)
         request.session['product_variants_json'] = serialized_product_variants
@@ -456,18 +585,19 @@ def product_details(request, id=None):
                     first_image.images.url, variant.color)
 
         product_vareint_data = []
-        
-        for varient in product_variants:
+
+        print(product_variants)
+
+        for var in product_variants:
+            print(var.id)
             varient_data = {
-                'id': variant.id,
-                'color': varient.color,
-                'price': varient.price,
-                'size': varient.size,
+                'id': var.id,
+                'color': var.color,
+                'price': var.price,
+                'size': var.size,
+                'stock': var.stock,
             }
             product_vareint_data.append(varient_data)
-
-        for varient_data in product_vareint_data:
-            print(varient_data['color'])
 
         color = Color.objects.get(name='Black')
 
@@ -478,13 +608,11 @@ def product_details(request, id=None):
 
         images = Multipleimges.objects.filter(product__in=product_variants)
         testing = Multipleimges.objects.filter(product__in=product_variants1)
-        rating =  Rating.objects.filter(user=user_id)
+        rating = Rating.objects.filter(user=user_id)
         ratingall = Rating.objects.filter(product_variant__product__id=id)
-        ratingcount=ratingall.count()
+        ratingcount = ratingall.count()
 
-
-
-        rating_varient_id=[]
+        rating_varient_id = []
 
         for i in rating:
             rating_varient_id.append(i.product_variant.id)
@@ -493,20 +621,20 @@ def product_details(request, id=None):
         color = Color.objects.all()
 
         context = {'wishlist': wishlist,
-                'varinet_data': varinet_data,
-                'size': size, 'color': color,
-                'product': product,
-                'product_variants': product_variants,
-                'images': images,
-                'product_vareint_data': product_vareint_data,
-                'product_variant_images': product_variant_images,
-                'rating_form': rating_form,
-                'rating':rating_varient_id,
-                'ratingall':ratingall,
-                'ordercheck':ordercheck,
-                    'order_list_id':order_list_id,
-                    'ratingcount':ratingcount,
-                }
+                   'varinet_data': varinet_data,
+                   'size': size, 'color': color,
+                   'product': product,
+                   'product_variants': product_variants,
+                   'images': images,
+                   'product_vareint_data': product_vareint_data,
+                   'product_variant_images': product_variant_images,
+                   'rating_form': rating_form,
+                   'rating': rating_varient_id,
+                   'ratingall': ratingall,
+                   'ordercheck': ordercheck,
+                   'order_list_id': order_list_id,
+                   'ratingcount': ratingcount,
+                   }
 
         return render(request, 'products_detalils.html', context)
     except Exception as e:
@@ -521,7 +649,6 @@ def Filtering_in_Prouduct_details_page(request):
         if request.method == 'POST':
 
             data = json.loads(request.body.decode('utf-8'))
-
 
             color = data.get('color')
             variant_id = data.get('variant_id')
@@ -568,9 +695,9 @@ def Filter(requset, category_id=None, heading=None):
         return combos(requset, category_id)
 
 
-
-
 def filter_Accordence_multiple_input(request, heading=None):
+
+    response_data = {}
 
     try:
         current_route = request.path
@@ -583,7 +710,6 @@ def filter_Accordence_multiple_input(request, heading=None):
 
             selected_colors = request.POST.getlist('colorCheckbox')
             selected_sizes = request.POST.getlist('sizeCheckbox')
-
 
             min_range_value = request.POST.get('myRangeMin', None)
             max_range_value = request.POST.get('myRangeMax', None)
@@ -661,6 +787,22 @@ def filter_Accordence_multiple_input(request, heading=None):
 
                     products = ProductVariant.objects.filter(product__in=product)
 
+            average_ratings_list = []
+            nums = []
+            i = 0
+
+            for product in products:
+                average_rating = Rating.objects.filter(product_variant=product).aggregate(
+                    Avg('rating_user'))['rating_user__avg']
+                average_ratings_list.append(
+                    int(average_rating) if average_rating is not None else None)
+                nums.append(i)
+                i = i+1
+
+            print(average_ratings_list)
+            print(average_ratings_list)
+            print(average_ratings_list)
+
             product_data = set()
 
             product_data = (
@@ -670,11 +812,21 @@ def filter_Accordence_multiple_input(request, heading=None):
                     'color': product.color.name,
                     'size': product.size.name,
                     'price': product.price,
-                    'image': product.product.images.url
+                    'image': product.product.images.url,
+                    'average_ratings_list': average_ratings_list,
+                    'nums': nums,
+
                     # Add more fields as needed
                 }
                 for product in products
             )
+
+            if products:
+                n = True
+            else:
+                n = False
+
+            data = zip(average_ratings_list,product_data)
 
             size = Size.objects.all()
             color = Color.objects.all()
@@ -685,16 +837,14 @@ def filter_Accordence_multiple_input(request, heading=None):
                 'size': size,
                 'color': color,
                 'heading': heading,
+                'n': n,
+                'data':data,
             }
         return render(request, 'multiplefilterproducts.html', response_data)
 
     except Exception as e:
         print(e)
         return render(request, 'multiplefilterproducts.html', response_data)
-
-
-
-      
 
 
 @require_GET
@@ -706,14 +856,12 @@ def search_products(request, query):
 
         if query:
             products = Product.objects.filter(name__icontains=query1)[
-                :10] 
+                :10]
 
             suggestions = [{'name': product.name} for product in products]
         else:
-            suggestions = []  
+            suggestions = []
         return JsonResponse(suggestions, safe=False)
     except Exception as e:
         print(e)
         return JsonResponse(suggestions, safe=False)
-
-

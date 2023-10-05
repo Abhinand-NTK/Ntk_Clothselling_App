@@ -92,6 +92,37 @@
 
 
     }
+    .quantity {
+        display: inline-flex;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 40px;
+        padding: 5px 10px;
+        border: 2px solid #000; 
+    }
+
+    .qtybtn {
+        width: 30px;
+        height: 30px;
+        background-color: #fff;
+        color: #000;
+        border: none;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    #quantity {
+        width: 40px;
+        height: 40px;
+        background-color: #fff;
+        color: #f20c0c;
+        border: none;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 18px;
+        margin: 0 10px;
+    }
 </style>
 
 
@@ -168,12 +199,13 @@
                         <div class="product__details__button">
                             <form id="cartForm" action="/cart/addtocart/{{ product_variant.id }}" method="POST">
                                 {% csrf_token %}
+
                                 <div class="quantity">
-                                    <span>Quantity:</span>
-                                    <div class="pro-qty">
-                                        <input type="number" name="quantity" value="1">
-                                    </div>
+                                    <button type="button" class="dec qtybtn" onclick="decrementQuantity()">-</button>
+                                    <input type="number" name="quantity" id="quantity" value="1" readonly>
+                                    <button type="button" class="inc qtybtn" onclick="incrementQuantity()">+</button>
                                 </div>
+                                
                                 <button type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to
                                     cart</button>
                             </form>
@@ -197,7 +229,6 @@
                                     </button>
                                 </li>
                                 {% endif %}
-                                <li><a href="#"><span class="fa fa-adjust"></span></a></li>
                             </ul>
                         </div>
                         {%endif%}
@@ -233,7 +264,7 @@
                                 </li>
                                 <div class="d-flex ">
                                     {% for variant_id, data in product_variant_images.items %}
-                                    <div id="product-images-container ml-5"
+                                    <div class="ml-4" id="product-images-container ml-5"
                                         onmouseenter="ready('{{ variant_id }}', '{{ data.1 }}')">
                                         {% with image_url=data.0 %}
                                         <img data-variant-id="{{ variant_id }}" data-color="{{ data.1 }}"
@@ -243,7 +274,19 @@
                                         {% endwith %}
                                     </div>
                                     {% endfor %}
+                                   
                                 </div>
+                                <div class="d-flex align-content-between ml-4">
+                                    {% for item in product_vareint_data %}
+                                {% if item.stock > 0 %}
+                                <li class="font-weight-bold text-success ml-4">In Stock,</li>
+                                {% else %}
+                                <li class="font-weight-bold text-danger">Out of Stock,</li>
+                                {% endif %}
+                                {% endfor %}
+
+                                </div>
+                                
                             </ul>
                         </div>
                     </div>

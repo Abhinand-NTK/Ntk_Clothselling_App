@@ -14,6 +14,10 @@ from collections import defaultdict
 from cart.models import *
 from user_auth.forms import *
 import json
+import random
+import string
+from datetime import datetime
+import re
 
 
 
@@ -47,6 +51,7 @@ def User_login(request):
                         # if user in request.session:
                         
                         return redirect('home')
+                        
                     else:
                         return redirect('otp_verification', user_id=user.id)
             
@@ -72,20 +77,72 @@ def User_logout(request):
     if 'user' in request.session:
         del request.session['user']
     return redirect('user_login')
-    
 
+
+
+def Signupvalidation(request):
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        print(data)
+        print(data.get('useremail'))
+
+        print(CustomUser.objects.filter(email = data.get('useremail')))
+
+        if CustomUser.objects.filter(email = data.get('useremail')):
+             response = {'message':'The email id is alredy exist !!'}
+             return JsonResponse(response)
+        else:
+            response = {'message':'Enter Your E-mail !!'}
+            return JsonResponse(response)
+        
+def Addpropic(request,user_id):
+  
+    if request.method == 'POST':
+        profilepic= request.FILES.get('profilepicture', None)
+        print(profilepic)
+        print(profilepic)
+        print(profilepic)
+        print(profilepic)
+        print(profilepic)
+        user=CustomUser.objects.get(id=user_id)
+        user.images = profilepic
+        user.save() 
+        return redirect('myprofile')
+    
+def generate_referral_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 def User_signup(request):
         
-    try:
+    # try:
         if request.method=='POST':
             email=request.POST['username']
             password=request.POST['password']
             firstname=request.POST['firstname']
             lastname=request.POST['lastname']
             repeatpassword=request.POST['repeatpassword']
+            referral_code = request.POST['referral_code']
 
             check=CustomUser.objects.filter(email=email)
+
+            if referral_code:
+                try:
+                    referrer = CustomUser.objects.get(referral_code=referral_code)
+                    referrer.wallet = referrer.wallet + 100
+                    referrer.save()
+                    wallerhistory_referer=Payementwallet(user=referrer)
+                    wallerhistory_referer.paymenttype="Credit"
+                    wallerhistory_referer.created=datetime.now()
+                    wallerhistory_referer.save()
+                
+                   
+                except CustomUser.DoesNotExist:
+                    referrer = None
+            else:
+                referrer = None
+
 
 
             
@@ -101,8 +158,25 @@ def User_signup(request):
                 user.lastname = lastname
                 # user.phone_number = phonenumber
                 user.otp=otp
+                user.referral_code=generate_referral_code()
+                user.referrer=referrer
                 user.save()
                 user_id=user.id
+
+                payhis =  CustomUser.objects.get(email = email)
+                payhis.referrer 
+
+                if payhis.referrer :
+                        
+                        payhis.wallet = payhis.wallet + 100
+                        payhis.save()
+
+
+                        wallerhistory=Payementwallet(user=payhis)
+                        wallerhistory.paymenttype="Credit"
+                        wallerhistory.created=datetime.now()
+                        wallerhistory.save()
+                
 
 
                 subject = "Email Confirmation OTP"
@@ -119,9 +193,9 @@ def User_signup(request):
                 return redirect('user_signup')
 
         return render(request, 'Authenticatoins/signup.html')
-    except Exception as e:
-        print(e)
-        return render(request, 'Authenticatoins/signup.html')
+    # except Exception as e:
+    #     print(e)
+    #     return render(request, 'Authenticatoins/signup.html')
 
 
 
@@ -148,8 +222,14 @@ def User_otpverification(request,user_id):
             if verification==user.otp:
                 user.otp = ''
                 user.is_verified = True
-                user.wallet = 100
+                user.wallet = user.wallet + 100
                 user.save()  # Save the user after updating is_email_verified
+
+                wallerhistory=Payementwallet(user=user)
+                wallerhistory.paymenttype="Credit"
+                wallerhistory.created=datetime.now()
+                wallerhistory.save()
+                
                 messages.success(request, 'Email verification is successful')
                 return redirect('user_login')  # Use return to perform the redirect
             else:
@@ -218,12 +298,32 @@ def Manage_Address(request):
                 
                 first_name=request.POST['firstname']
                 last_name=request.POST['lastname']
-                phonenumber=request.POST['phonenumber']
+                phonenumber=request.POST['phonenumber'].strip()
                 address=request.POST['address']
                 town=request.POST['town']
-                zip_code=request.POST['zipcode']
+                zip_code=request.POST['zipcode'].strip()
                 nearbylocation=request.POST['nearbylocation']
                 district=request.POST['district']
+
+                # phonenumber = request.form.get("phonenumber").strip()
+                # zipcode = request.form.get("zipcode").strip()
+
+                pattern = r'^\d{10}$'
+
+                if re.match(pattern, phonenumber):
+                    pass
+                else:
+                    messages.error(request,'The phonenumber field should be digits')
+                    return redirect('manageadress')
+            
+                zipcode = r'^\d{6}$'
+
+                if re.match(zipcode, zip_code):
+                    pass
+                else:
+                    messages.error(request,'The Pin field should be  6 digits')
+                    return redirect('manageadress')
+
 
                 address=UserAdress(
                     user=user,
@@ -278,6 +378,24 @@ def Manage_Edit_Address(request, adress_id):
             zip_code = request.POST['zipcode']
             nearby_location = request.POST['nearbylocation']
             district = request.POST['district']
+
+          
+
+            pattern = r'^\d{10}$'
+
+            if re.match(pattern, phonenumber):
+                    pass
+            else:
+                    messages.error(request,'The phonenumber field should be digits')
+                    return redirect('manageadress')
+            
+            zipcode = r'^\d{6}$'
+
+            if re.match(zipcode, zip_code):
+                    pass
+            else:
+                    messages.error(request,'The Pin field should be  6 digits')
+                    return redirect('manageadress')
 
             # Update the address fields
             address.first_name = first_name
@@ -353,12 +471,14 @@ def Edit_profile(request):
             firstname = request.POST['firstname']
             lastname = request.POST['lastname']
             password = request.POST['password']
+            profilepic = request.FILES['profilepicture']
             user_email = request.user  
             user = CustomUser.objects.get(email=user_email)  
             
             if user.check_password(password):  
                 user.first_name = firstname
                 user.lastname = lastname  
+                user.images = profilepic
                 user.save()                  
                 messages.success(request, "Profile updated successfully")
                 return redirect('myprofile')
@@ -460,8 +580,6 @@ def Add_item_to_Cart(request,product_vareint_id=None):
 
     try:
         
-
-   
         user = request.session['user']
 
         request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
@@ -480,6 +598,11 @@ def Add_item_to_Cart(request,product_vareint_id=None):
         if check_is_the_item_in_Cart_or_not:
             messages.info(request,"The item is already in the cart")
             return redirect('mywishlist', varient_id = 0)
+        elif varient.stock <=0:
+            messages.info(request,"The item is Out of stock")
+            return redirect('mywishlist', varient_id = 0)
+
+    
 
         
         else:

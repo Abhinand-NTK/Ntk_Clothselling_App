@@ -1,7 +1,9 @@
 
-
 function approve(id) {
 
+    console.log(id)
+    console.log(id)
+    console.log(id)
     fetch(`/order/returnindivudalproducts/${id}`)
         .then(response => {
 

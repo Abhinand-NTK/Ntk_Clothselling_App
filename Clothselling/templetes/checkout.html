@@ -46,7 +46,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="row">
-               
+
             </div>
             <div class="checkout__order__total">
                 <div class="coupon__input ">
@@ -221,7 +221,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/manageadress/" method="POST">
+                    <form action="/manageadress/" method="POST" id="addressform">
                         {% csrf_token %}
                         <div class="row">
                             <div class="form-group col-lg-6 col-6 col-md-6">
@@ -234,6 +234,7 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <span id="validationMessage"></span>
                             <label for="address">Mobile_number</label>
                             <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
                         </div>
@@ -247,6 +248,7 @@
                      <input type="text" class="form-control" id="town" name="town" required>
                  </div>
                  <div class="form-group">
+                    <span id="validationMessageforzipcode"></span>
                      <label for="locality">Zip_code</label>
                      <input type="text" class="form-control" id="zipcode" name="zipcode" required>
                  </div>
@@ -256,7 +258,7 @@
                  </div>
                  <div class="form-group">
                      <label for="state">District</label>
-                     <input type="text" class="form-control" id="district" name="district" req>
+                     <input type="text" class="form-control" id="district" name="district" required>
                  </div>
              <button type="submit" class="btn btn-primary">Add Address</button>
 
@@ -302,7 +304,7 @@
 
                  <div class="form-group">
                      <label for="address">Address</label>
-                     <textarea class="form-control" id="address"  name="address" value="{{i.address}}" rows="4"></textarea required>
+                     <textarea class="form-control" id="address"  name="address" value="" rows="4">{{i.address}}</textarea required>
                  </div>
                  <div class="form-group">
                      <label for="pin">Town</label>
@@ -313,14 +315,14 @@
                      <input type="text" class="form-control" id="zipcode" value="{{i.zip_code}}" name="zipcode" required>
                  </div>
                  <div class="form-group">
-                     <label for="district">Nearbylocation</label>
+                     <label for="district">Nearby Location</label>
                      <input type="text" class="form-control" id="nearbylocation" value="{{i.nearbylocation}}" name="nearbylocation" required>
                  </div>
                  <div class="form-group">
                      <label for="state">District</label>
                      <input type="text" class="form-control" id="district" value="{{i.district}}" name="district" req>
                  </div>
-             <button type="submit" class="btn btn-primary">Add Address</button>
+             <button type="submit" class="btn btn-primary">Edit Address</button>
              </form>
          </div>
          <div class="modal-footer">
@@ -489,6 +491,15 @@
 <!-- success.html -->
 
 {% block scripts %}
+
+
+<script>
+   
+</script>
+
+
+
+
 
 <script>
 

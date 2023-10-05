@@ -20,15 +20,26 @@ from django.urls import path
 urlpatterns = [
     path('',views.User_login,name='user_login'),
     path('logout/',views.User_logout,name='user_logout'),
+
     path('signup/',views.User_signup,name='user_signup'),
+    path('Validation/',views.Signupvalidation,name='validation'),
+    path('addprofilepicture/<int:user_id>',views.Addpropic,name='addprofilepicture'),
+    path('myprofile/',views.Myprofile,name='myprofile'),
+    path('myprofile_edit/',views.Edit_profile,name='myprofile_edit'),
+
+
     path('forgetpas/',views.User_forgetpassword,name='forget_password'),
     path('otpverifiaction/<int:user_id>',views.User_otpverification,name='otp_verification'),
     path('resetpas/<int:user_id>',views.User_resetpassword,name='reset_password'),
-    path('myprofile/',views.Myprofile,name='myprofile'),
-    path('myprofile_edit/',views.Edit_profile,name='myprofile_edit'),
+
+
+    
+
     path('manageadress/',views.Manage_Address,name='manageadress'),
     path('manageadress_edit/<int:adress_id>',views.Manage_Edit_Address,name='manageadress_edit'),
     path('manageadress_delete/<int:adress_id>',views.Manage_Address_delete,name='manageadress_delete'),
+
+    
     path('myorder/',views.Myorder,name='myorder'),
     path('coupenslist/',views.Coupenlist,name='coupenslist'),
     path('mywallet/',views.Mywallet,name='mywallet'),

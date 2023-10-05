@@ -159,6 +159,13 @@ class CustomUser(AbstractUser):
     wallet = models.DecimalField(default=0, decimal_places=2, max_digits=10,null=True,blank=True)
 
 
+    referral_code = models.CharField(max_length=12, unique=True, null=True, blank=True)
+    referrer = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
+
+    images=models.ImageField(upload_to='photos/userprofile',blank=True)
+
+
+
     
     # required
     created_at = models.DateTimeField(default=timezone.now,null=True,blank=True)

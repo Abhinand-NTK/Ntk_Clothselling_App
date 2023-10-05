@@ -13,10 +13,6 @@ from user_auth.models import UserAdress
 import json
 from django.http import JsonResponse
 
-
-
-
-
 # Create your views here.
 
 def Place_Order(request):
@@ -335,6 +331,17 @@ def Cancelorder(request,order_id):
             order.cancelnote=cancelnote
             order.status="Cancelled"
             order.save()
+
+            if order.payment_method == 'Op':
+
+                user_wallet=CustomUser.objects.get(id=order.user.id)
+                user_wallet.wallet=user_wallet.wallet + int(order.paid_amount)
+                user_wallet.save()
+
+                wallerhistory=Payementwallet(user=order.user)
+                wallerhistory.paymenttype="Credit"
+                wallerhistory.save()
+                
             return redirect('order_details',order.order_id)
     except Exception as e:
         print(e)
@@ -420,7 +427,7 @@ def razorpaycheck(request):
 
 def Refunded_for_indivdal_items(request,itemid):
         try:
-        
+         
             product=OrderProduct.objects.get(id=itemid)
             order=Order.objects.get(order_id=product.order_id)
             order_amount=order.order_total
@@ -431,7 +438,6 @@ def Refunded_for_indivdal_items(request,itemid):
 
             wallerhistory=Payementwallet(user=order.user)
             wallerhistory.paymenttype="Credit"
-            wallerhistory.created=datetime.now()
             wallerhistory.save()
         
             product.return_accept='True'
