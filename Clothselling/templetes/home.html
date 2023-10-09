@@ -8,8 +8,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <link rel="icon" type="image/x-icon"
+        href="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg"
+        style="border-radius:50% ;">
+    <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ntk Onliine-Shopping </title>
 </head>
 
 <style>
@@ -42,7 +48,7 @@
 
                 <div class="col-lg-12 ml-2">
                     <div class="row">
-                        {% for b in banner %}
+                        {% for b,i in banner_data %}
                         <div class="col-lg-6 col-md-6 col-sm-6 p-0">
                             {% if b.image %}
                             <div class="categories__item set-bg"
@@ -53,7 +59,7 @@
                             {% endif %}
                                 <div class="categories__text">
                                     <h4>{{b.title}}</h4>
-                                    <p class="text-black font-weight-bold">{{ count1 }} items</p>
+                                    <p class="text-black font-weight-bold">{{ i }} items</p>
                                     <a href="{{b.linkfordata}}" class="text-light font-weight-bold">Shop now</a>
                                 </div>
                             </div>

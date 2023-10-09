@@ -73,10 +73,11 @@ def userlogin(request,user):
 
 
 def User_logout(request):
-    logout(request)
-    if 'user' in request.session:
-        del request.session['user']
-    return redirect('user_login')
+    if request.method == 'POST':
+        logout(request)
+        if 'user' in request.session:
+            del request.session['user']
+        return redirect('user_login')
 
 
 
@@ -118,13 +119,13 @@ def User_signup(request):
         
     # try:
         if request.method=='POST':
-            email=request.POST['username']
-            password=request.POST['password']
-            firstname=request.POST['firstname']
-            lastname=request.POST['lastname']
-            repeatpassword=request.POST['repeatpassword']
-            referral_code = request.POST['referral_code']
-
+            
+            email = request.POST.get('username', '').strip()
+            password = request.POST.get('password', '')
+            firstname = request.POST.get('firstname', '').strip()
+            lastname = request.POST.get('lastname', '').strip()
+            repeatpassword = request.POST.get('repeatpassword', '')
+            referral_code = request.POST.get('referral_code', '').strip()
             check=CustomUser.objects.filter(email=email)
 
             if referral_code:
@@ -216,8 +217,7 @@ def User_otpverification(request,user_id):
         print(user.otp)
 
         if request.method == 'POST':
-            verification = request.POST['otp']
-            print(verification)
+            verification = request.POST.get('otp', '').strip()
 
             if verification==user.otp:
                 user.otp = ''
@@ -245,12 +245,14 @@ def User_otpverification(request,user_id):
 def User_forgetpassword(request):
     try:
         if request.method == 'POST':
-            reset_email = request.POST['resetpassword']
+            reset_email = request.POST.get('resetpassword', '').strip()
             try:
                 user = CustomUser.objects.get(email=reset_email)
                 return redirect('reset_password', user_id=user.id)
-            except CustomUser.DoesNotExist:
+            except Exception as e:
+                print(e)
                 messages.error(request, 'User with this email does not exist')
+                return redirect('forget_password')
         return render(request, 'Authenticatoins/forgotpassword.html')
     except Exception as e:
         print(e)
@@ -266,8 +268,8 @@ def User_resetpassword(request, user_id):
             return redirect('user_login')
         
         if request.method == 'POST':
-            password = request.POST['resetpassword']
-            repeat_password = request.POST['password']
+            password = request.POST.get('resetpassword', '').strip()
+            repeat_password = request.POST.get('password', '').strip()
             if password == repeat_password:
                 user.set_password(password)
                 user.save()
@@ -294,7 +296,6 @@ def Manage_Address(request):
             return redirect('user_login')
             
         if request.method=='POST':
-                print("Abhinand")
                 
                 first_name=request.POST['firstname']
                 last_name=request.POST['lastname']
@@ -305,8 +306,7 @@ def Manage_Address(request):
                 nearbylocation=request.POST['nearbylocation']
                 district=request.POST['district']
 
-                # phonenumber = request.form.get("phonenumber").strip()
-                # zipcode = request.form.get("zipcode").strip()
+               
 
                 pattern = r'^\d{10}$'
 
@@ -451,12 +451,17 @@ def Myprofile(request):
         if 'user' in request.session:
             if request.method=='POST':
                 return render(request, 'manageadress.html')
+        else:
+            messages.info(request,"Create a Account first")
+            return redirect('user_signup')
+
 
             
         personal_details = CustomUser.objects.all()
         context = {'personal_details': personal_details}
             
         return render(request, 'myprofile.html', context)
+        
     except Exception as e:
         print(e)
         return render(request, 'myprofile.html', context)
@@ -492,22 +497,31 @@ def Edit_profile(request):
         return render(request,'myprofile.html')
 
 def Myorder(request):
-
+    context = {}
     try:
-        user = request.user
-        orders = OrderProduct.objects.filter(customer=user).order_by('id')
-        
-        order_dict = defaultdict(list)
+        if 'user' in request.session:
+            user = request.user
+            if user:
+                orders = OrderProduct.objects.filter(customer=user).order_by('id')
+                
+                order_dict = defaultdict(list)
 
-        for order in orders:
-            order_dict[order.order_id].append(order)
+                for order in orders:
+                    order_dict[order.order_id].append(order)
 
-        context = {
-            'order': orders,
-            'order_dict': dict(order_dict),  
-        }
+                context = {
+                    'order': orders,
+                    'order_dict': dict(order_dict),  
+                }
 
-        return render(request, 'myorder.html', context)
+                return render(request, 'myorder.html', context)
+            else:
+                messages.info(request,"Create an Acccount first")
+                return redirect('user_signup')
+        else:
+            messages.info(request,"Create an Acccount first")
+            return redirect('user_signup')
+
     except Exception as e:
         print(e)
         return render(request, 'myorder.html', context)
@@ -529,11 +543,15 @@ def Mywallet(request):
 
     try:
      
-        user = request.session['user']
-        user_id = CustomUser.objects.get(email=user)
-        waller_history=Payementwallet.objects.filter(user__email=user)
+        if 'user' in request.session:
+            user = request.session['user']
+            user_id = CustomUser.objects.get(email=user)
+            waller_history=Payementwallet.objects.filter(user__email=user)
 
-        return render(request,'mywallet.html',{'waller_history': waller_history})
+            return render(request,'mywallet.html',{'waller_history': waller_history})
+        else:
+            messages.info(request,"Please login first")
+            return redirect('user_login')
     except Exception as e:
         print(e)
         return render(request,'mywallet.html',{'waller_history': waller_history})
@@ -543,6 +561,10 @@ def Mywishlist(request, varient_id=None):
     try:
         user = request.session['user']
         user_id = CustomUser.objects.get(email=user)
+
+        if not user:
+            messages.error("login for this feature")
+            return redirect('user_login')
         
         request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
         request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
@@ -668,14 +690,18 @@ def Submit_rating(request, variant_id):
         return JsonResponse({'message': 'Rating submitted successfully'})
 
 def Print_invoice(request,order_id):
+    if request.method == 'POST':
     
-    order=Order.objects.filter(order_id=order_id).order_by('id')
-    order_product=OrderProduct.objects.filter(order_id__order_id=order_id)
-    eachproduct_quantity_price = []
-    for item in order_product:
-        eachproduct_quantity_price.append(item.quandity * item.variant.price)
+        order=Order.objects.filter(order_id=order_id).order_by('id')
+        order_product=OrderProduct.objects.filter(order_id__order_id=order_id)
+        eachproduct_quantity_price = []
+        for item in order_product:
+            eachproduct_quantity_price.append(item.quandity * item.variant.price)
 
-    zipdata = zip(order_product, eachproduct_quantity_price)
+        zipdata = zip(order_product, eachproduct_quantity_price)
+    else:
+        messages.error(request,"login first")
+        return redirect('user_login')
 
 
     return render(request,'invoice.html',{'zipdata':zipdata,'order':order,'order_product':order_product,'eachproduct_quantity_price':eachproduct_quantity_price,})

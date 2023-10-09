@@ -56,15 +56,17 @@ def home(request):
                 average_ratings_list.append(
                     int(average_rating) if average_rating is not None else None)
                 
-        print(average_ratings_list)
-        print(average_ratings_list)
-        print(average_ratings_list)
+        count = []
+
+        count=[count1,count2,count3,count4]
+     
                 
         data=zip(products,average_ratings_list)
+        banner_data = zip(banner,count)
 
 
-        context = {'count1': count1, 'count2': count2, 'count3': count3, 'count4': count4, 'products': products,
-                   'brand': brand, 'banner': banner,'data':data }
+        context = {'count':count,'products': products,
+                   'brand': brand, 'banner': banner,'data':data,'banner_data':banner_data }
 
         return render(request, "home.html", context)
     except Exception as e:
@@ -567,9 +569,11 @@ def product_details(request, id=None):
         product = get_object_or_404(Product, id=id)
         product_variants = ProductVariant.objects.filter(product=product)
 
-        for i in product_variants:
-            print(i.id)
+        all_variants_out_of_stock = all(
+        variant.stock <= 0  for variant in product_variants)
 
+
+       
         serialized_product_variants = serializers.serialize(
             'json', product_variants)
         request.session['product_variants_json'] = serialized_product_variants
@@ -634,6 +638,7 @@ def product_details(request, id=None):
                    'ordercheck': ordercheck,
                    'order_list_id': order_list_id,
                    'ratingcount': ratingcount,
+                   'all_variants_out_of_stock':all_variants_out_of_stock,
                    }
 
         return render(request, 'products_detalils.html', context)

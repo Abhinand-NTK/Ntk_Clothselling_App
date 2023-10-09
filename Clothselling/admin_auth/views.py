@@ -77,7 +77,7 @@ def admindashboard(request):
 
         year_to_query = 2023
 
-
+ 
         sales_counts = (
             Order.objects
             .filter(created__year=year_to_query)
