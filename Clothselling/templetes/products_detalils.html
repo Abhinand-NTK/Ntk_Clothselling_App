@@ -333,15 +333,27 @@
                                     <div class="md-col-4  h-50 review-content">
                                     </div>
                                     <div class="md-col-8">
+                                        <div class="">
+
                                         {% for rating in ratingall %}
                                         {% if rating.user.images %}
-                                        <img data-variant-id="{{ variant_id }}" data-color="{{ data.1 }}"
+                                        <div>
+                                            <img data-variant-id="{{ variant_id }}" data-color="{{ data.1 }}"
                                         class="product__big__img mt-5" src="{{ rating.user.images.url }}" alt=""
                                         style="width: 5rem; height: 5rem;">
-                                       {%endif%}
+                                        <p>
                                             <div class="user-info">
-                                                <h4>{{ rating.user.first_name }} {{ rating.user.lastname }}</h4>
+                                                {{ rating.user.first_name }} {{ rating.user.lastname }}
                                             </div>
+
+                                        </p>
+
+                                        </div>
+                                        
+                                       {%endif%}
+                                    </div>
+
+                                            
                                             <div class="rating">
                                                 {% if rating.rating_user == 5 %}
                                                 <span class="star1">&#9733;</span> <!-- Filled star -->

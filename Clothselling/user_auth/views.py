@@ -117,7 +117,7 @@ def generate_referral_code():
 
 def User_signup(request):
         
-    # try:
+    try:
         if request.method=='POST':
             
             email = request.POST.get('username', '').strip()
@@ -194,9 +194,9 @@ def User_signup(request):
                 return redirect('user_signup')
 
         return render(request, 'Authenticatoins/signup.html')
-    # except Exception as e:
-    #     print(e)
-    #     return render(request, 'Authenticatoins/signup.html')
+    except Exception as e:
+        print(e)
+        return render(request, 'Authenticatoins/signup.html')
 
 
 
@@ -297,14 +297,14 @@ def Manage_Address(request):
             
         if request.method=='POST':
                 
-                first_name=request.POST['firstname']
-                last_name=request.POST['lastname']
+                first_name=request.POST['firstname'].strip()
+                last_name=request.POST['lastname'].strip()
                 phonenumber=request.POST['phonenumber'].strip()
-                address=request.POST['address']
-                town=request.POST['town']
+                address=request.POST['address'].strip()
+                town=request.POST['town'].strip()
                 zip_code=request.POST['zipcode'].strip()
-                nearbylocation=request.POST['nearbylocation']
-                district=request.POST['district']
+                nearbylocation=request.POST['nearbylocation'].strip()
+                district=request.POST['district'].strip()
 
                
 
