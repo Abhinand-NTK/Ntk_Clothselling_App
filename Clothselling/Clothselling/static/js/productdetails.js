@@ -210,8 +210,7 @@ function ready(variant_id, color) {
                     if (imagesData.indexOf(imageUrl) === 0) {
                         const firstImg = img.cloneNode(true);
 
-                        console.log(firstImg)
-                        //firstImageContainer.appendChild(firstImg);
+                    
 
 
                         firstImageContainer.src = firstImg.src;
