@@ -32,6 +32,7 @@ from django.core.exceptions import ValidationError
 
 
 # Create your views here.
+#added some comment here
 
 
 @staff_member_required(login_url='adminlogin')
