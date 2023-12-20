@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-fzceTEF6Pz63szlbR+TfH2sr8Nz4JpXyV1lHAy4lW7I8bNBkVoSF3NDDUomO4qg6" crossorigin="anonymous">
+
     <style>
         body {
             background-color: #f6f3f4f7;
@@ -41,7 +43,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 login-form">
-                <form class="mt-5" method="POST" action="{% url 'user_login' %}">
+                <form class="mt-5" method="POST" action="">
                     {% csrf_token %}
                     {% if messages %}
                         {% for message in messages %}
@@ -62,13 +64,16 @@
                             <a class="text-dark" href="forgetpas/"> Forgot your password</a>
                         </label>
                     </div>
-                    <div class="form-group d-flex align-items-center">
-                        <button class="btn-light rounded-sm border text-dark font-weight-normal" style="width: 100%;">Continue with Google</button>
-                    </div>
                     <div class="form-group text-dark">
                         <button style="width: 100%;" type="submit" class="btn btn-danger text-center">Sign In</button>
-                        <p>Dont have an Account <a href="/signup/" class="text-dark">Sign up</a></p>
                     </div>
+                    <div class="form-group d-flex align-items-center">
+                        {% load socialaccount %}
+                        <a class="btn btn-light rounded-sm border text-dark font-weight-normal align-items-center" style="width: 100%" href="{% provider_login_url 'google'%}?next=/">
+                            <i class=" mr-2"><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 488 512"><path fill="#c913a7" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg></i> Google Login
+                        </a>
+                    </div>
+                    <p>Dont have an Account <a href="/signup/" class="text-dark">Sign up</a></p>
                 </form>
             </div>
             <div class=" mt-5 col-md-6 d-none d-md-block login-image">
@@ -92,7 +97,9 @@
 <script src="{% static 'js/jquery.slicknav.js' %}"></script>
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/googleauth.js' %}"></script>
+<script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
+
 
 </html>
 

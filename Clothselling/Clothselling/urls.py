@@ -18,7 +18,7 @@ from django.urls import include,path
 from .import views
 from django.conf.urls.static import static
 from django.conf import settings
-
+from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('user_auth.urls')),
@@ -26,4 +26,7 @@ urlpatterns = [
     path('products/',include('products.urls')),
     path('cart/',include('cart.urls')),
     path('order/',include('order.urls')),
+    path('accounts/',include('allauth.urls')),
+    # path('home/',TemplateView.as_view(template_name='dashboard/home.html'),name='home'),
+    path('home/',TemplateView.as_view(template_name='Authenticatoins/loginpage.html'),name='home')
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

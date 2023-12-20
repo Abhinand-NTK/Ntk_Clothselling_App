@@ -28,12 +28,20 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 import json
 from django.core.exceptions import ValidationError
+from allauth.account.views import SignupView
+from .forms import CustomSignupForm
+
+
 
 
 
 # Create your views here.
 
-
+class CustomSignupView(SignupView):
+    form_class = CustomSignupForm
+    def dispatch(self, request, *args, **kwargs):
+            print("CustomSignupView received a request")
+            return super().dispatch(request, *args, **kwargs)
 
 @staff_member_required(login_url='adminlogin')
 @cache_control(no_store=True, no_cache=True)
@@ -595,7 +603,9 @@ def addcategory(request):
                     else:
                         messages.error(request, 'Already existing the category')
                 except IntegrityError:
-                    pass
+                    messages.warning(request,"The box is empty")
+            else:
+                messages.warning(request,"Please Enter a Valid category")
             return redirect('category')  
 
         return redirect('category')
@@ -620,6 +630,8 @@ def editcategory(request, id):
 
                 except IntegrityError:
                     pass
+            else:
+                messages.warning(request,"Cant make the input box empty")
             return redirect('category')  
 
         return redirect('category')

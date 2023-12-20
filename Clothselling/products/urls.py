@@ -18,7 +18,7 @@ from . import views
 from django.urls import path
 
 urlpatterns=[
-    path('',views.home,name='home'),
+    path('',views.home,name='home1'),
     path('category_selection/',views.product_category,name='category_selection'),
     path('womans/',views.Womans,name='womans'),
     path('mens/',views.Mens,name='mens'),

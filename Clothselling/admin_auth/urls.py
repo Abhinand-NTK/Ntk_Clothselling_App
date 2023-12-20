@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import CustomSignupView
 from .import views
 from django.conf.urls import handler404
 
 handler404 = 'admin_auth.views.custom_404'
+
+# from django.conf.urls import url
 
 
 
@@ -78,7 +81,7 @@ urlpatterns = [
 
     path('totalorders/', views.Dashboard, name='totalorders'),
 
-
+    path('accounts/signup/', CustomSignupView.as_view(), name='account_signup'),
 
 ]
 

@@ -189,6 +189,15 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 from decouple import config
+import os
+
+# # Get the absolute path to the directory containing this script
+# current_directory = os.path.dirname(os.path.abspath(__file__))
+
+# # Construct the absolute path to 'client_secrets.json'
+# client_secrets_path = os.path.join(current_directory, 'client_secrets.json')
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -210,6 +219,8 @@ AUTH_USER__MODEL='admin_auth.CustomUser'
 
 # Application definition
 
+SITE_ID = 2
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -217,13 +228,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'products',
     'user_auth',
     'admin_auth',
     'cart',
-    'order'
-    
+    'order',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'crispy_forms',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -233,9 +251,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Clothselling.urls'
+
+
+
 
 TEMPLATES = [
     {
@@ -251,6 +273,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'Clothselling.wsgi.application'
@@ -346,3 +373,23 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+SOCIALACCOUNT_ADAPTER = 'user_auth.adapters.CustomSocialAccountAdapter'
+
+
+SITE_ID = 2
+LOGIN_REDIRECT_URL = '/products/'
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+

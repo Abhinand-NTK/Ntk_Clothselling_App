@@ -18,11 +18,15 @@ import random
 import string
 from datetime import datetime
 import re
-
+from allauth.account.views import LoginView
 
 
 def User_login(request):
+
     try:
+        if request.user.is_authenticated:
+            return redirect('home1')
+
         if 'admin' in  request.session:
                 return redirect('admindashboard')
 
@@ -50,7 +54,7 @@ def User_login(request):
                         request.session['user'] = email
                         # if user in request.session:
                         
-                        return redirect('home')
+                        return redirect('home1')
                         
                     else:
                         return redirect('otp_verification', user_id=user.id)
@@ -448,7 +452,8 @@ def Manage_Address_delete(request,adress_id):
 
 def Myprofile(request):
     try:
-        if 'user' in request.session:
+        user = request.user
+        if user.is_authenticated:
             if request.method=='POST':
                 return render(request, 'manageadress.html')
         else:

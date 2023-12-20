@@ -2,7 +2,17 @@ from django.db import models
 from django.contrib.auth.models import  BaseUserManager,AbstractUser, Group, Permission
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
-# from django.contrib.postgres.fields import ArrayField
+# from django.contrib import admin
+# from django.contrib.auth.models import User
+# from django.conf import settings
+# from django.db import models
+# from oauth2client.contrib.django_util.models import CredentialsField
+
+# class CredentialsModel(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     credential = CredentialsField()
+#     task = models.CharField(max_length=80, null=True)
+#     updated_time = models.CharField(max_length=80, null=True)
 
 
 class Brand(models.Model):
@@ -143,8 +153,10 @@ class CustomUserManager(BaseUserManager):
  
 
 class CustomUser(AbstractUser):
+     
 
-    username = None
+    username = models.CharField(max_length=255, default='default_username')
+
     first_name=models.CharField(max_length=30,null=True,blank=True)
     lastname=models.CharField(max_length=30,null=True,blank=True)
     phone_number=models.CharField(max_length=30,null=True,blank=True)
@@ -169,7 +181,6 @@ class CustomUser(AbstractUser):
     
     # required
     created_at = models.DateTimeField(default=timezone.now,null=True,blank=True)
-
 
     USERNAME_FIELD = "email"
 

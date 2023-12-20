@@ -42,7 +42,7 @@
     <!--  -->
     <div class="offcanvas__logo">
         <a href="/products/"><img src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg" alt="" style="width: 6rem; height: 4rem;"></a>
-        {% if 'user' in request.session %}
+        {% if user.is_authenticated %}
         <form action="/logout/" method="POST">
             {% csrf_token %}
             <button type="submit" class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal" >
