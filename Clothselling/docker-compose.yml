@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: 'ntkstore'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'ADMIN'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    volumes:
+      - .:/app
+    container_name: Clothselling_container
+    ports:
+      - 8000:8000
+    image: app:Clothselling
+    command: bash -c "apt-get update && apt-get install -y postgresql-client && pip install gunicorn && python manage.py makemigrations && gunicorn Clothselling.wsgi:application --bind 0.0.0.0:8000"
+    depends_on:
+      - postgres_db
+  
+volumes:
+  postgres_data:
