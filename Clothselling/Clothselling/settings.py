@@ -305,16 +305,27 @@ AUTH_USER_MODEL = 'admin_auth.CustomUser'
 
 # change the database as postgres
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ntkstore',
+#         'USER': config('DATABASE_USER'),
+#         'PASSWORD': config('DATABASE_PASSWORD'),
+#         'HOST': 'postgres_db',
+#         'PORT': '',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ntkstore',
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': 'postgres_db',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
+
 
 
 # Password validation

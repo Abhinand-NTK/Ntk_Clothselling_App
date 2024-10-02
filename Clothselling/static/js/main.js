@@ -206,6 +206,10 @@ Created: Colorib
 		Quantity change
 	--------------------- */
     var proQty = $('.pro-qty');
+    console.log('working and working ')
+    console.log('working and working ')
+    console.log('working and working ')
+    console.log('working and working ')
 	proQty.prepend('<span class="dec qtybtn">-</span>');
 	proQty.append('<span class="inc qtybtn">+</span>');
 	proQty.on('click', '.qtybtn', function () {
@@ -215,7 +219,7 @@ Created: Colorib
 			var newVal = parseFloat(oldValue) + 1;
 		} else {
 			// Don't allow decrementing below zero
-			if (oldValue > 0) {
+			if (oldValue > 1) {
 				var newVal = parseFloat(oldValue) - 1;
 			} else {
 				newVal = 0;

@@ -3,6 +3,60 @@
 
 
 <style>
+    button {
+        border: none;
+        width: 100%;
+        height: 32px;
+        margin: auto;
+        margin-top: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        background: #fff;
+        color: #ff97a4;
+        font-size: 17px;
+        overflow: hidden;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        position: relative;
+        -webkit-transition-property: color;
+        transition-property: color;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+    }
+
+    button:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fd677a;
+        -webkit-transform: scaleX(0);
+        transform: scaleX(0);
+        -webkit-transform-origin: 50%;
+        transform-origin: 50%;
+        -webkit-transition-property: transform;
+        transition-property: transform;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+    }
+
+    button:hover {
+        color: white;
+    }
+
+    button:hover:before {
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
+    }
+
     .dropdown-container {
         position: relative;
     }
@@ -21,11 +75,10 @@
     .dropdown-container:hover .dropdown-menu {
         display: block;
     }
-    .logout-1
-    {
-     font-size: 1px;
+
+    .logout-1 {
+        font-size: 1px;
     }
-    
 </style>
 
 <!-- header section start -->
@@ -41,11 +94,13 @@
     <div class="offcanvas__close">+</div>
     <!--  -->
     <div class="offcanvas__logo">
-        <a href="/products/"><img src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg" alt="" style="width: 6rem; height: 4rem;"></a>
+        <a href="/products/"><img
+                src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg" alt=""
+                style="width: 6rem; height: 4rem;"></a>
         {% if user.is_authenticated %}
         <form action="/logout/" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal" >
+            <button type="submit" class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal">
                 <a class="text-light font-weight-5 " style="font-size: small;">logout</a>
             </button>
         </form>
@@ -62,12 +117,15 @@
 <!-- Header Section Begin -->
 <header class="header">
     <div class="container-fluid ">
-        <div class="row">
-            <div class="col-xl-3 col-lg-2">
-                <div class=" d-flex justify-content-between ">
-                    <a class="mt-2" href="/products/"><img style="width: 10vh; height: 6vh; margin-block-start: 3vh;"
+        <div class="row rownavbar">
+            <div class="col-xl-3 col-lg-2 h-12">
+                <div class="logotag">
+                    <a class="logotag" href="/products/"><img
                             src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg"
                             alt=""></a>
+                </div>
+                <div class="canvas__open">
+                    <i class="fa fa-bars"></i>
                 </div>
             </div>
             <div class="col-xl-6 col-lg-7">
@@ -173,7 +231,9 @@
                             <a href="/mywishlist/{{0}}">
                                 <span class="position-relative">
                                     <span class="fa fa-heart text-danger"></span>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary" style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary"
+                                        style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
                                         {{ request.session.wishlist_count|default:"0" }}
                                     </span>
                                 </span>
@@ -183,10 +243,12 @@
                             <a href="/cart/cart_item/">
                                 <span class="position-relative">
                                     <span class="fa fa-shopping-cart text-danger"></span>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary" style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary"
+                                        style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
                                         {{ request.session.cart_count|default:"0"}}
                                     </span>
-                                    
+
                                 </span>
                             </a>
                         </li>
@@ -205,27 +267,25 @@
                             </a>
                             {%endif%}
 
-                        </li> 
+                        </li>
                         {%endif%}
                         {% if user.is_authenticated and not user.is_blocked and user.is_verified%}
 
                         <li>
                             <form action="/logout/" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal" >
+                                <button type="submit"
+                                    class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal">
                                     <a class="text-light font-weight-5 " style="font-size: small;">logout</a>
                                 </button>
                             </form>
-                           
+
                         </li>
                         {%endif%}
                     </ul>
-
                 </div>
             </div>
-        </div>
-        <div class="canvas__open">
-            <i class="fa fa-bars"></i>
+
         </div>
     </div>
 </header>

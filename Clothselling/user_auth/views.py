@@ -106,11 +106,7 @@ def Addpropic(request,user_id):
   
     if request.method == 'POST':
         profilepic= request.FILES.get('profilepicture', None)
-        print(profilepic)
-        print(profilepic)
-        print(profilepic)
-        print(profilepic)
-        print(profilepic)
+     
         user=CustomUser.objects.get(id=user_id)
         user.images = profilepic
         user.save() 
@@ -197,10 +193,10 @@ def User_signup(request):
                 messages.error(request,'Password fiels are Not matchining  !')
                 return redirect('user_signup')
 
-        return render(request, 'Authenticatoins/signup.html')
+        return render(request, 'Authenticatoins/signup copy.html')
     except Exception as e:
         print(e)
-        return render(request, 'Authenticatoins/signup.html')
+        return render(request, 'Authenticatoins/signup copy.html')
 
 
 
