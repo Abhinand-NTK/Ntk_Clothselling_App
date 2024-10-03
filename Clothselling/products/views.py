@@ -590,8 +590,6 @@ def product_details(request, id=None):
 
         product_vareint_data = []
 
-        print(product_variants)
-
         for var in product_variants:
             print(var.id)
             varient_data = {

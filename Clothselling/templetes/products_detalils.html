@@ -13,9 +13,10 @@
 
 
 <style>
-    .imagetochange{
+    .imagetochange {
         height: 25vh;
     }
+
     .star {
         font-size: 24px;
         color: #ddd;
@@ -93,18 +94,16 @@
         display: inline-flex;
         align-items: center;
         background-color: #fff;
-        border-radius: 40px;
-        padding: 5px 10px;
-        border: 2px solid #000;
+        border: 1px solid #000;
+        border-radius: 5px;
     }
 
     .qtybtn {
-        width: 30px;
-        height: 30px;
+        width: 25px;
+        height: 10px;
         background-color: #fff;
         color: #000;
         border: none;
-        border-radius: 50%;
         font-size: 20px;
         cursor: pointer;
     }
@@ -115,7 +114,6 @@
         background-color: #fff;
         color: #f20c0c;
         border: none;
-        border-radius: 20px;
         text-align: center;
         font-size: 18px;
         margin: 0 10px;
@@ -133,6 +131,406 @@
             </div>
         </div>
     </div>
+
+    <!-- content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row gx-5">
+                <aside class="col-lg-6">
+                    <div class="d-flex border rounded-4 mb-3">
+                        <!-- Left Column: Thumbnails -->
+                        <div class="d-flex flex-column justify-content-center me-3">
+                            {% for product in images %}
+                            {% if forloop.counter <= 3 %} <a data-fslightbox="mygalley"
+                                class="border mx-1 rounded-2 mb-2 ml-2" target="_blank" data-type="image"
+                                class="item-thumb">
+                                <img class="imagetochange" alt="Cant loign" id="left-{{forloop.counter}}"
+                                    onclick="leftright('left-{{forloop.counter}}')" width="100" height="100"
+                                    class="rounded-2" src="{{product.images.url}}" />
+                                </a>
+                                {% endif %}
+                                {% endfor %}
+                        </div>
+                        <!-- Right Column: Big Image -->
+                        <div class="flex-grow-1 d-flex justify-content-center align-items-center image-container">
+                            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image">
+                                <img id="myimage" style="max-width: 100%; max-height: 100vh; margin: auto;"
+                                    class="rounded-4 fit" src="{{product.images.url}}" />
+                                <div id="zoom-lens" class="zoom-lens"></div>
+
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ml-4 d-flex justify-content-center ">
+                        {% for variant_id, data in product_variant_images.items %}
+                        <div class="ml-4 d-flex justify-content-center" id="product-images-container ml-5"
+                            onmouseenter="ready('{{variant_id}}', '{{data.1}}')">
+                            {% with image_url=data.0 %}
+                            <!-- Anchor tag with popover -->
+                            <a data-fslightbox="mygalley" class="border rounded-2" target="_blank" data-type="image"
+                                tabindex="0" data-bs-toggle="popover" data-bs-trigger="focus" title="Product Info"
+                                data-bs-content="Variant ID: {{variant_id}}, Color: {{data.1}}" class="item-thumb">
+                                <img width="60" height="60" class="rounded-2" src="{{image_url}}" />
+                            </a>
+                            {% endwith %}
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </aside>
+                <main class="col-lg-6">
+                    <div class="ps-lg-3">
+                        {% for product_variant in product_variants %}
+                        {% if forloop.counter == 1 %}
+                        <h4 class="title text-dark">
+                            {{product_variant.product.name}}
+                        </h4>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="d-flex flex-row my-3">
+                            <div class="text-warning mb-1 me-2">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="ms-1">
+                                    {% if rating.rating_user == 0 %}
+                                    <h1>0</h1>
+                                    {%endif%}
+                                </span>
+                                {% if rating.rating_user == 5 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif rating.rating_user == 1 %}
+                                <i class="fa fa-star"></i>
+                                {% elif rating.rating_user == 2 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif rating.rating_user == 3 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif rating.rating_user == 4 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif rating.rating_user == 0 %}
+                                <span class="star">&#9733;</span> <!-- Filled star -->
+                                <span class="star">&#9733;</span> <!-- Filled star -->
+                                <span class="star">&#9733;</span> <!-- Filled star -->
+                                <span class="star">&#9733;</span> <!-- Filled star -->
+                                <span class="star">&#9733;</span> <!-- Filled star -->
+                                {% endif %}
+                            </div>
+                            <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span>
+
+                            <span class="text-success ms-2">In stock</span>
+                        </div>
+                        {% for product_variant in product_variants %}
+                        {% if forloop.counter == 1 %}
+                        <div class="mb-3">
+                            <span class="h5">₹ {{product_variant.price}} </span>
+                            <span class="text-muted">/per box</span>
+                            {% if product_variant.checkcolor %}
+                            <a id="colorchange" style="color: red;border-width: 2px;"
+                                onclick="Wishlist('{{product_variant.id}}')" data-bs-toggle="popover"
+                                data-bs-placement="bottom" data-bs-trigger="manual" data-bs-content="" href="#"
+                                class="btn btn-light py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save
+                            </a>
+                            {% else %}
+                            <a id="colorchange" class="btn btn-light border-none rounded-circle border-1"
+                                style="color: black;border-width: 2px;" onclick="Wishlist('{{product_variant.id}}')"
+                                data-bs-toggle="popover"> <i class="me-1 fa fa-heart fa-lg" data-bs-placement="bottom"
+                                    data-bs-trigger="manual" data-bs-content=""></i> Save </a>
+                            {% endif %}
+                        </div>
+                        <p>
+                            {{product_variant.product.description}}
+                        </p>
+                        {%endif%}
+                        {%endfor%}
+
+                        <div class="row">
+                            <div class="col-3">
+                                <dt>Size:</dt>
+                                {% for varient_data in product_vareint_data %}
+                                <p>{{ varient_data.size }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-3">
+                                <dt>Color:</dt>
+                                {% for varient_data in product_vareint_data %}
+                                <dd>{{ varient_data.color }}{% if forloop.counter > 0 %} {% endif %}</dd>
+                                {% endfor %}
+                            </div>
+                            <div class="col-3">
+                                <dt>Brand:</dt>
+                                {% for product_variant in product_variants%}
+                                {% if forloop.counter == 1 %}
+                                <dd>{{ product_variant.product.brand }}</dd>
+                                {%endif%}
+                                {%endfor%}
+                            </div>
+                            <div class="col-3">
+                                <dt>Stock:</dt>
+                                {% for item in product_vareint_data %}
+                                {% if item.stock > 0 %}
+                                <dd class="text-success ml-4">In Stock</dd>
+                                {% else %}
+                                <dd class="text-danger">Out of Stock</dd>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <hr />
+
+                        <div class="row mb-4 align-items-center">
+                            <!-- Quantity Selector and Add to Cart Form -->
+                            <div class="col-md-4 col-6">
+                                <form id="cartForm" action="/cart/addtocart/{{ product_variant.id }}" method="POST">
+                                    {% csrf_token %}
+                                    {% if not all_variants_out_of_stock %}
+                                    <div class="quantity d-flex justify-content-center align-items-center">
+                                        <button type="button" class="dec qtybtn" onclick="decrementQuantity()">-</button>
+                                        <input type="number" name="quantity" id="quantity" value="1" readonly class="mx-2 text-center">
+                                        <button type="button" class="inc qtybtn" onclick="incrementQuantity()">+</button>
+                                    </div>
+                                    {% else %}
+                                    <p class="text-danger text-center mt-2" style="font-size: 1rem;">Out of stock</p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                            
+                            <!-- Size Selection -->
+                            <div class="col-md-4 col-6">
+                                <select class="form-select border border-secondary w-100" style="height: 35px;">
+                                    <option>Small</option>
+                                    <option>Medium</option>
+                                    <option>Large</option>
+                                </select>
+                            </div>
+
+                            <!-- Add to Cart Button -->
+                            <div class="col-md-4 col-6">
+                                <a href="#" class="btn btn-primary shadow-0 w-100 d-flex justify-content-center align-items-center">
+                                    <i class="me-1 fa fa-shopping-basket"></i> Add to cart
+                                </a>
+                            </div>
+                        
+                        
+                            
+                        </div>
+                        
+                        <hr />
+                        <a href="#" class="btn btn-warning shadow-0 w-100"> Buy now </a>
+                    </div>
+                </main>
+            </div>
+
+        </div>
+    </section>
+    <!-- content -->
+
+    <section class="bg-light border-top py-4">
+        <div class="container">
+            <div class="row gx-4">
+                <div class="col-lg-8 mb-4">
+                    <div class="border rounded-2 px-3 py-2 bg-white">
+                        <!-- Pills navs -->
+                        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                            <li class="nav-item d-flex" role="presentation">
+                                <a class="nav-link d-flex align-items-center justify-content-center w-100 active"
+                                    id="ex1-tab-1" data-mdb-toggle="pill" href="#ex1-pills-1" role="tab"
+                                    aria-controls="ex1-pills-1" aria-selected="true">Specification</a>
+                            </li>
+                            <li class="nav-item d-flex" role="presentation">
+                                <a class="nav-link d-flex align-items-center justify-content-center w-100"
+                                    id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2" role="tab"
+                                    aria-controls="ex1-pills-2" aria-selected="false">Warranty info</a>
+                            </li>
+                            <li class="nav-item d-flex" role="presentation">
+                                <a class="nav-link d-flex align-items-center justify-content-center w-100"
+                                    id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
+                                    aria-controls="ex1-pills-3" aria-selected="false">Shipping info</a>
+                            </li>
+                            <li class="nav-item d-flex" role="presentation">
+                                <a class="nav-link d-flex align-items-center justify-content-center w-100"
+                                    id="ex1-tab-4" data-mdb-toggle="pill" href="#ex1-pills-4" role="tab"
+                                    aria-controls="ex1-pills-4" aria-selected="false">Seller profile</a>
+                            </li>
+                        </ul>
+                        <!-- Pills navs -->
+
+                        <!-- Pills content -->
+                        <div class="tab-content" id="ex1-content">
+                            <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel"
+                                aria-labelledby="ex1-tab-1">
+                                <p>
+                                    With supporting text below as a natural lead-in to additional content. Lorem ipsum
+                                    dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                                    labore et dolore magna aliqua. Ut
+                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                    cillum dolore eu fugiat nulla
+                                    pariatur.
+                                </p>
+                                <div class="row mb-2">
+                                    <div class="col-12 col-md-6">
+                                        <ul class="list-unstyled mb-0">
+                                            <li><i class="fas fa-check text-success me-2"></i>Some great feature name
+                                                here</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Lorem ipsum dolor sit
+                                                amet, consectetur</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Duis aute irure dolor in
+                                                reprehenderit</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Optical heart sensor</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-0">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check text-success me-2"></i>Easy fast and ver good
+                                            </li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Some great feature name
+                                                here</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Modern style and design
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <table class="table border mt-3 mb-2">
+                                    <tr>
+                                        <th class="py-2">Display:</th>
+                                        <td class="py-2">13.3-inch LED-backlit display with IPS</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2">Processor capacity:</th>
+                                        <td class="py-2">2.3GHz dual-core Intel Core i5</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2">Camera quality:</th>
+                                        <td class="py-2">720p FaceTime HD camera</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2">Memory</th>
+                                        <td class="py-2">8 GB RAM or 16 GB RAM</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2">Graphics</th>
+                                        <td class="py-2">Intel Iris Plus Graphics 640</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade mb-2" id="ex1-pills-2" role="tabpanel"
+                                aria-labelledby="ex1-tab-2">
+                                Tab content or sample information now <br />
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut
+                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                proident, sunt in culpa qui
+                                officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                                enim ad minim veniam, quis
+                                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            </div>
+                            <div class="tab-pane fade mb-2" id="ex1-pills-3" role="tabpanel"
+                                aria-labelledby="ex1-tab-3">
+                                Another tab content or sample information now <br />
+                                Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                laboris nisi ut aliquip ex ea
+                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+                                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                culpa qui officia deserunt
+                                mollit anim id est laborum.
+                            </div>
+                            <div class="tab-pane fade mb-2" id="ex1-pills-4" role="tabpanel"
+                                aria-labelledby="ex1-tab-4">
+                                Some other tab content or sample information now <br />
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut
+                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                proident, sunt in culpa qui
+                                officia deserunt mollit anim id est laborum.
+                            </div>
+                        </div>
+                        <!-- Pills content -->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="px-0 border rounded-2 shadow-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Similar items</h5>
+                                <div class="d-flex mb-3">
+                                    <a href="#" class="me-3">
+                                        <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/8.webp"
+                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                                    </a>
+                                    <div class="info">
+                                        <a href="#" class="nav-link mb-1">
+                                            Rucksack Backpack Large <br />
+                                            Line Mounts
+                                        </a>
+                                        <strong class="text-dark"> $38.90</strong>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-3">
+                                    <a href="#" class="me-3">
+                                        <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/9.webp"
+                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                                    </a>
+                                    <div class="info">
+                                        <a href="#" class="nav-link mb-1">
+                                            Summer New Men's Denim <br />
+                                            Jeans Shorts
+                                        </a>
+                                        <strong class="text-dark"> $29.50</strong>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mb-3">
+                                    <a href="#" class="me-3">
+                                        <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/10.webp"
+                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                                    </a>
+                                    <div class="info">
+                                        <a href="#" class="nav-link mb-1"> T-shirts with multiple colors, for men and
+                                            lady </a>
+                                        <strong class="text-dark"> $120.00</strong>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex">
+                                    <a href="#" class="me-3">
+                                        <img src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/11.webp"
+                                            style="min-width: 96px; height: 96px;" class="img-md img-thumbnail" />
+                                    </a>
+                                    <div class="info">
+                                        <a href="#" class="nav-link mb-1"> Blazer Suit Dress Jacket for Men, Blue color
+                                        </a>
+                                        <strong class="text-dark"> $339.90</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="product-details spad">
         <div class="container">
             <div class="row">
@@ -142,8 +540,8 @@
                             <div class="d-flex flex-column">
                                 {% for product in images %}
                                 {% if forloop.counter <= 3 %} <img class="imagetochange" src="{{product.images.url}}"
-                                    alt="Cant loign" id="left-{{ forloop.counter }}"
-                                    onclick="leftright('left-{{ forloop.counter }}')">
+                                    alt="Cant loign" id="left-{{forloop.counter}}"
+                                    onclick="leftright('left-{{forloop.counter}}')">
                                     {% endif %}
                                     {% endfor %}
                             </div>
@@ -163,8 +561,8 @@
                     <div class="product__details__text" id="details__text">
                         {% for product_variant in product_variants %}
                         {% if forloop.counter == 1 %}
-                        <h4 id="productname font-weight-bold">{{ product_variant.product.name }}<span>{{
-                                product_variant.product.brand }}</span></h3>
+                        <h4 id="productname font-weight-bold">
+                            {{product_variant.product.name}}<span>{{product_variant.product.brand}}</span></h3>
                             {% endif %}
                             {% endfor %}
                             {% for product_variant in product_variants %}
@@ -177,7 +575,7 @@
 
                             {% if messages %}
                             {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
                                 {{ message }}
                             </div>
                             {% endfor %}
@@ -240,8 +638,7 @@
                                         <div class="color__checkbox d-flex justify-content-start">
                                             {% for varient_data in product_vareint_data %}
                                             <div>
-                                                <a href="" class="text-black font-weight-bold">{{ varient_data.color
-                                                    }}{% if forloop.counter > 0%},{% endif %}</a>
+                                                <a href="" class="text-black font-weight-bold">{{varient_data.color}}{%if forloop.counter > 0%},{% endif %}</a>
                                             </div>
                                             {% endfor %}
                                         </div>
@@ -253,7 +650,7 @@
 
                                             <label for="xs-btn" class="active">
                                                 <input type="radio" id="xs-btn">
-                                                {{ varient_data.size }}
+                                                {{varient_data.size}}
                                             </label>
                                             {% endfor %}
 
@@ -266,10 +663,10 @@
                                     <div class="d-flex ">
                                         {% for variant_id, data in product_variant_images.items %}
                                         <div class="ml-4" id="product-images-container ml-5"
-                                            onmouseenter="ready('{{ variant_id }}', '{{ data.1 }}')">
+                                            onmouseenter="ready('{{variant_id}}', '{{data.1}}')">
                                             {% with image_url=data.0 %}
-                                            <img data-variant-id="{{ variant_id }}" data-color="{{ data.1 }}"
-                                                class="product__big__img" src="{{ image_url }}" alt=""
+                                            <img data-variant-id="{{variant_id}}" data-color="{{data.1}}"
+                                                class="product__big__img" src="{{image_url}}" alt=""
                                                 style="width: 5rem; height: 5rem;">
                                             <li class="text-center font-weight-bold">{{ data.1 }}</li>
                                             {% endwith %}
@@ -344,8 +741,8 @@
                                             {% for rating in ratingall %}
                                             {% if rating.user.images %}
                                             <div>
-                                                <img data-variant-id="{{ variant_id }}" data-color="{{ data.1 }}"
-                                                    class="product__big__img mt-5" src="{{ rating.user.images.url }}"
+                                                <img data-variant-id="{{variant_id}}" data-color="{{data.1}}"
+                                                    class="product__big__img mt-5" src="{{rating.user.images.url}}"
                                                     alt="" style="width: 5rem; height: 5rem;">
                                                 <p>
                                                 <div class="user-info">
@@ -406,7 +803,7 @@
                         <form method="post" action="" id="ratingForm">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="{{ rating_form.rating_user.id_for_label }}">Rating:</label>
+                                <label for="{{rating_form.rating_user.id_for_label}}">Rating:</label>
                                 <div id="rating" class="rating">
                                     <span data-value="1" class="star">&#9733;</span>
                                     <span data-value="2" class="star">&#9733;</span>
@@ -414,14 +811,14 @@
                                     <span data-value="4" class="star">&#9733;</span>
                                     <span data-value="5" class="star">&#9733;</span>
                                 </div>
-                                <input type="hidden" id="id_rating_user" name="{{ rating_form.rating_user.name }}"
+                                <input type="hidden" id="id_rating_user" name="{{rating_form.rating_user.name}}"
                                     value="0">
                             </div>
                             <div class="form-group">
-                                <label for="{{ rating_form.review_comment.id_for_label }}">Review
+                                <label for="{{rating_form.review_comment.id_for_label}}">Review
                                     Comment:</label>
-                                {{ rating_form.review_comment }}
-                                <input type="hidden" name="{{ rating_form.review_comment.name }}" id="review_comment"
+                                {{rating_form.review_comment}}
+                                <input type="hidden" name="{{rating_form.review_comment.name}}" id="review_comment"
                                     value="">
                             </div>
                             <button class="btn btn-primary" type="submit">Submit</button>
