@@ -1,91 +1,136 @@
+
 {% load static %}
-<!-- Remove the container if you want to extend the Footer to full width. -->
-<div class="my-5">
-    <!-- Footer -->
-    <footer class="text-center text-white" style="background-color: #B71C41">
-      <!-- Grid container -->
-      <div class="container">
-        <!-- Section: Links -->
-        <section class="">
-          <!-- Grid row-->
-          <div class="row text-center d-flex justify-content-center pt-5">
-            <!-- Grid column -->
-            <div class="col-md-2">
-              <h6 class="text-uppercase font-weight-bold">
-                <a href="#!" class="text-white">About us</a>
-              </h6>
-            </div>
-            <!-- Grid column -->
-  
-            <!-- Grid column -->
-            <div class="col-md-2">
-              <h6 class="text-uppercase font-weight-bold">
-                <a href="#!" class="text-white">Products</a>
-              </h6>
-            </div>
-            <!-- Grid column -->
-  
-            <!-- Grid column -->
-            <div class="col-md-2">
-              <h6 class="text-uppercase font-weight-bold">
-                <a href="#!" class="text-white">Awards</a>
-              </h6>
-            </div>
-            <!-- Grid column -->
-  
-            <!-- Grid column -->
-            <div class="col-md-2">
-              <h6 class="text-uppercase font-weight-bold">
-                <a href="#!" class="text-white">Help</a>
-              </h6>
-            </div>
-            <!-- Grid column -->
-  
-            <!-- Grid column -->
-            <div class="col-md-2">
-              <h6 class="text-uppercase font-weight-bold">
-                <a href="#!" class="text-white">Contact</a>
-              </h6>
-            </div>
-            <!-- Grid column -->
-          </div>
-          <!-- Grid row-->
-        </section>
-        <!-- Section: Links -->
-  
-        <hr class="my-5" />
-  
-        <!-- Section: Text -->
-        <section class="mb-5">
-          <div class="row d-flex justify-content-center">
-            <div class="col-lg-8">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
-                distinctio earum repellat quaerat voluptatibus placeat nam,
-                commodi optio pariatur est quia magnam eum harum corrupti
-                dicta, aliquam sequi voluptate quas.
-              </p>
-            </div>
-          </div>
-        </section>
-        <!-- Section: Text -->
-  
-       
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Improved Footer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .footer-link {
+      transition: color 0.3s ease-in-out;
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      color: #FFD700;
+    }
+
+    .footer-heading {
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    .social-icon {
+      margin-right: 15px;
+      font-size: 20px;
+    }
+
+    footer {
+      background: linear-gradient(to right, #B71C41, #8A1C41);
+      color: white;
+    }
+
+    .footer-text {
+      font-size: 14px;
+      padding: 15px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 768px) {
+      .footer-heading {
+        font-size: 14px;
+      }
+    }
+
+    .social-section {
+      padding: 15px 0;
+    }
+
+    .social-section a {
+      color: white;
+      font-size: 20px;
+      margin-right: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .social-section a:hover {
+      transform: scale(1.2);
+      color: #FFD700;
+    }
+
+    .footer-container {
+      padding: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Footer -->
+  <footer class="text-center text-white">
+    <div class="">
+      <!-- Social media section -->
+      <section class="social-section">
+        <a href="#" class="text-white"><i class="fab fa-facebook-f social-icon"></i></a>
+        <a href="#" class="text-white"><i class="fab fa-twitter social-icon"></i></a>
+        <a href="#" class="text-white"><i class="fab fa-instagram social-icon"></i></a>
+        <a href="#" class="text-white"><i class="fab fa-linkedin social-icon"></i></a>
+      </section>
+
+      <!-- Links section -->
+      <div class="row text-center d-flex justify-content-center pt-5">
+        <div class="col-md-2 col-6 mb-3">
+          <h6 class="text footer-heading font-weight-bold">
+            <a href="#!" class="text-white footer-link">About us</a>
+          </h6>
+        </div>
+        <div class="col-md-2 col-6 mb-3">
+          <h6 class="text footer-heading font-weight-bold">
+            <a href="#!" class="text-white footer-link">Products</a>
+          </h6>
+        </div>
+        <div class="col-md-2 col-6 mb-3">
+          <h6 class="text footer-heading font-weight-bold">
+            <a href="#!" class="text-white footer-link">Awards</a>
+          </h6>
+        </div>
+        <div class="col-md-2 col-6 mb-3">
+          <h6 class="text footer-heading font-weight-bold">
+            <a href="#!" class="text-white footer-link">Help</a>
+          </h6>
+        </div>
+        <div class="col-md-2 col-6 mb-3">
+          <h6 class="text footer-heading font-weight-bold">
+            <a href="#!" class="text-white footer-link">Contact</a>
+          </h6>
+        </div>
       </div>
-      <!-- Grid container -->
-  
-      <!-- Copyright -->
-      <div
-           class="text-center p-3"
-           style="background-color: rgba(0, 0, 0, 0.2)"
-           >
-        © 2023 Copyright :
-        <a class="text-white" href="https://mdbootstrap.com/"
-           >Ntk_Products.com</a
-          >
-      </div>
-      <!-- Copyright -->
-    </footer>
-    <!-- Footer -->
-  </div>
-  <!-- End of .container -->
+
+      <hr class="my-2" />
+
+      <!-- Text section -->
+      <section class="mb-2">
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-8">
+            <p class="footer-text">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum repellat quaerat
+              voluptatibus placeat nam, commodi optio pariatur est quia magnam eum harum corrupti dicta,
+              aliquam sequi voluptate quas.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      © 2023 Copyright :
+      <a class="text-white" href="https://mdbootstrap.com/">Ntk_Products.com</a>
+    </div>
+  </footer>
+  <!-- Footer -->
+</body>
+
+</html>
