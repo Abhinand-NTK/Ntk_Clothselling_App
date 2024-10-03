@@ -383,7 +383,7 @@ MEDIA_ROOT =BASE_DIR /'media'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "testntk123@gmail.com"
-EMAIL_HOST_PASSWORD = 'sstr lptb qkmw hagz'
+EMAIL_HOST_PASSWORD 
 EMAIL_USE_TLS=True
 
 razor_pay_key_id = config('razor_pay_key_id', default='')
