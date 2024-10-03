@@ -11,35 +11,77 @@
     <title>Sign Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .error-box {
-            position: relative;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        form{
+            width: 80%; 
+            padding:2rem
         }
 
-        .error-message {
+        .image-holder {
+            background: url("../../media/brand/ballon.jpg") no-repeat center center;
+            background-size: cover;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-            color: red;
-            font-size: 14px;
-            font-weight: bold;
+        .container {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+        }
+
+        .vh-100 {
+            height: 80vh;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-group.col-6 {
+                width: 100%;
+                flex: 100%;
+            }
+            .form-group.col-6 {
+                padding-right: 0;
+            }
+            .form-container {
+                background-color: rgba(255, 255, 255, 0.8);
+                border-radius: 10px;
+                padding: 0;
+                width: 100%;
+            }
+            .row{
+                padding: 0;
+            }
         }
     </style>
+
 </head>
 
-<body style="background-color: #f6f3f4f7;">
-    <!-- <body style="background-color: #f5c5cf;" ></body> -->
-
-    <div class=" container vh-80 d-flex justify-content-center align-items-center ">
-        <div class="col-md-6 text-center d-none d-md-block vh-100">
-            <img style="height: 100vh; width: 90vh;"
-                src="https://img.freepik.com/free-photo/impressed-young-handsome-slavic-party-guy-wearing-party-hat-sunglasses-holding-balloons-paper-bags-looking-pointing-side-isolated-pink-wall_141793-85302.jpg"
-                class="img-fluid mt-4" alt="Image">
-        </div>
-        <div class="col-md-6 d-flex justify-content-center ">
-            <!-- <form method="POST" action="/signup/"  style="height: 85vh; width: 60vh;"  class="row d-flex justify-content-between mt-5"> -->
-            <form method="POST" action="{% url 'user_signup' %}" style="width: 80%" onsubmit="submission(event)"
-                class="row d-flex justify-content-center align-items-center vh-100 mt-5" id="signupform">
+<body>
+    <div class="image-holder">
+        <div class="col-md-6 d-flex justify-content-center form-container" style="margin:2rem;">
+            <form method="POST" action="{% url 'user_signup' %}"
+                onsubmit="submission(event)" class="row d-flex justify-content-center align-items-center"
+                id="signupform">
                 {% csrf_token %}
-                <div class="col-12  mb-4">
-                    <h2 class="">Sign up</h3>
+                <div class="col-12 mb-4 text-center">
+                    <h2>Sign up</h2>
                 </div>
                 {% if messages %}
                 {% for message in messages %}
@@ -48,24 +90,22 @@
                 </div>
                 {% endfor %}
                 {% endif %}
-                <div class="form-group col-12 d-flex justify-content-center mb-3">
-                    <button class="btn btn-light rounded-sm border text-dark font-weight-normal"
-                        style="width: 100%;">Continue with Google</button>
+                <div class="form-group col-12 d-flex justify-content-center">
+                    <button class="btn btn-light rounded-sm border text-dark font-weight-normal" style="width: 100%;">
+                        Continue with Google
+                    </button>
                 </div>
-                <div class="form-group col-6">
-                    <p class="error-message" id="firstname-error" style="height: 1rem;"></p>
+                <div class="form-group col-l-6 col-md-12 col-12">
+                    <p class="error-message" id="firstname-error"></p>
                     <label for="firstname">Enter your firstname</label>
                     <input type="text" class="form-control" id="firstname" placeholder="Enter your firstname"
                         name="firstname" required>
-
-
                 </div>
-                <div class="form-group col-6">
-                    <p class="error-message" id="lastname-error" style="height: 1rem;"></p>
+                <div class="form-group col-l-6 col-md-12 col-12">
+                    <p class="error-message" id="lastname-error"></p>
                     <label for="lastname">Enter your Lastname</label>
                     <input type="text" class="form-control" id="lastname" placeholder="Enter your lastname"
                         name="lastname" required>
-
                 </div>
                 <div class="form-group col-12">
                     <p class="error-message" id="username-error"></p>
@@ -86,183 +126,164 @@
                     <p class="error-message" id="repeatpassword-error"></p>
                 </div>
                 <div class="form-group col-12 text-center">
-                    <label for="referral_code" class="text-center font-weight-bold">Referel Code(Optional)</label>
-                    <input type="text" class="form-control" id="referral_code" placeholder="Enter Refrel Code"
+                    <label for="referral_code" class="text-center font-weight-bold">Referel Code (Optional)</label>
+                    <input type="text" class="form-control" id="referral_code" placeholder="Enter Referral Code"
                         name="referral_code">
-                </div>
-                <div class="form-group col-12 text-center">
-                    <p id="messgessss"  class="text-info fs-3 font-weight-bold"></p>
                 </div>
                 <div class="form-group col-12 text-center">
                     <button style="width: 100%;" type="submit" class="btn btn-danger">Sign Up</button>
                     <p class="mt-2">I already have an account <a href="/" class="text-dark">Sign In</a></p>
                 </div>
             </form>
-
-            <script>
-
-
-
-                let formdata = document.getElementById('signupform')
-
-
-
-                let userinput = formdata.querySelector('#username');
-
-                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-                // for Email Validation 
-                let error_message_email = document.getElementById('username-error')
-
-
-
-
-
-                userinput.addEventListener('input', function () {
-                    let useremail;
-                    useremail = formdata.username.value;
-                    postData = { 'useremail': useremail }
-
-                    fetch('/Validation/', {
-                        method: 'POST', // or 'POST', 'PUT', 'DELETE', etc.
-                        headers: {
-                            'Content-Type': 'application/json', // Specify JSON content type
-                            'X-CSRFToken': csrfToken, // Include CSRF token in headers as well
-                            // Add more headers as needed
-                        },
-                        body: JSON.stringify(postData), // Convert the data to JSON format
-
-                    })
-                        .then(response => {
-                            // Handle the response here
-
-                            if (response.ok) {
-                                return response.json() // Assuming the response is JSON
-                            } else {
-                                throw new Error('Network response was not ok');
-                            }
-                        })
-                        .then(data => {
-                            if (data.message == 'Enter Your E-mail !!') {
-
-                                error_message_email.textContent = data.message
-                                error_message_email.style.color = 'green'
-                            }
-                            else {
-                                error_message_email.textContent = data.message
-                                error_message_email.style.color = 'red'
-
-
-
-                            }
-
-                        })
-                        .catch(error => {
-                            // Handle any errors here
-                        });
-                })
-
-                const nameInput = document.querySelector('#firstname'); // Replace '#name' with the actual ID of your name input field
-                const lastnameinput = document.querySelector('#lastname'); // Replace '#name' with the actual ID of your name input field
-                const nameError = document.getElementById('firstname-error'); // Replace 'name-error' with the ID of the error message element
-                const lastnameError = document.getElementById('lastname-error'); // Replace 'name-error' with the ID of the error message element
-
-                // Define the name regex
-                const nameRegex = /^[A-Za-z]+$/;
-
-                // Add an input event listener to the name field
-                nameInput.addEventListener('input', validateName);
-                lastnameinput.addEventListener('input', validateName);
-
-                // Event listener function for name validation
-                function validateName() {
-                    const name = nameInput.value;
-                    const lastname = lastnameinput.value;
-
-                    if (!nameRegex.test(name)) {
-                        nameError.textContent = "Please enter a valid name (letters only)";
-                        nameError.style.color = 'red';
-                    } else {
-                        nameError.textContent = " ";
-                        nameError.style.color = 'green';
-
-                    }
-                    if (!nameRegex.test(lastname)) {
-                        lastnameError.textContent = "Please enter a valid name (letters only)";
-                        lastnameError.style.color = 'red';
-                    } else {
-                        lastnameError.textContent = " ";
-                        lastnameError.style.color = 'green';
-
-                    }
-                }
-
-
-                // for password validation
-                // Get references to the input fields and error message elements
-                const passwordInput = formdata.querySelector('#password');
-                const confirmPasswordInput = formdata.querySelector('#repeatpassword');
-                const passwordError = document.getElementById('password-error');
-                const confirmPasswordError = document.getElementById('repeatpassword-error');
-
-                // Define the password regex
-                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-
-                // Add an input event listener to both password and confirmPassword input fields
-                passwordInput.addEventListener('input', validatePassword);
-                confirmPasswordInput.addEventListener('input', validatePassword);
-
-                // Event listener function for password validation
-                function validatePassword() {
-                    const password = passwordInput.value;
-                    const confirmPassword = confirmPasswordInput.value;
-
-                    if (!passwordRegex.test(password)) {
-                        passwordError.textContent = "Password must be at least 6 characters long and include uppercase, lowercase, digit, and special character";
-                        passwordError.style.color = 'red';
-                    } else {
-                        passwordError.textContent = "Password must meet the criteria.";
-                        passwordError.style.color = 'green';
-                    }
-
-                    if (!passwordRegex.test(confirmPassword)) {
-                        confirmPasswordError.textContent = "Confirm Password must be at least 6 characters long and include uppercase, lowercase, digit, and special character";
-                        confirmPasswordError.style.color = 'red';
-                    } else if (password === confirmPassword) { // Compare passwords using ===
-                        confirmPasswordError.textContent = "Passwords match";
-                        confirmPasswordError.style.color = 'green';
-                    } else {
-                        confirmPasswordError.textContent = "Passwords do not match";
-                        confirmPasswordError.style.color = 'red';
-                    }
-                }
-
-                function submission(event) {
-
-                    event.preventDefault()
-                    if (confirmPasswordError.style.color == 'green' && nameError.style.color == 'green' && lastnameError.style.color == 'green') {
-                        formdata.submit()
-                    }
-                    else {
-                        const messages = document.getElementById('messgessss');
-
-                        messages.innerHTML = "Fill all the fields as per the instruction"
-                        messages.style
-
-                        return false
-                    }
-
-                }
-
-
-
-
-            </script>
-
-
         </div>
     </div>
 </body>
+
+<script>
+
+    
+
+    let formdata = document.getElementById('signupform')
+
+    let userinput = formdata.querySelector('#username');
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // for Email Validation 
+    let error_message_email = document.getElementById('username-error')
+
+    userinput.addEventListener('input', function () {
+        let useremail;
+        useremail = formdata.username.value;
+        postData = { 'useremail': useremail }
+
+        fetch('/Validation/', {
+            method: 'POST', // or 'POST', 'PUT', 'DELETE', etc.
+            headers: {
+                'Content-Type': 'application/json', // Specify JSON content type
+                'X-CSRFToken': csrfToken, // Include CSRF token in headers as well
+                // Add more headers as needed
+            },
+            body: JSON.stringify(postData), // Convert the data to JSON format
+
+        })
+            .then(response => {
+                // Handle the response here
+
+                if (response.ok) {
+                    return response.json() // Assuming the response is JSON
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                if (data.message == 'Enter Your E-mail !!') {
+
+                    error_message_email.textContent = data.message
+                    error_message_email.style.color = 'green'
+                }
+                else {
+                    error_message_email.textContent = data.message
+                    error_message_email.style.color = 'red'
+                }
+            })
+            .catch(error => {
+                // Handle any errors here
+            });
+    })
+
+    const nameInput = document.querySelector('#firstname'); // Replace '#name' with the actual ID of your name input field
+    const lastnameinput = document.querySelector('#lastname'); // Replace '#name' with the actual ID of your name input field
+    const nameError = document.getElementById('firstname-error'); // Replace 'name-error' with the ID of the error message element
+    const lastnameError = document.getElementById('lastname-error'); // Replace 'name-error' with the ID of the error message element
+
+    // Define the name regex
+    const nameRegex = /^[A-Za-z]+$/;
+
+    // Add an input event listener to the name field
+    nameInput.addEventListener('input', validateName);
+    lastnameinput.addEventListener('input', validateName);
+
+    // Event listener function for name validation
+    function validateName() {
+        const name = nameInput.value;
+        const lastname = lastnameinput.value;
+
+        if (!nameRegex.test(name)) {
+            nameError.textContent = "Please enter a valid name (letters only)";
+            nameError.style.color = 'red';
+        } else {
+            nameError.textContent = " ";
+            nameError.style.color = 'green';
+
+        }
+        if (!nameRegex.test(lastname)) {
+            lastnameError.textContent = "Please enter a valid name (letters only)";
+            lastnameError.style.color = 'red';
+        } else {
+            lastnameError.textContent = " ";
+            lastnameError.style.color = 'green';
+
+        }
+    }
+
+
+    // for password validation
+    // Get references to the input fields and error message elements
+    const passwordInput = formdata.querySelector('#password');
+    const confirmPasswordInput = formdata.querySelector('#repeatpassword');
+    const passwordError = document.getElementById('password-error');
+    const confirmPasswordError = document.getElementById('repeatpassword-error');
+
+    // Define the password regex
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    // Add an input event listener to both password and confirmPassword input fields
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validatePassword);
+
+    // Event listener function for password validation
+    function validatePassword() {
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (!passwordRegex.test(password)) {
+            passwordError.textContent = "Password must be at least 6 characters long and include uppercase, lowercase, digit, and special character";
+            passwordError.style.color = 'red';
+        } else {
+            passwordError.textContent = "Password must meet the criteria.";
+            passwordError.style.color = 'green';
+        }
+
+        if (!passwordRegex.test(confirmPassword)) {
+            confirmPasswordError.textContent = "Confirm Password must be at least 6 characters long and include uppercase, lowercase, digit, and special character";
+            confirmPasswordError.style.color = 'red';
+        } else if (password === confirmPassword) { // Compare passwords using ===
+            confirmPasswordError.textContent = "Passwords match";
+            confirmPasswordError.style.color = 'green';
+        } else {
+            confirmPasswordError.textContent = "Passwords do not match";
+            confirmPasswordError.style.color = 'red';
+        }
+    }
+
+    function submission(event) {
+
+        event.preventDefault()
+        if (confirmPasswordError.style.color == 'green' && nameError.style.color == 'green' && lastnameError.style.color == 'green') {
+            formdata.submit()
+        }
+        else {
+            const messages = document.getElementById('messgessss');
+
+            messages.innerHTML = "Fill all the fields as per the instruction"
+            messages.style
+
+            return false
+        }
+
+    }
+</script>
 
 </html>
 

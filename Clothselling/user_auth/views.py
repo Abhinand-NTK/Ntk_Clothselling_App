@@ -116,8 +116,10 @@ def generate_referral_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 def User_signup(request):
+
+    
         
-    try:
+    # try:
         if request.method=='POST':
             
             email = request.POST.get('username', '').strip()
@@ -127,7 +129,6 @@ def User_signup(request):
             repeatpassword = request.POST.get('repeatpassword', '')
             referral_code = request.POST.get('referral_code', '').strip()
             check=CustomUser.objects.filter(email=email)
-
             if referral_code:
                 try:
                     referrer = CustomUser.objects.get(referral_code=referral_code)
@@ -143,18 +144,15 @@ def User_signup(request):
                     referrer = None
             else:
                 referrer = None
-
-
-
             
             if check:
                 messages.error(request,'The E-mail is Already exist Try with another one')
                 return redirect('user_signup')
-            if password==repeatpassword:
             
+            if password==repeatpassword:
                 
                 otp = generate_and_send_otp()  # Generate OTP here
-                user=CustomUser.objects.create_user(email,password=password,)
+                user=CustomUser.objects.create_user(email,password=password)
                 user.first_name = firstname
                 user.lastname = lastname
                 # user.phone_number = phonenumber
@@ -163,7 +161,6 @@ def User_signup(request):
                 user.referrer=referrer
                 user.save()
                 user_id=user.id
-
                 payhis =  CustomUser.objects.get(email = email)
                 payhis.referrer 
 
@@ -171,8 +168,6 @@ def User_signup(request):
                         
                         payhis.wallet = payhis.wallet + 100
                         payhis.save()
-
-
                         wallerhistory=Payementwallet(user=payhis)
                         wallerhistory.paymenttype="Credit"
                         wallerhistory.created=datetime.now()
@@ -193,10 +188,10 @@ def User_signup(request):
                 messages.error(request,'Password fiels are Not matchining  !')
                 return redirect('user_signup')
 
-        return render(request, 'Authenticatoins/signup copy.html')
-    except Exception as e:
-        print(e)
-        return render(request, 'Authenticatoins/signup copy.html')
+        return render(request, 'Authenticatoins/signup.html')
+    # except Exception as e:
+    #     print(e)
+    #     return render(request, 'Authenticatoins/signup.html')
 
 
 
