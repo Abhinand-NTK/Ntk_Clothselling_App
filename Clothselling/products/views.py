@@ -591,7 +591,6 @@ def product_details(request, id=None):
         product_vareint_data = []
 
         for var in product_variants:
-            print(var.id)
             varient_data = {
                 'id': var.id,
                 'color': var.color,
@@ -611,8 +610,28 @@ def product_details(request, id=None):
         images = Multipleimges.objects.filter(product__in=product_variants)
         testing = Multipleimges.objects.filter(product__in=product_variants1)
         rating = Rating.objects.filter(user=user_id)
-        ratingall = Rating.objects.filter(product_variant__product__id=id)
+        ratingall = Rating.objects.filter(product_variant__id=id)
         ratingcount = ratingall.count()
+
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print(ProductVariant.objects.filters(product_id=id))
+        print(ratingall)
+        print(id)
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+        print("=======================================================================")
+
+
+
 
         rating_varient_id = []
 
@@ -643,6 +662,8 @@ def product_details(request, id=None):
     except Exception as e:
         print(e)
         return render(request, 'products_detalils.html', context)
+    
+
 
 
 def Filtering_in_Prouduct_details_page(request):

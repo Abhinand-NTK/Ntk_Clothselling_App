@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
 
 <link rel="stylesheet" type="text/css" href="{% static 'your-stylesheet.css' %}">
+<!-- MDB CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet" />
+<!-- MDB JavaScript -->
+
 
 
 
@@ -180,6 +184,9 @@
                     </div>
                 </aside>
                 <main class="col-lg-6">
+                    <div class="">
+                        <div id="myresult" class="img-zoom-result"></div>
+                    </div>
                     <div class="ps-lg-3">
                         {% for product_variant in product_variants %}
                         {% if forloop.counter == 1 %}
@@ -234,7 +241,7 @@
                         {% for product_variant in product_variants %}
                         {% if forloop.counter == 1 %}
                         <div class="mb-3">
-                            <span class="h5">₹ {{product_variant.price}} </span>
+                            <span class="product__details__price h5" id="price">₹ {{product_variant.price}} </span>
                             <span class="text-muted">/per box</span>
                             {% if product_variant.checkcolor %}
                             <a id="colorchange" style="color: red;border-width: 2px;"
@@ -293,41 +300,36 @@
 
                         <div class="row mb-4 align-items-center">
                             <!-- Quantity Selector and Add to Cart Form -->
-                            <div class="col-md-4 col-6">
+
+                            {% for product_variant in product_variants %}
+                            {% if forloop.counter == 1 %}
+
+                            <div class="product__details__button">
                                 <form id="cartForm" action="/cart/addtocart/{{ product_variant.id }}" method="POST">
                                     {% csrf_token %}
+
                                     {% if not all_variants_out_of_stock %}
-                                    <div class="quantity d-flex justify-content-center align-items-center">
-                                        <button type="button" class="dec qtybtn" onclick="decrementQuantity()">-</button>
-                                        <input type="number" name="quantity" id="quantity" value="1" readonly class="mx-2 text-center">
-                                        <button type="button" class="inc qtybtn" onclick="incrementQuantity()">+</button>
+                                    <div class="quantity">
+                                        <button type="button" class="dec qtybtn"
+                                            onclick="decrementQuantity()">-</button>
+                                        <input type="number" name="quantity" id="quantity" value="1" readonly>
+                                        <button type="button" class="inc qtybtn"
+                                            onclick="incrementQuantity()">+</button>
                                     </div>
+                                    <button type="submit"
+                                        class="btn btn-primary shadow-0 d-flex justify-content-center align-items-center"><span
+                                            class="icon_bag_alt"></span> Add to
+                                        cart</button>
                                     {% else %}
-                                    <p class="text-danger text-center mt-2" style="font-size: 1rem;">Out of stock</p>
+                                    <p class="text-danger text-center" style="height: 1rem; font-size: 1rem;">Out of
+                                        stock</p>
                                     {% endif %}
+
                                 </form>
                             </div>
-                            
-                            <!-- Size Selection -->
-                            <div class="col-md-4 col-6">
-                                <select class="form-select border border-secondary w-100" style="height: 35px;">
-                                    <option>Small</option>
-                                    <option>Medium</option>
-                                    <option>Large</option>
-                                </select>
-                            </div>
-
-                            <!-- Add to Cart Button -->
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="btn btn-primary shadow-0 w-100 d-flex justify-content-center align-items-center">
-                                    <i class="me-1 fa fa-shopping-basket"></i> Add to cart
-                                </a>
-                            </div>
-                        
-                        
-                            
+                            {%endif%}
+                            {%endfor%}
                         </div>
-                        
                         <hr />
                         <a href="#" class="btn btn-warning shadow-0 w-100"> Buy now </a>
                     </div>
@@ -353,34 +355,31 @@
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
                                     id="ex1-tab-2" data-mdb-toggle="pill" href="#ex1-pills-2" role="tab"
-                                    aria-controls="ex1-pills-2" aria-selected="false">Warranty info</a>
+                                    aria-controls="ex1-pills-2" aria-selected="false">Description</a>
                             </li>
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
                                     id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
-                                    aria-controls="ex1-pills-3" aria-selected="false">Shipping info</a>
+                                    aria-controls="ex1-pills-3" aria-selected="false">Reviews</a>
                             </li>
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
                                     id="ex1-tab-4" data-mdb-toggle="pill" href="#ex1-pills-4" role="tab"
-                                    aria-controls="ex1-pills-4" aria-selected="false">Seller profile</a>
+                                    aria-controls="ex1-pills-4" aria-selected="false">Others</a>
                             </li>
                         </ul>
                         <!-- Pills navs -->
 
                         <!-- Pills content -->
                         <div class="tab-content" id="ex1-content">
+                            <!-- Specification Content -->
                             <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel"
                                 aria-labelledby="ex1-tab-1">
-                                <p>
-                                    With supporting text below as a natural lead-in to additional content. Lorem ipsum
-                                    dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                    labore et dolore magna aliqua. Ut
-                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla
-                                    pariatur.
-                                </p>
+                                {% for product_variant in product_variants %}
+                                {% if forloop.counter == 1 %}
+                                <p>{{product_variant.product.description}}</p>
+                                {% endif %}
+                                {% endfor %}
                                 <div class="row mb-2">
                                     <div class="col-12 col-md-6">
                                         <ul class="list-unstyled mb-0">
@@ -395,7 +394,7 @@
                                     </div>
                                     <div class="col-12 col-md-6 mb-0">
                                         <ul class="list-unstyled">
-                                            <li><i class="fas fa-check text-success me-2"></i>Easy fast and ver good
+                                            <li><i class="fas fa-check text-success me-2"></i>Easy fast and very good
                                             </li>
                                             <li><i class="fas fa-check text-success me-2"></i>Some great feature name
                                                 here</li>
@@ -427,41 +426,103 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="tab-pane fade mb-2" id="ex1-pills-2" role="tabpanel"
-                                aria-labelledby="ex1-tab-2">
-                                Tab content or sample information now <br />
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui
-                                officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis
-                                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                            <!-- Description Content -->
+                            <div class="tab-pane fade" id="ex1-pills-2" role="tabpanel" aria-labelledby="ex1-tab-2">
+                                <p>Tab content or sample information now.<br />
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
                             </div>
-                            <div class="tab-pane fade mb-2" id="ex1-pills-3" role="tabpanel"
-                                aria-labelledby="ex1-tab-3">
-                                Another tab content or sample information now <br />
-                                Dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea
-                                commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                culpa qui officia deserunt
-                                mollit anim id est laborum.
+                            <!-- Reviews Content -->
+                            <div class="rating-container">
+                                <p class="text-md">Rate and Review This Product</p>
+                                <form method="post" action="" id="ratingForm">
+                                    {% csrf_token %}
+
+                                    <!-- Star Rating and Text in the Same Row -->
+                                    <div class="form-group row align-items-center">
+                                        <label for="{{rating_form.rating_user.id_for_label}}"
+                                            class="col-md-2 col-form-label">Rating:</label>
+                                        <div id="rating" class="rating col-md-10">
+                                            <span data-value="1" class="star">&#9733;</span>
+                                            <span data-value="2" class="star">&#9733;</span>
+                                            <span data-value="3" class="star">&#9733;</span>
+                                            <span data-value="4" class="star">&#9733;</span>
+                                            <span data-value="5" class="star">&#9733;</span>
+                                        </div>
+                                        <input type="hidden" id="id_rating_user" name="{{rating_form.rating_user.name}}"
+                                            value="0">
+                                    </div>
+
+                                    <!-- Review Textarea on the Next Row -->
+                                    <div class="form-group">
+                                        <label for="{{rating_form.review_comment.id_for_label}}">Review Comment:</label>
+                                        <textarea class="form-control" id="review_comment"
+                                            name="{{rating_form.review_comment.name}}" rows="3"
+                                            placeholder="Write your review here..."></textarea>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                </form>
+
+                                {% for rating in ratingall %}
+                                <div class="rating-review-container">
+                                    <!-- User Image and Name -->
+                                    {% if rating.user.images %}
+                                    <div class="user-info d-flex align-items-center mb-2">
+                                        <img data-variant-id="{{variant_id}}" data-color="{{data.1}}" class="user-img"
+                                            src="{{rating.user.images.url}}" alt="User Image">
+                                        <div class="user-name ms-3">
+                                            <strong>{{ rating.user.first_name }} {{ rating.user.lastname }}</strong>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    <!-- Star Rating and Review -->
+                                    <div class="rating d-flex align-items-center mb-2">
+                                        <!-- Star Rating -->
+                                        <div class="stars">
+                                            {% if rating.rating_user == 5 %}
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            {% elif rating.rating_user == 1 %}
+                                            <span class="star1">&#9733;</span>
+                                            {% elif rating.rating_user == 2 %}
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            {% elif rating.rating_user == 3 %}
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            {% elif rating.rating_user == 4 %}
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            {% elif rating.rating_user == 0 %}
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            <span class="star1">&#9733;</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <!-- Review Comment -->
+                                    <div class="review-content mb-2">
+                                        <p>{{ rating.review_comment }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
                             </div>
-                            <div class="tab-pane fade mb-2" id="ex1-pills-4" role="tabpanel"
-                                aria-labelledby="ex1-tab-4">
-                                Some other tab content or sample information now <br />
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                proident, sunt in culpa qui
-                                officia deserunt mollit anim id est laborum.
+                            <!-- Other Content -->
+                            <div class="tab-pane fade" id="ex1-pills-4" role="tabpanel" aria-labelledby="ex1-tab-4">
+                                <p>Some other tab content or sample information now.<br />
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
                             </div>
                         </div>
                         <!-- Pills content -->
@@ -534,161 +595,6 @@
     <section class="product-details spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="d-flex flex-column">
-                                {% for product in images %}
-                                {% if forloop.counter <= 3 %} <img class="imagetochange" src="{{product.images.url}}"
-                                    alt="Cant loign" id="left-{{forloop.counter}}"
-                                    onclick="leftright('left-{{forloop.counter}}')">
-                                    {% endif %}
-                                    {% endfor %}
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="image-container">
-                                <img src="{{product.images.url}}" class="h-75" alt="No images" id="myimage">
-                                <div id="zoom-lens" class="zoom-lens"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="">
-                        <div id="myresult" class="img-zoom-result"></div>
-                    </div>
-                    <div class="product__details__text" id="details__text">
-                        {% for product_variant in product_variants %}
-                        {% if forloop.counter == 1 %}
-                        <h4 id="productname font-weight-bold">
-                            {{product_variant.product.name}}<span>{{product_variant.product.brand}}</span></h3>
-                            {% endif %}
-                            {% endfor %}
-                            {% for product_variant in product_variants %}
-                            {% if forloop.counter == 1 %}
-                            <div class="product__details__price" id="price"> ₹ {{product_variant.price}} <span> ₹
-                                    83.0</span></div>
-                            <p>{{product_variant.product.description}}</p>
-                            {% endif %}
-                            {% endfor %}
-
-                            {% if messages %}
-                            {% for message in messages %}
-                            <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% for product_variant in product_variants %}
-                            {% if forloop.counter == 1 %}
-
-                            <div class="product__details__button">
-                                <form id="cartForm" action="/cart/addtocart/{{ product_variant.id }}" method="POST">
-                                    {% csrf_token %}
-
-                                    {% if not all_variants_out_of_stock %}
-                                    <div class="quantity">
-                                        <button type="button" class="dec qtybtn"
-                                            onclick="decrementQuantity()">-</button>
-                                        <input type="number" name="quantity" id="quantity" value="1" readonly>
-                                        <button type="button" class="inc qtybtn"
-                                            onclick="incrementQuantity()">+</button>
-                                    </div>
-
-                                    <button type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to
-                                        cart</button>
-                                    {% else %}
-                                    <p class="text-danger" style="height: 1rem; font-size: 2rem;"> This items is
-                                        currently out of stock</p>
-                                    {% endif %}
-
-                                </form>
-                                <ul>
-                                    {% if product_variant.checkcolor %}
-                                    <li>
-                                        <button id="colorchange"
-                                            class="btn btn-light border-none rounded-circle border-1"
-                                            style="color: red;border-width: 2px;"
-                                            onclick="Wishlist('{{product_variant.id}}')" data-bs-toggle="popover"
-                                            data-bs-placement="bottom" data-bs-trigger="manual" data-bs-content="">
-                                            <span class="fa fa-heart"></span>
-                                        </button>
-                                    </li>
-                                    {% else %}
-                                    <li>
-                                        <button id="colorchange"
-                                            class="btn btn-light border-none rounded-circle border-1"
-                                            style="color: black;border-width: 2px;"
-                                            onclick="Wishlist('{{product_variant.id}}')" data-bs-toggle="popover"
-                                            data-bs-placement="bottom" data-bs-trigger="manual" data-bs-content="">
-                                            <span class="fa fa-heart"></span>
-                                        </button>
-                                    </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                            {%endif%}
-                            {%endfor%}
-                            <div class="product__details__widget">
-                                <ul>
-                                    <li>
-                                        <span>Available color:</span>
-                                        <div class="color__checkbox d-flex justify-content-start">
-                                            {% for varient_data in product_vareint_data %}
-                                            <div>
-                                                <a href="" class="text-black font-weight-bold">{{varient_data.color}}{%if forloop.counter > 0%},{% endif %}</a>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span>Available size:</span>
-                                        <div class="size__btn font-weight-bold">
-                                            {% for varient_data in product_vareint_data %}
-
-                                            <label for="xs-btn" class="active">
-                                                <input type="radio" id="xs-btn">
-                                                {{varient_data.size}}
-                                            </label>
-                                            {% endfor %}
-
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span>Promotions:</span>
-                                        <p class="font-weight-bold">Free shipping</p>
-                                    </li>
-                                    <div class="d-flex ">
-                                        {% for variant_id, data in product_variant_images.items %}
-                                        <div class="ml-4" id="product-images-container ml-5"
-                                            onmouseenter="ready('{{variant_id}}', '{{data.1}}')">
-                                            {% with image_url=data.0 %}
-                                            <img data-variant-id="{{variant_id}}" data-color="{{data.1}}"
-                                                class="product__big__img" src="{{image_url}}" alt=""
-                                                style="width: 5rem; height: 5rem;">
-                                            <li class="text-center font-weight-bold">{{ data.1 }}</li>
-                                            {% endwith %}
-                                        </div>
-                                        {% endfor %}
-
-                                    </div>
-                                    <div class="d-flex align-content-between ml-4">
-                                        {% for item in product_vareint_data %}
-                                        {% if item.stock > 0 %}
-                                        <li class="font-weight-bold text-success ml-4">In Stock,</li>
-                                        {% else %}
-                                        <li class="font-weight-bold text-danger">Out of Stock,</li>
-                                        {% endif %}
-                                        {% endfor %}
-
-                                    </div>
-
-                                </ul>
-                            </div>
-                    </div>
-                </div>
                 <div class="col-lg-12">
                     <div class="product__details__tab">
                         <ul class="nav nav-tabs" role="tablist">
@@ -832,7 +738,7 @@
 
         </div>
     </section>
-    <input type="hidden" name="" id="varient_id" value="">
+    <input type="hidden" name="" id="varient_id" value="{{varient_data.id}}">
     <input type="hidden" name="" id="rating_data" value="{{rating}}">
     <input type="hidden" name="" id="order_list_id" value="{{order_list_id}}">
     <script>
@@ -990,13 +896,14 @@
 
 
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </body>
 {% endblock%}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 </html>
