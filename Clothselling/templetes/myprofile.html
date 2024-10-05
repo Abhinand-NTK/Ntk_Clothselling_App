@@ -159,7 +159,6 @@
                             alt="Profile Picture" class="rounded-circle border border-success"
                             style="width: 100px; height: 100px;" id="profilepic">
                     </div>
-
                     <!-- Referral Code -->
                     <div class="col-lg-12">
                         <div class="text-center mt-3">
@@ -170,14 +169,13 @@
                             </p>
                         </div>
                     </div>
-
                     <!-- Upload Profile Picture -->
                     {% if not user.images %}
                     <form method="POST" action="{% url 'addprofilepicture' user.id %}" id="userprofiledetails"
                         enctype="multipart/form-data">
                         <div class="col-lg-12">
                             <div class="text-center mt-3">
-                                {% csrf_token %}
+                                    {% csrf_token %}
                                 <div class="row justify-content-center align-items-center">
                                     <input type="file" name="profilepicture" id="addprofilepic1" style="display: none;"
                                         accept="image/*">
