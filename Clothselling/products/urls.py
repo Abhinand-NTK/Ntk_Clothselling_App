@@ -29,8 +29,5 @@ urlpatterns=[
     path('filter/<str:category_id>/<str:heading>', views.Filter, name='filter'),
     path('multiple_filter/<str:heading>', views.filter_Accordence_multiple_input, name='multiple_filter'),
     path('search_products/<str:query>', views.search_products, name='search_products'),
-
-
-    # path('filtering_varient/<str:varient_id>',views.product_details,name='filtering_varient'),
       ]
 

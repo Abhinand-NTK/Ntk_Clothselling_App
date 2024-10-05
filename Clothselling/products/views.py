@@ -619,7 +619,7 @@ def product_details(request, id=None):
         print("=======================================================================")
         print("=======================================================================")
         print("=======================================================================")
-        print(ProductVariant.objects.filters(product_id=id))
+        # print(ProductVariant.objects.filters(product_id=id))
         print(ratingall)
         print(id)
         print("=======================================================================")

@@ -644,6 +644,39 @@ def Add_item_to_Cart(request,product_vareint_id=None):
 
 
 
+def check_purchase(request,item_id):
+
+    
+        user = request.session.get('user')
+    # try:
+        if request.method == 'POST':
+            # try:
+                # item_id = request.POST.get('item_id')
+                # data = json.loads(request.body.decode('utf-8'))
+                # user_id = data.get('user_id')
+                # item_id = data.get('item_id')
+                user_id = CustomUser.objects.filter(email=user)
+                print(user_id)
+                user_id = CustomUser.objects.filter(email=user).values_list('id', flat=True).first()
+                print(user_id)
+                item = ProductVariant.objects.get(id=item_id)
+                print(item)
+                is_purchased = OrderProduct.objects.filter(customer=user_id, variant=item_id).exists()
+                print(is_purchased)
+
+                # Return a JSON response
+                return JsonResponse({
+                    'purchased': True
+                })
+
+    #         except CustomUser.DoesNotExist:
+    #             return JsonResponse({'error': 'User not found'}, status=404)
+    #         except Product.DoesNotExist:
+    #             return JsonResponse({'error': 'Item not found'}, status=404)
+
+    # except Exception as e:
+    #     return JsonResponse({'error': str(e)}, status=500)
+
 
 
 def Submit_rating(request, variant_id):  
@@ -657,8 +690,6 @@ def Submit_rating(request, variant_id):
                 rating = data.get('rating')
                 review_comment = data.get('review_comment')
 
-                print(rating)
-                print(review_comment)
 
                 check_submission_status = Rating.objects.filter(
                     user=CustomUser.objects.get(email=user),
@@ -666,8 +697,6 @@ def Submit_rating(request, variant_id):
                 )
 
                 if not check_submission_status:  
-                    print("succeeded")
-                    print("succeeded")
 
                     rating_form = RatingForm(data={'rating_user': rating, 'review_comment': review_comment})
 

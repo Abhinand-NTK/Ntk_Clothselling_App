@@ -16,7 +16,7 @@ class Payments(models.Model):
     def __str__(self):
         return self.payment_id
     
-class Order(models.Model):
+class   Order(models.Model):
 
     STATUS ={
         ('Order confirmed', 'Order confirmed'),

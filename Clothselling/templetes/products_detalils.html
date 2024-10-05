@@ -359,8 +359,8 @@
                             </li>
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
-                                    id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
-                                    aria-controls="ex1-pills-3" aria-selected="false">Reviews</a>
+                                   id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
+                                   aria-controls="ex1-pills-3" aria-selected="false" onclick="checkPurchase()">Reviews</a>
                             </li>
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
@@ -752,7 +752,7 @@
 
             varient_id = document.getElementById('varient_id')
 
-
+           
             // Initialize the rating value
             let currentRating = parseInt(ratingInput.value);
             updateStars(currentRating);
@@ -798,6 +798,8 @@
 
 
                 varient_idvalue = varient_id.value
+
+                
 
 
 
@@ -853,11 +855,6 @@
             var $button = $(this);
             var oldValue = $button.parent().find('input').val();
 
-            console.log(oldValue)
-            console.log(oldValue)
-            console.log(oldValue)
-            console.log(oldValue)
-
             if ($button.hasClass('inc')) {
                 var newVal = parseFloat(oldValue) + 1;
             } else {
@@ -870,6 +867,36 @@
             }
             $button.parent().find('input').val(newVal);
         });
+
+
+
+
+
+        function checkPurchase(itemId) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Ensure CSRF token is included
+            
+            
+            fetch(`/isorderexist/${varient_idvalue}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken
+                },
+                body: new URLSearchParams({
+                    'item_id': itemId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.purchased) {
+                    console.log('User has purchased the item.');
+                } else {
+                    console.log('User has not purchased the item.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
 
 
     </script>
