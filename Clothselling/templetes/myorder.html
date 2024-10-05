@@ -21,51 +21,60 @@
 
 
     <style>
-        /* Ensure there are no text decorations */
         .nav-link {
             padding: 0.75rem 1rem;
             transition: background-color 0.3s, color 0.3s;
             border-radius: 5px;
-            /* Rounded corners */
             display: flex;
             align-items: center;
-            /* Align items vertically */
             font-weight: 400;
-            /* Set font weight to a lighter value */
             text-decoration: none;
-            /* Remove underline */
         }
 
-        /* Specific style for Your Order to ensure no strikethrough */
         #yourOrderLink {
             text-decoration: none;
-            /* Ensure no strikethrough */
             color: #000;
-            /* You can choose a different color if needed */
         }
 
         .nav-link:hover {
             background-color: rgba(255, 192, 203, 0.5);
-            /* Light rose background on hover */
             color: #333;
-            /* Change text color on hover */
         }
 
         .dropdown-menu {
-            border: 1px solid #ccc;
-            /* Light border for dropdown */
+            border: 1px solid #fff;
             border-radius: 5px;
-            /* Rounded corners for dropdown */
+            background-color: #fff;
         }
 
         .dropdown-item {
             font-weight: 400;
-            /* Set font weight for dropdown items */
         }
 
         .dropdown-item:hover {
             background-color: rgba(255, 192, 203, 0.3);
-            /* Light background on hover */
+        }
+        .nav-item:hover {
+            background-color: rgba(255, 182, 193, 0.5);
+        }
+
+        .nav-link {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: #FF69B4;
+        }
+
+        .dropdown-menu {
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .dropdown-menu a {
+            text-align: center;
         }
     </style>
 
@@ -96,15 +105,20 @@
                         id="navbar-vertical">
                         <div class="navbar-nav w-100 overflow-hidden align" style="height: 410px;">
                             <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center;">
-                                <li style="display: flex; justify-content: center; align-items: center; height: 50px;">
-                                    <a href="/myorder/" class="nav-item nav-link">My Order</a>
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a href="/myorder/" class="nav-item nav-link"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">My
+                                        Order</a>
                                 </li>
-                                <li style="display: flex; justify-content: center; align-items: center; height: 50px;">
-                                    <a href="/mywallet" class="nav-item nav-link">My Wallet</a>
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a href="/mywallet" class="nav-item nav-link"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">My
+                                        Wallet</a>
                                 </li>
-                                <li style="display: flex; justify-content: center; align-items: center; height: 50px;">
+                                <li style="height: 50px; margin-bottom: 10px;">
                                     <a class="nav-link text-dark dropdown-toggle" href="#" id="accountSettingsDropdown"
-                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">
                                         Account Settings
                                     </a>
                                     <ul class="dropdown-menu w-100" aria-labelledby="accountSettingsDropdown"
@@ -113,15 +127,15 @@
                                         <li><a class="dropdown-item" href="/manageadress/">Manage Address</a></li>
                                     </ul>
                                 </li>
-                                <li style="display: flex; justify-content: center; align-items: center; height: 50px;">
-                                    <a href="/mywishlist/0" class="nav-item nav-link">My Wishlist</a>
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a href="/mywishlist/0" class="nav-item nav-link"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">My
+                                        Wishlist</a>
                                 </li>
                             </ul>
                         </div>
                     </nav>
                 </div>
-
-
 
                 <div class="col-lg-8">
                     <h5 class="d-flex justifycontent-between font-weight-bold">My Order</h5>
