@@ -359,8 +359,9 @@
                             </li>
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
-                                   id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
-                                   aria-controls="ex1-pills-3" aria-selected="false" onclick="checkPurchase()">Reviews</a>
+                                    id="ex1-tab-3" data-mdb-toggle="pill" href="#ex1-pills-3" role="tab"
+                                    aria-controls="ex1-pills-3" aria-selected="false"
+                                    onclick="checkPurchase()">Reviews</a>
                             </li>
                             <li class="nav-item d-flex" role="presentation">
                                 <a class="nav-link d-flex align-items-center justify-content-center w-100"
@@ -592,152 +593,21 @@
         </div>
     </section>
 
-    <section class="product-details spad">
+    <section class="product-details spad" hidden>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active font-weight-bold text-danger" data-toggle="tab" href="#tabs-1"
-                                    role="tab">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link font-weight-bold text-danger" data-toggle="tab" href="#tabs-2"
-                                    role="tab">Specification</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link font-weight-bold text-danger" data-toggle="tab" href="#tabs-3"
-                                    role="tab">Reviews ( {{ratingcount}} )</a>
-                            </li>
-                        </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <h6 class="">Description</h6>
-                                {% for product_variant in product_variants %}
-                                {% if forloop.counter == 1 %}
-                                <p>{{product_variant.product.description}}</p>
-                                {% endif %}
-                                {% endfor %}
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                    quis, sem.</p>
+                            <div id="ratingwindow1112">
                             </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <h6>Specification</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                    consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                    quis, sem.</p>
-                            </div>
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <div class="d-flex justify-content-lg-start">
-                                    <div class="md-col-4  h-50 review-content">
-                                    </div>
-                                    <div class="md-col-8">
-                                        <div class="">
-
-                                            {% for rating in ratingall %}
-                                            {% if rating.user.images %}
-                                            <div>
-                                                <img data-variant-id="{{variant_id}}" data-color="{{data.1}}"
-                                                    class="product__big__img mt-5" src="{{rating.user.images.url}}"
-                                                    alt="" style="width: 5rem; height: 5rem;">
-                                                <p>
-                                                <div class="user-info">
-                                                    {{ rating.user.first_name }} {{ rating.user.lastname }}
-                                                </div>
-
-                                                </p>
-
-                                            </div>
-
-                                            {%endif%}
-                                        </div>
-
-
-                                        <div class="rating">
-                                            {% if rating.rating_user == 5 %}
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            {% elif rating.rating_user == 1 %}
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            {% elif rating.rating_user == 2 %}
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            {% elif rating.rating_user == 3 %}
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            {% elif rating.rating_user == 4 %}
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            <span class="star1">&#9733;</span> <!-- Filled star -->
-                                            {% elif rating.rating_user == 0 %}
-                                            <span class="star">&#9733;</span> <!-- Filled star -->
-                                            <span class="star">&#9733;</span> <!-- Filled star -->
-                                            <span class="star">&#9733;</span> <!-- Filled star -->
-                                            <span class="star">&#9733;</span> <!-- Filled star -->
-                                            <span class="star">&#9733;</span> <!-- Filled star -->
-                                            {% endif %}
-                                        </div>
-                                        <div class="review-content">
-                                            <p>{{ rating.review_comment }}</p>
-                                        </div>
-
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
                         </div>
-                    </div>
-
-                    <div id="ratingwindow1112">
-                        <h3>Rate and Review This Product</h3>
-                        <form method="post" action="" id="ratingForm">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="{{rating_form.rating_user.id_for_label}}">Rating:</label>
-                                <div id="rating" class="rating">
-                                    <span data-value="1" class="star">&#9733;</span>
-                                    <span data-value="2" class="star">&#9733;</span>
-                                    <span data-value="3" class="star">&#9733;</span>
-                                    <span data-value="4" class="star">&#9733;</span>
-                                    <span data-value="5" class="star">&#9733;</span>
-                                </div>
-                                <input type="hidden" id="id_rating_user" name="{{rating_form.rating_user.name}}"
-                                    value="0">
-                            </div>
-                            <div class="form-group">
-                                <label for="{{rating_form.review_comment.id_for_label}}">Review
-                                    Comment:</label>
-                                {{rating_form.review_comment}}
-                                <input type="hidden" name="{{rating_form.review_comment.name}}" id="review_comment"
-                                    value="">
-                            </div>
-                            <button class="btn btn-primary" type="submit">Submit</button>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-
-        </div>
     </section>
+
     <input type="hidden" name="" id="varient_id" value="{{varient_data.id}}">
     <input type="hidden" name="" id="rating_data" value="{{rating}}">
     <input type="hidden" name="" id="order_list_id" value="{{order_list_id}}">
@@ -752,7 +622,7 @@
 
             varient_id = document.getElementById('varient_id')
 
-           
+
             // Initialize the rating value
             let currentRating = parseInt(ratingInput.value);
             updateStars(currentRating);
@@ -799,7 +669,7 @@
 
                 varient_idvalue = varient_id.value
 
-                
+
 
 
 
@@ -874,8 +744,8 @@
 
         function checkPurchase(itemId) {
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Ensure CSRF token is included
-            
-            
+
+
             fetch(`/isorderexist/${varient_idvalue}`, {
                 method: 'POST',
                 headers: {
@@ -886,17 +756,17 @@
                     'item_id': itemId
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.purchased) {
-                    console.log('User has purchased the item.');
-                } else {
-                    console.log('User has not purchased the item.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.purchased) {
+                        console.log('User has purchased the item.');
+                    } else {
+                        console.log('User has not purchased the item.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
-        
+
 
 
     </script>
@@ -915,13 +785,6 @@
     <script src="js/jquery.nicescroll.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/productdetails.js"></script>
-
-
-    <script>
-
-    </script>
-
-
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.js"></script>
 
