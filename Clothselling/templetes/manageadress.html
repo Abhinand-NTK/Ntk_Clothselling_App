@@ -38,6 +38,61 @@
     .dropdown-item:hover {
         background-color: #f5f5f5;
     }
+    .nav-link {
+        padding: 0.75rem 1rem;
+        transition: background-color 0.3s, color 0.3s;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        text-decoration: none;
+    }
+
+    #yourOrderLink {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(255, 192, 203, 0.5);
+        color: #333;
+    }
+
+    .dropdown-menu {
+        border: 1px solid #fff;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .dropdown-item {
+        font-weight: 400;
+    }
+
+    .dropdown-item:hover {
+        background-color: #ffc0cb4d;
+    }
+    .nav-item:hover {
+        background-color: rgba(255, 182, 193, 0.5);
+    }
+
+    .nav-link {
+        width: 100%;
+    }
+
+    .nav-link:hover {
+        color: #FF69B4;
+    }
+
+    .dropdown-menu {
+        border: 1px solid #fff;
+        border-radius: 5px;
+        background-color: #ffffffe6;
+        backdrop-filter: blur(10px);
+    }
+
+    .dropdown-menu a {
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -59,19 +114,41 @@
     <section class="checkout spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="checkout__order">
-                        <h5><a class="text-dark" href="/myorder/">Your order</a></h5>
-                        <div class="dropdown">
-                            <h5><a class="text-dark" href="#">Account Settings</a></h5>
-                            <div class="dropdown-content">
-                                <a class="dropdown-item" href="/myprofile/">Personal Information</a>
-                                <a class="dropdown-item" href="/manageadress/">Manage Address</a>
-                            </div>
+                <div class="col-lg-3 d-none d-lg-block">
+                    <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
+                        id="navbar-vertical">
+                        <div class="navbar-nav w-100 overflow-hidden align" style="height: 410px;">
+                            <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center;">
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a href="/myorder/" class="nav-item nav-link"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">My
+                                        Order</a>
+                                </li>
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a href="/mywallet" class="nav-item nav-link"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">My
+                                        Wallet</a>
+                                </li>
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a class="nav-link text-dark dropdown-toggle" href="#" id="accountSettingsDropdown"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">
+                                        Account Settings
+                                    </a>
+                                    <ul class="dropdown-menu w-100" aria-labelledby="accountSettingsDropdown"
+                                        style="text-align: center;">
+                                        <li><a class="dropdown-item" href="/myprofile/">Personal Information</a></li>
+                                        <li><a class="dropdown-item" href="/manageadress/">Manage Address</a></li>
+                                    </ul>
+                                </li>
+                                <li style="height: 50px; margin-bottom: 10px;">
+                                    <a href="/mywishlist/0" class="nav-item nav-link"
+                                        style="display: block; height: 100%; padding: 10px; transition: background-color 0.3s; text-decoration: none; color: black;">My
+                                        Wishlist</a>
+                                </li>
+                            </ul>
                         </div>
-                        <h5><a class="text-dark" href="/mywallet">Mywallet</a></h5>
-                        <h5><a class="text-dark" href="/mywishlist/0">mywishlist</a></h5>
-                    </div>
+                    </nav>
                 </div>
                 <div class="col-lg-8">
                     <h2 class="d-flex justifycontent-between">Manage Address</h5>
