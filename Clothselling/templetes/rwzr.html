@@ -1,0 +1,42 @@
+<div class="col-lg-9">
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="checkout__form__input">
+                <div class="container border mt-3 rounded shadow-sm">
+                    <div class="border mb-3 w-100 h-auto d-flex flex-column p-3 text-center">
+                        <div class="font-color-danger">
+                            User Name: <span class="font-weight-bold">{{user.first_name}} {{user.lastname}}</span>
+                        </div>
+                        <div>
+                            Wallet Amount: <span class="font-weight-bold">{{ user.wallet }}</span>
+                        </div>
+                    </div>
+
+                    <div class="border p-3">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Sl No</th>
+                                        <th scope="col">Payment Method</th>
+                                        <th scope="col">Date of Payment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in wallet_history %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ item.paymenttype }}</td>
+                                        <td>{{ item.created }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <!-- Add more rows as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
