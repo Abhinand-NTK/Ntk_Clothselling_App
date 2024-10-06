@@ -6,12 +6,14 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-fzceTEF6Pz63szlbR+TfH2sr8Nz4JpXyV1lHAy4lW7I8bNBkVoSF3NDDUomO4qg6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-fzceTEF6Pz63szlbR+TfH2sr8Nz4JpXyV1lHAy4lW7I8bNBkVoSF3NDDUomO4qg6" crossorigin="anonymous">
 
     <style>
         body {
@@ -39,6 +41,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row">
@@ -46,20 +49,22 @@
                 <form class="mt-5" method="POST" action="">
                     {% csrf_token %}
                     {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                     {% endif %}
                     <h2>Login</h2>
                     <div class="form-group">
                         <label for="username">Username or Email</label>
-                        <input type="email" class="form-control" id="username" placeholder="Enter username" name="username" required>
+                        <input type="email" class="form-control" id="username" placeholder="Enter username"
+                            name="username" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password"
+                            required>
                         <label class="d-flex justify-content-end" for="password">
                             <a class="text-dark" href="forgetpas/"> Forgot your password</a>
                         </label>
@@ -69,20 +74,26 @@
                     </div>
                     <div class="form-group d-flex align-items-center">
                         {% load socialaccount %}
-                        <a class="btn btn-light rounded-sm border text-dark font-weight-normal align-items-center" style="width: 100%" href="{% provider_login_url 'google'%}?next=/%}">
+                        <!-- <a class="btn btn-light rounded-sm border text-dark font-weight-normal align-items-center" style="width: 100%" href="{% provider_login_url 'google'%}?next=/}">
+                            
                             <i class=" mr-2"><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 488 512"><path fill="#c913a7" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg></i> Google Login
+                        </a> -->
+                        <a class="btn btn-light rounded-sm border text-dark font-weight-normal align-items-center"
+                            style="width: 100%" href="{% provider_login_url 'google' %}?next=/products/">
+                            Sign in with Google
                         </a>
                     </div>
                     <p>Dont have an Account <a href="/signup/" class="text-dark">Sign up</a></p>
                 </form>
             </div>
             <div class=" mt-5 col-md-6 d-none d-md-block login-image">
-                <img src="https://img.freepik.com/free-photo/smiling-attractive-woman-stylish-colorful-outfit-jumping-with-shopping-bags-pink-yellow-background-polo-neck-striped-mini-skirt-shopaholic-sale-fashion-summer-trend_285396-2420.jpg" class="img-fluid" alt="Image">
+                <img src="https://img.freepik.com/free-photo/smiling-attractive-woman-stylish-colorful-outfit-jumping-with-shopping-bags-pink-yellow-background-polo-neck-striped-mini-skirt-shopaholic-sale-fashion-summer-trend_285396-2420.jpg"
+                    class="img-fluid" alt="Image">
             </div>
         </div>
     </div>
 
-    
+
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -104,7 +115,3 @@
 </html>
 
 {% endblock content%}
-
-
-
-

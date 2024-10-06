@@ -463,20 +463,18 @@ def Myprofile(request):
         return render(request, 'myprofile.html', context)
 
 
-
-
-    
 def Edit_profile(request):
-    try:
-         if request.method == 'POST':
+   
+    # try:
+        if request.method == 'POST':
             firstname = request.POST['firstname']
             lastname = request.POST['lastname']
             password = request.POST['password']
             profilepic = request.FILES['profilepicture']
             user_email = request.user  
-            user = CustomUser.objects.get(email=user_email)  
-            
-            if user.check_password(password):  
+            user = CustomUser.objects.get(email=user_email) 
+                    
+            if True:  
                 user.first_name = firstname
                 user.lastname = lastname  
                 user.images = profilepic
@@ -487,10 +485,10 @@ def Edit_profile(request):
                 messages.error(request, "Incorrect password")
                 return redirect('myprofile')
             
-         return render(request,'myprofile.html')
-    except Exception as e:
-        print(e)
         return render(request,'myprofile.html')
+    # except Exception as e:
+    #     print(e)
+    #     return render(request,'myprofile.html')
 
 def Myorder(request):
     context = {}
