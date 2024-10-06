@@ -1,8 +1,13 @@
 {% load static %}
+
 </head>
 
-
 <style>
+    .my-account .dropdown {
+        display: none;
+    }
+
+    /* General button styles */
     button {
         border: none;
         width: 100%;
@@ -57,6 +62,7 @@
         transform: scaleX(1);
     }
 
+    /* Dropdown container styles */
     .dropdown-container {
         position: relative;
     }
@@ -76,53 +82,111 @@
         display: block;
     }
 
+    /* Logout button specific styles */
     .logout-1 {
-        font-size: 1px;
+        font-size: 10px;
+        width: 60px;
+    }
+
+    /* Anchor tag without underline */
+    a {
+        text-decoration: none;
+    }
+
+    /* Removing bullets for list items */
+    ul,
+    li {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Specific to navbar and offcanvas menu */
+    .header__menu a,
+    .offcanvas__nav a {
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+        display: block;
+    }
+
+    .header__menu ul,
+    .offcanvas__nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Hover effect for li and a tags in offcanvas menu */
+    .offcanvas__nav ul li:hover a {
+        background-color: #ff97a4;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Style for offcanvas hover effect on small screens */
+    @media (max-width: 768px) {
+        .offcanvas__nav ul li:hover a {
+            background-color: #ff97a4;
+        }
     }
 </style>
-
-<!-- header section start -->
 
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
 </div>
-
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
-    <div class="offcanvas__close">+</div>
-    <!--  -->
     <div class="offcanvas__logo">
-        <a href="/products/"><img
-                src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg" alt=""
-                style="width: 6rem; height: 4rem;"></a>
+        <a href="/products/">
+            <img src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg" alt=""
+                style="width: 6rem; height: 4rem;">
+        </a>
         {% if user.is_authenticated %}
         <form action="/logout/" method="POST">
             {% csrf_token %}
             <button type="submit" class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal">
-                <a class="text-light font-weight-5 " style="font-size: small;">logout</a>
+                <a class="text-light font-weight-5 " style="font-size: small;">Logout</a>
             </button>
         </form>
         {% endif %}
     </div>
-    <div id="mobile-menu-wrap"></div>
-    <div class="offcanvas__auth">
-        <!-- <button class="btn-danger"><a href="#">Login</a></button>
-        <button class="btn-danger "><a href="#">Register</a></button> -->
-    </div>
+    <nav class="offcanvas__nav">
+        <ul>
+            <li><a href="/products/">Shop</a></li>
+            <li><a href="/products/womans/">Women’s</a></li>
+            <li><a href="/products/mens/">Men’s</a></li>
+            <li><a href="/products/kids/">Kids</a></li>
+            <li><a href="/products/combos/">Combos</a></li>
+            <li><a href="">Blog</a></li>
+            {% if user.is_authenticated and user.is_verified %}
+            <li class="my-account">
+                <a href="#">My Account</a>
+                <ul class="dropdown" style="display: none;">
+                    <li><a href="/mywishlist/0">My Wishlist</a></li>
+                    <li><a href="/cart/cart_item/">Cart</a></li>
+                    <li><a href="/myprofile/">Personal Information</a></li>
+                    <li><a href="/myorder/">Order Details</a></li>
+                </ul>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 <!-- Offcanvas Menu End -->
 
 <!-- Header Section Begin -->
 <header class="header">
-    <div class="container-fluid ">
+    <div class="container-fluid">
         <div class="row rownavbar">
-            <div class="col-xl-3 col-lg-2 h-12">
+            <div class="col-xl-3 col-lg-2">
                 <div class="logotag">
-                    <a class="logotag" href="/products/"><img
-                            src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg"
-                            alt=""></a>
+                    <a class="logotag" href="/products/">
+                        <img src="https://t3.ftcdn.net/jpg/05/29/41/96/360_F_529419639_eFk62uXuzFexGwZR5Xi6zYwiAQvaxSjM.jpg"
+                            alt="">
+                    </a>
                 </div>
                 <div class="canvas__open">
                     <i class="fa fa-bars"></i>
@@ -131,17 +195,15 @@
             <div class="col-xl-6 col-lg-7">
                 <nav class="header__menu">
                     <ul>
-                        <li class=""><a href="/products/">Shop</a></li>
-
-                        <li class=""><a href="/products/womans/">Women’s</a>
+                        <li><a href="/products/">Shop</a></li>
+                        <li><a href="/products/womans/">Women’s</a>
                             {% if heading == "Woman" %}
                             <ul class="dropdown">
                                 {% for i in cat %}
                                 <li><a href="/products/filter/{{i}}/{{heading}}">{{i}}</a></li>
                                 {% endfor %}
                             </ul>
-                            {%endif %}
-
+                            {% endif %}
                         </li>
                         <li><a href="/products/mens/">Men’s</a>
                             {% if heading == "Men" %}
@@ -150,7 +212,7 @@
                                 <li><a href="/products/filter/{{i}}/{{heading}}">{{i}}</a></li>
                                 {% endfor %}
                             </ul>
-                            {%endif %}
+                            {% endif %}
                         </li>
                         <li><a href="/products/kids/">Kids</a>
                             {% if heading == "Kids" %}
@@ -159,21 +221,20 @@
                                 <li><a href="/products/filter/{{i}}/{{heading}}">{{i}}</a></li>
                                 {% endfor %}
                             </ul>
-                            {%endif %}
+                            {% endif %}
                         </li>
                         <li><a href="/products/combos/">Combos</a>
                             {% if heading == "Combos" %}
-                            <ul class="dropdown" style="text-decoration: none;">
+                            <ul class="dropdown">
                                 {% for i in cat %}
-                                <li><a style="text-decoration: none;"
-                                        href="/products/filter/{{i}}/{{heading}}">{{i}}</a></li>
+                                <li><a href="/products/filter/{{i}}/{{heading}}">{{i}}</a></li>
                                 {% endfor %}
                             </ul>
-                            {%endif %}
+                            {% endif %}
                         </li>
                         <li><a href="">Blog</a></li>
                         {% if user.is_authenticated and user.is_verified %}
-                        <li><a class="text-dark font-weight-5">My Account</a>
+                        <li><a href="#">My Account</a>
                             <ul class="dropdown">
                                 <li><a href="/myprofile/">My Profile</a></li>
                                 <li><a href="/products/">Product Details</a></li>
@@ -182,110 +243,72 @@
                                 <li><a href="/myorder/">Order details</a></li>
                             </ul>
                         </li>
-                        {%endif%}
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__right">
                     <div class="header__right__auth">
-                        {% if user.is_authenticated and not user.is_blocked and user.is_verified%}
+                        {% if user.is_authenticated and not user.is_blocked and user.is_verified %}
                         <div class="header_right_auth">
                             <a style="font-size: 1rem;" class="display-1 text-dark" href="#">{{user.first_name}}
                                 {{user.lastname}}</a>
                         </div>
-
                         {% else %}
                         <div class="d-flex justifycontent-between">
-
                             <div class="dropdown-container">
                                 <button type="button" style="width: 15vh; height: 5vh;"
-                                    class=" d-flex justifycontent-between btn btn-danger rounded-sm border text-primary font-weight-normal">
-                                    <a class="text-light text-align-center" href="/">
-                                        Sign in
-                                    </a>
+                                    class="d-flex justifycontent-between btn btn-danger rounded-sm border text-primary font-weight-normal">
+                                    <a class="text-light text-align-center" href="/">Sign in</a>
                                 </button>
                                 <div class="dropdown-menu">
                                     <a href="/myprofile/">My Profile</a>
                                     <a href="/products/">Product Details</a>
                                     <a href="/products/womans/">Womans</a>
                                     <a href="/products/mens/">Mens</a>
-                                    <a href="/products/kids/">kids</a>
+                                    <a href="/products/kids/">Kids</a>
                                     <a href="/products/combos/">Combos</a>
                                 </div>
                             </div>
                             <div>
-                                <button type="submit" style="width: 15vh; height: 5vh ; "
+                                <button type="submit" style="width: 15vh; height: 5vh;"
                                     class="btn-danger rounded-sm border text-primary font-weight-normal">
-                                    <a class="text-light" href="/signup/">
-                                        Register
-                                    </a>
+                                    <a class="text-light" href="/signup/">Register</a>
                                 </button>
                             </div>
                         </div>
-                        {%endif%}
+                        {% endif %}
                     </div>
-                    <ul class="header__right__widget list-inline ">
-                        {% if user.is_authenticated and not user.is_blocked and user.is_verified%}
-                        <li>
-                            <a href="/mywishlist/{{0}}">
-                                <span class="position-relative">
-                                    <span class="fa fa-heart text-danger"></span>
-                                    <span
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary"
-                                        style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
-                                        {{ request.session.wishlist_count|default:"0" }}
-                                    </span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/cart/cart_item/">
-                                <span class="position-relative">
-                                    <span class="fa fa-shopping-cart text-danger"></span>
-                                    <span
-                                        class="position-absolute top-0 start-100 translate-middle badge rounded-circle p-1 bg-secondary"
-                                        style="height: 18px; width: 18px; font-size: 10px; line-height: 1;">
-                                        {{ request.session.cart_count|default:"0"}}
-                                    </span>
-
-                                </span>
-                            </a>
-                        </li>
-                        {%else%}
-                        <li>
-                            {%if user.is_authenticated %}
-                            <a href="/mywishlist/{{0}}">
-                                <span class="fa fa-heart text-danger"></span>
-                            </a>
-                            {%endif%}
-                        </li>
-                        <li>
-                            {%if user.is_authenticated %}
-                            <a href="/cart/cart_item/">
-                                <span class="fa fa-shopping-cart text-danger"></span>
-                            </a>
-                            {%endif%}
-
-                        </li>
-                        {%endif%}
-                        {% if user.is_authenticated and not user.is_blocked and user.is_verified%}
-
+                    <ul class="header__right__widget list-inline">
+                        {% if user.is_authenticated and not user.is_blocked and user.is_verified %}
+                        <li><a href="/mywishlist/0"><span class="fa fa-heart text-danger"></span></a></li>
+                        <li><a href="/cart/cart_item/"><span class="fa fa-shopping-cart text-danger"></span></a></li>
                         <li>
                             <form action="/logout/" method="POST">
                                 {% csrf_token %}
-                                <button type="submit"
-                                    class="btn-danger logout-1 rounded-sm border text-primary font-weight-normal">
-                                    <a class="text-light font-weight-5 " style="font-size: small;">logout</a>
+                                <button type="submit" class="btn-danger logout-1">
+                                    Logout
                                 </button>
                             </form>
-
                         </li>
-                        {%endif%}
+                        {% endif %}
                     </ul>
                 </div>
             </div>
-
         </div>
     </div>
 </header>
+
+<script>
+    document.querySelector('.my-account a').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default action of the anchor tag
+        var dropdown = document.querySelector('.my-account .dropdown');
+        if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+            dropdown.style.display = 'block';
+        } else {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
+<script src="{% static 'js/checkout.js' %}"></script>
