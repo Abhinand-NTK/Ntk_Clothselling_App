@@ -19,6 +19,9 @@ import string
 from datetime import datetime
 import re
 from allauth.account.views import LoginView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib import messages
 
 
 def User_login(request):
@@ -278,18 +281,19 @@ def User_resetpassword(request, user_id):
         print(e)
         return render(request, 'Authenticatoins/resetpassword.html', {'user': user})
         
-
-    
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib import messages
+@login_required(login_url='user_login')
 def Manage_Address(request):
     try:
         current_path = request.path
-        if 'user' in request.session:
-            user=request.user
-        
-        else:
-            messages.error(request,'Sesson time Out')
+        user = request.user
+    
+        if not user.is_authenticated:
+            messages.error(request, 'Session timed out. Please log in again.')
             return redirect('user_login')
-            
+                
         if request.method=='POST':
                 
                 first_name=request.POST['firstname'].strip()
@@ -470,14 +474,14 @@ def Edit_profile(request):
             firstname = request.POST['firstname']
             lastname = request.POST['lastname']
             password = request.POST['password']
-            profilepic = request.FILES['profilepicture']
+            profilepic = request.FILES.get('profilepicture', None)
             user_email = request.user  
             user = CustomUser.objects.get(email=user_email) 
                     
             if True:  
                 user.first_name = firstname
                 user.lastname = lastname  
-                user.images = profilepic
+                user.images = profilepic if profilepic else ''
                 user.save()                  
                 messages.success(request, "Profile updated successfully")
                 return redirect('myprofile')
@@ -532,12 +536,13 @@ def Coupenlist(requset):
         print(e)
         return render(requset,'coupenlistuserside.html',context)
 
-
+@login_required(login_url='user_login')
 def Mywallet(request):
 
     try:
-     
-        if 'user' in request.session:
+        user = request.user
+    
+        if user.is_authenticated:
             user = request.session['user']
             user_id = CustomUser.objects.get(email=user)
             waller_history=Payementwallet.objects.filter(user__email=user)

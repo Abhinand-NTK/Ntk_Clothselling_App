@@ -11,11 +11,25 @@ from django.db.models import Sum
 
 
 def Cart_page(request):
+
+    print("============================================")
+    print("============================================")
+    print("============================================")
+    print("============================================")
+    print("============================================")
+    print(request)
+    print("============================================")
+    print("============================================")
+    print("============================================")
+    print("============================================")
+    print("============================================")
+    print("============================================")
     
     try:
-        
+        user = request.user
+    
 
-        if 'user' in request.session:
+        if user.is_authenticated:
             user = request.session['user']
             user_id = CustomUser.objects.get(email=user)
             request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()

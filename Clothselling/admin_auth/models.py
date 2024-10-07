@@ -176,17 +176,26 @@ class CustomUser(AbstractUser):
 
     images=models.ImageField(upload_to='photos/userprofile',blank=True)
 
-
-
-    
-    # required
     created_at = models.DateTimeField(default=timezone.now,null=True,blank=True)
 
     USERNAME_FIELD = "email"
-
     objects = CustomUserManager()
-
     REQUIRED_FIELDS = [] 
+    def save(self, *args, **kwargs):
+        if not self.username:
+            base_username = f"{self.first_name}{self.last_name}{self.email.split('@')[0]}".replace(' ', '')
+            self.username = base_username  
+            
+        super().save(*args, **kwargs)
+
+        if self.username:
+            if CustomUser.objects.filter(username=self.username).exists():
+                self.username = f"{self.username}_{self.id}"
+                count = 1
+                while CustomUser.objects.filter(username=self.username).exists():
+                    self.username = f"{self.username[:-len(str(count))]}{count}"
+                    count += 1
+                super().save(update_fields=['username'])
 
     def __str__(self):
         return self.email

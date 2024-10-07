@@ -416,3 +416,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+SOCIALACCOUNT_ADAPTER = 'user_auth.adapters.CustomSocialAccountAdapter'
