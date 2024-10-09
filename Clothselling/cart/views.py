@@ -14,13 +14,8 @@ def Cart_page(request):
     try:
         user = request.user
         if user.is_authenticated:
-            print('Step - 1')
-            # user = request.session['user']
-            print('Step - 2')
             user_id = CustomUser.objects.get(email=user)
-            print('Step - 3')
             request.session['wishlist_count'] = Wishlist.objects.filter(user__email=user).count()
-            print('Step - 4')
             request.session['cart_count'] = Cart.objects.filter(user__email=user).count()
             cart = Cart.objects.filter(user=user_id)
             all_items_in_stock = not any(item.products.stock <= 0 for item in cart)
@@ -29,20 +24,6 @@ def Cart_page(request):
             for cart_item in cart:
                 cart_item.total_price = cart_item.quantity * cart_item.products.price
                 total_price += cart_item.total_price
-
-            print("==============================")
-            print("==============================")
-            print("==============================")
-            print("==============================")
-            print("==============================")
-            print(cart)
-            print("==============================")
-            print("==============================")
-            print("==============================")
-            print("==============================")
-            print("==============================")
-
-            
 
             context = {'cart': cart, 'total_price': total_price,'all_items_in_stock':all_items_in_stock}
             return render(request, 'cart_page.html', context)
@@ -59,39 +40,14 @@ def Cart_page(request):
 def Add_to_Cart(request, product_vareint_id):
 
 
-    # print("======================================")
-    # print("======================================")
-    # print("======================================")
-    # print("======================================")
-    # print("Testing the route is working or not with out any issue")
-    # print("Testing the route is working or not with out any issue")
-    # print(product_vareint_id)
-    # print("Testing the route is working or not with out any issue")
-    # print("Testing the route is working or not with out any issue")
-    # print("======================================")
-    # print("======================================")
-    # print("======================================")
-    # print("======================================")
-    # print("======================================")
-
-    # try:
+    try:
         if request.user.is_authenticated:
-            user = request.session['user']
-            user_id = CustomUser.objects.get(email=user)
+            user = request.user
+            user_id = CustomUser.objects.get(email=user.email)
 
          
             if request.method == 'POST':
 
-
- 
-                print('=======================================================')
-                print('=======================================================')
-                print("testing wheather the cart item is added to the cart or not")
-                print(cart_item)
-
-                print('=======================================================')
-                print('=======================================================')
-                print('=======================================================')
 
                 quantity = int(request.POST['quantity'])
                 product_variant = ProductVariant.objects.get(id=product_vareint_id)
@@ -106,17 +62,6 @@ def Add_to_Cart(request, product_vareint_id):
                     products=product_variant,
                     defaults={'quantity': quantity}
                 )
-                print('=======================================================')
-                print('=======================================================')
-                print('=======================================================')
-                print('=======================================================')
-                print('=======================================================')
-                print("testing wheather the cart item is added to the cart or not")
-                print(cart_item)
-
-                print('=======================================================')
-                print('=======================================================')
-                print('=======================================================')
                 if not created:
                         cart_item.quantity += quantity
                         cart_item.save()
@@ -130,15 +75,15 @@ def Add_to_Cart(request, product_vareint_id):
             messages.info(request,"login for add the items into cart")
             return redirect('user_login')
 
-    # except Exception as e:
-    #     print(e)
-    #     return redirect('cart_item')
+    except Exception as e:
+        print(e)
+        return redirect('cart_item')
 
   
 def Cart_delete(request, delete_id):
     try:
         if request.method == 'POST':
-            if 'user' in request.session:
+            if request.user:
                 delete = Cart.objects.get(id=delete_id)
 
                 delete.delete()
@@ -152,10 +97,10 @@ def Cart_delete(request, delete_id):
 
 def Checkout(request):
     try:
-        if 'user' in request.session:
+        if request.user:
 
-            user = request.session['user']
-            user_id = CustomUser.objects.get(email=user)
+            user = request.user
+            user_id = CustomUser.objects.get(email=user.email)
 
             cart = Cart.objects.filter(user=user_id)
             total_price = 0  
@@ -245,7 +190,7 @@ def update_cart_item_quantity(request):
 
  
 
-    # try:
+    try:
 
 
         if request.method == 'POST':
@@ -290,8 +235,8 @@ def update_cart_item_quantity(request):
                             'cart_Stock': cart_Stock,
                             'cart_count':cart_count,}
             return JsonResponse(response_data)
-    # except Exception as e:
-    #     print(e)
-    #     return JsonResponse(response_data)
+    except Exception as e:
+        print(e)
+        return JsonResponse(response_data)
 
 

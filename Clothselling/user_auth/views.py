@@ -22,7 +22,9 @@ from allauth.account.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.contrib import messages
 
 def User_login(request):
 
@@ -119,10 +121,8 @@ def generate_referral_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 def User_signup(request):
-
-    
         
-    # try:
+    try:
         if request.method=='POST':
             
             email = request.POST.get('username', '').strip()
@@ -192,9 +192,9 @@ def User_signup(request):
                 return redirect('user_signup')
 
         return render(request, 'Authenticatoins/signup.html')
-    # except Exception as e:
-    #     print(e)
-    #     return render(request, 'Authenticatoins/signup.html')
+    except Exception as e:
+        print(e)
+        return render(request, 'Authenticatoins/signup.html')
 
 
 
@@ -281,9 +281,7 @@ def User_resetpassword(request, user_id):
         print(e)
         return render(request, 'Authenticatoins/resetpassword.html', {'user': user})
         
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
-from django.contrib import messages
+
 @login_required(login_url='user_login')
 def Manage_Address(request):
     try:
@@ -497,7 +495,7 @@ def Edit_profile(request):
 def Myorder(request):
     context = {}
     try:
-        if 'user' in request.session:
+        if request.user:
             user = request.user
             if user:
                 orders = OrderProduct.objects.filter(customer=user).order_by('id')
@@ -543,7 +541,7 @@ def Mywallet(request):
         user = request.user
     
         if user.is_authenticated:
-            user = request.session['user']
+            user = request.user.email
             user_id = CustomUser.objects.get(email=user)
             waller_history=Payementwallet.objects.filter(user__email=user)
 
@@ -558,8 +556,8 @@ def Mywallet(request):
 
 def Mywishlist(request, varient_id=None):
     try:
-        user = request.session['user']
-        user_id = CustomUser.objects.get(email=user)
+        user = request.user
+        user_id = CustomUser.objects.get(email=user.email)
 
         if not user:
             messages.error("login for this feature")
@@ -649,15 +647,10 @@ def Add_item_to_Cart(request,product_vareint_id=None):
 
 def check_purchase(request,item_id):
 
-    
         user = request.session.get('user')
-    # try:
+    try:
         if request.method == 'POST':
-            # try:
-                # item_id = request.POST.get('item_id')
-                # data = json.loads(request.body.decode('utf-8'))
-                # user_id = data.get('user_id')
-                # item_id = data.get('item_id')
+            try:
                 user_id = CustomUser.objects.filter(email=user)
                 print(user_id)
                 user_id = CustomUser.objects.filter(email=user).values_list('id', flat=True).first()
@@ -672,13 +665,13 @@ def check_purchase(request,item_id):
                     'purchased': True
                 })
 
-    #         except CustomUser.DoesNotExist:
-    #             return JsonResponse({'error': 'User not found'}, status=404)
-    #         except Product.DoesNotExist:
-    #             return JsonResponse({'error': 'Item not found'}, status=404)
+            except CustomUser.DoesNotExist:
+                return JsonResponse({'error': 'User not found'}, status=404)
+            except Product.DoesNotExist:
+                return JsonResponse({'error': 'Item not found'}, status=404)
 
-    # except Exception as e:
-    #     return JsonResponse({'error': str(e)}, status=500)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 

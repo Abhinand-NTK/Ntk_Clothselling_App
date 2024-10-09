@@ -161,9 +161,9 @@ def Place_Order_online_Payment(request):
     try:
 
    
-        if 'user' in request.session:
-            user = request.session['user']
-            userid = CustomUser.objects.get(email=user)
+        if request.user:
+            user = request.user
+            userid = CustomUser.objects.get(email=user.email)
 
             if request.method == 'POST':
 
@@ -281,7 +281,7 @@ def remove_show_modal_session(request):
 
 def Order_deatails(request, order_id):
     try:
-        if 'user' in request.session:
+        if request.user:
 
             details = Order.objects.get(order_id=order_id)
 
